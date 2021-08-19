@@ -9,6 +9,10 @@ import store from '../store'
 import mme from '@/util/mme.js'
 import publicFunc from '@/util/public.js'
 import fdSliderController from '@/util/fdSliderController'
+import chooseLanguage from '@/lib/exportModule/languageExport'
+console.log('language', store.state.user.userLanguage)
+chooseLanguage.lang(store.state.user.userLanguage)
+let mrs_download_completed = mrs_download_completed
 const playback = {
   /*
   ** 停止视频播放
@@ -100,9 +104,9 @@ const playback = {
       switch (obj.type) {
         case "missing": {
           if (!playbackFlag) {
-            if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
-              location.href = "https://www.adobe.com/go/getflashplayer";
-            }
+            // if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
+            //   location.href = "https://www.adobe.com/go/getflashplayer";
+            // }
             if (flash_isplay) clearInterval(flash_isplay);
             flash_isplay = setInterval(function () { flash_play() }, 1000);
           } else {
@@ -556,6 +560,7 @@ const playback = {
           // console.log(string_speed, 'download_string_speed', obj, 'download_obj')
           if (string_speed.length >= 150) {
             let json_speed = eval("(" + string_speed + ")");
+            console.log(json_speed.data.played_duration / data.videoSize, 'json_speed.data.played_duration / data.videoSize')
             if (json_speed.data.played_duration / data.videoSize > 1) {
               json_speed.data.played_duration = data.videoSize;
               l_speed = "100%";
@@ -576,13 +581,13 @@ const playback = {
               console.log(data, 'download_info_data')
               let data_num = data.substring(0, data.length - 1);
               $("#download_progress").html(data)
-              if (data_num == 100) {
+              if (data_num > 99) {
                 // create_preview({parent:l_dom_playback_screen});
                 playback.video_stop({
                   dom: $("#playback_screen"),
                   isDownload: 1 // 是否下载中特殊标记
                 }).then(res => {
-                  sessionStorage.setItem("pause_start_time", start_time)
+                  // sessionStorage.setItem("pause_start_time", start_time)
                   let pic_token = store.state.jumpPageData.playBackObj.pic_token.replace("_p3_", "_p0_")
                   play.play_preview_img({
                     dom: $("#playback_screen"),
@@ -590,7 +595,7 @@ const playback = {
                     pic_token: pic_token
                   })
                   console.log('下载')
-                  // publicFunc.mx('#playback_screen').innerHTML =
+                  publicFunc.mx('#playback_buffer_ret').style.display = "none"
                   //   "<div id='play_view_box'>"
                   //   + "<div id='play_pause_pic'></div>"
                   //   + "</div>"

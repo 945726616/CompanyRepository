@@ -220,7 +220,7 @@
                     this.$router.push({ name: 'play', params: this.boxlist_params })
                 } else {
                     let dev_sn = e.currentTarget.getAttribute("sn");
-                    let jumpData = { dev_sn: dev_sn, addr: this.boxlist_params.addr, back_page: "boxlist", agent: this.boxlist_params.agent };
+                    let jumpData = { dev_sn: dev_sn, addr: this.boxlist_params.addr, back_page: "boxlist", agent: this.boxlist_params.agent, box_ipc: 1 };
                     this.$router.push({ name: 'history', params: jumpData })
                 }
             },
@@ -266,16 +266,28 @@
                 _this.private_ipc_data = [];
                 if (_this.$store.state.jumpPageData.localFlag) { // 判断是否是本地搜素
                     let local_play_data = {};
-                    local_play_data.addr = obj.addr;
+                    local_play_data.addr = _this.boxlist_params.addr;
                     local_play_data.box_sn = _this.$store.state.jumpPageData.selectDeviceIpc;
                     local_play_data.sn = _this.$store.state.jumpPageData.selectDeviceIpc;
                     local_play_data.flag = 1;
                     local_play_data.password = sessionStorage.getItem("pass_" + _this.$store.state.jumpPageData.selectDeviceIpc);
-                    local_play_data.func = function() {
-                        local_play_data.func = _this.boxlist_get_ack
-                        msdk_ctrl({ type: "local_boxlist_get", data: local_play_data })
-                    }
-                    msdk_ctrl({ type: "local_sign_in", data: local_play_data })
+                    _this.$api.local.local_sign_in({
+                        data: local_play_data
+                    }).then(res => {
+                        if (res.result === '') {
+                            _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
+                            _this.$store.dispatch('setSid', res.sid)
+                            _this.$store.dispatch('setGuest', res.guest)
+                            _this.$store.dispatch('setSeq', res.seq)
+
+                            _this.$api.boxlist.box_get({ //返回onvif后发送ccm_box_get，解决有时私有去不掉onvif问题
+                                box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
+                                flag: 1
+                            }).then(res => {
+                                _this.boxlist_get_ack(res)
+                            })
+                        }
+                    })
                 } else {
                     _this.l_get_onvif_flag = true
                     _this.$api.boxlist.onvif_box_search({ // 调用ccm_box_search接口

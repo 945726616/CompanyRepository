@@ -9,7 +9,7 @@
                     <div class='set_img' id='exit_btn_img' style='width:180px;height:34px' @click="exit_btn"> {{login_sign ? mcs_exit: mcs_sign_in + "/" + mcs_sign_up}} </div>
                 </div>
                 <ul id='left_ul_top' class='ul_public' :style="(!fujikam_sign && login_sign) || !login_sign?'border:inherit':''">
-                    <li class='set_list' id='local_div_hide' v-if="fujikam_sign" @click="clickLocalSearch">
+                    <li class='set_list' id='local_div_hide' v-if="fujikam_sign && login_sign" @click="clickLocalSearch">
                         <div class='set_img' id='local_devs'></div>
                         <!-- 本地搜索(客户端实现 网页端隐藏) -->
                         <div class='set_name' id='local_div'> {{mcs_local_search}} </div>
@@ -262,6 +262,7 @@
                         flag: "my_page",
                         func: function() {
                             localStorage.setItem("auto_login", 0);
+                            _this.$store.dispatch("setLoginFlag",0)
                             if (!localStorage.getItem("keep_pw")) {
                                 let remember_msg_info_data = localStorage.getItem("remember_msg_info");
                                 let remember_msg_info_json = eval("(" + remember_msg_info_data + ")");
@@ -269,14 +270,14 @@
                                 localStorage.setItem("remember_msg_info", JSON.stringify({ user: username }));
                             }
                             _this.$router.push({ name: 'login' })
-                            if (_this.$store.state.jumpPageData.localFlag) {
-                                let url = location.href;
-                                location.href = url.replace("&l=local&c=1", "");
-                                sessionStorage.clear();
-                            } else {
+                            // if (_this.$store.state.jumpPageData.localFlag) {
+                            //     let url = location.href;
+                            //     location.href = url.replace("&l=local&c=1", "");
+                            //     sessionStorage.clear();
+                            // } else {
                                 sessionStorage.clear();
                                 location.reload();
-                            }
+                            // }
                         }
                     })
                 } else {
@@ -495,7 +496,7 @@
             },
             clickLocalSearch() { // 点击本地搜索
                 console.log('点击本地搜索', window.location.protocol === "file:" ? 1 : 0)
-                this.$store.dispatch('setLocalModel', 1)
+                this.$store.dispatch('setLocalFlag', 1)
                 this.$router.push({ name: 'devlist' })
                 // document.getElementById('main_ifr').setAttribute('src', location.href + "&l=local&c=" + 1 + "" + (location.href.indexOf("file=vimtag") > -1 ? "&file=vimtag" : ""))
                 // let changeHref = location.href.split('#')[0] + "&l=local&c=" + 1 + "" + (location.href.indexOf("file=vimtag") > -1 ? "&file=vimtag" : "") + '#/devlist'

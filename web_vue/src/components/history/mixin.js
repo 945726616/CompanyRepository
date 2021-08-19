@@ -200,6 +200,9 @@ export const historyMixin = {
             jumpData.data = this.history_data[num].cut_video_data;
             jumpData.a_start = this.a_start;
             jumpData.b_end = this.b_end;
+            if(this.history_info.box_ipc){ //云盒子
+                jumpData.box_ipc = this.history_info.box_ipc;
+            }
             this.$router.push({ name: 'playback', params: jumpData })
         },
         photo_sign_picture_btn(e) { //点击照片

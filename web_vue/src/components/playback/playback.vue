@@ -309,7 +309,8 @@ export default {
             sn: this.$store.state.jumpPageData.selectDeviceIpc,
             videoSize: this.videoSize,
             token: this.play_back_token,
-            playback: 1 // 此处额外添加参数
+            playback: 1, // 此处额外添加参数
+            box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
         } else {
           console.log('从头开始')
@@ -319,7 +320,8 @@ export default {
             sn: this.$store.state.jumpPageData.selectDeviceIpc,
             videoSize: this.videoSize,
             token: this.createPlaybackObj.token,
-            playback: 1 // 此处额外添加参数
+            playback: 1, // 此处额外添加参数
+            box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
         }
         $("#video_play").attr("class", "video_play_start")
@@ -351,7 +353,8 @@ export default {
           sn: this.$store.state.jumpPageData.selectDeviceIpc,
           videoSize: this.videoSize,
           token: this.play_back_token,
-          playback: 1 // 此处额外添加参数
+          playback: 1, // 此处额外添加参数
+          box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
         })
       } else {
         console.log('从头开始')
@@ -361,7 +364,8 @@ export default {
           sn: this.$store.state.jumpPageData.selectDeviceIpc,
           videoSize: this.videoSize,
           token: this.createPlaybackObj.token,
-          playback: 1 // 此处额外添加参数
+          playback: 1, // 此处额外添加参数
+          box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
         })
       }
       $("#video_play").attr("class", "video_play_start")
@@ -401,7 +405,8 @@ export default {
             sn: this.$store.state.jumpPageData.selectDeviceIpc,
             videoSize: this.videoSize,
             token: this.play_back_token,
-            playback: 1 // 此处额外添加参数
+            playback: 1, // 此处额外添加参数
+            box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
           // .then(res => {
           //   console.log(res, 'playBack_playSpeed1')
@@ -513,7 +518,7 @@ export default {
     "$store.state.jumpPageData.clientP2Ping" (val) {
       if (val) {
         this.clientP2PingValue = val
-        console.log(val, 'p2pingvalue')
+        // console.log(val, 'p2pingvalue')
       }
     }
   },

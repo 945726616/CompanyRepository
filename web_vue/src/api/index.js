@@ -8,6 +8,7 @@ import my from '@/api/my'
 import play from '@/api/play'
 import playback from '@/api/playback'
 import set from '@/api/set'
+import local from '@/api/local'
 // import test2 from '@/api/test2'
 
 export default {
@@ -18,5 +19,6 @@ export default {
     my,
     play,
     playback,
-    set
+    set,
+    local
 }

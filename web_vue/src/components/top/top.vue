@@ -39,7 +39,8 @@
                     </div>
                 </div>
                 <div id='menu_download' :class="project_name == 'ebitcam'?switch_download?'ebit_menu_top_li_active':'ebit_menu_top_li':switch_download?'menu_top_li_active':'menu_top_li'" v-if='!kbwin_sign' @click="menu_download_click">
-                    <div v-if='!fujikam_sign'>  <!-- 若为客户端则隐藏下载按钮 -->
+                    <div v-if='!fujikam_sign'>
+                        <!-- 若为客户端则隐藏下载按钮 -->
                         <div id='menu_download_img' class='menu_img'></div>
                         <div id='menu_download_txt' class='menu_txt'>
                             {{mcs_download}}
@@ -114,7 +115,7 @@
                 if (!this.$store.state.user.name) {
                     this.username_value = mcs_my
                 }
-                if (this.$store.state.jumpPageData.localModel) { // 判断是否为本地离线模式
+                if (this.$store.state.jumpPageData.localFlag) { // 判断是否为本地离线模式
                     this.$store.dispatch('setLoginFlag', this.publicFunc.urlParam() && this.publicFunc.urlParam().c == 1 ? 1 : 0)
                     let l_remember_data = sessionStorage.get('remember_msg_info')
                     l_remember_data = eval('(' + l_remember_data + ')')
@@ -156,32 +157,33 @@
             },
             menu_my_click() { // 点击个人中心
                 if (this.publicFunc.urlParam().l == 'local') {
-                    this.$store.dispatch('setLocalModel', 1)
+                    this.$store.dispatch('setLocalFlag', 1)
                 }
-                if (this.$store.state.jumpPageData.localModel) {
-                    this.$store.dispatch('setLoginFlag', this.publicFunc.urlParam() && this.publicFunc.urlParam().c == 1 ? 1 : 0)
-                }
+                // if (this.$store.state.jumpPageData.localFlag) {
+                //     this.$store.dispatch('setLoginFlag', this.publicFunc.urlParam() && this.publicFunc.urlParam().c == 1 ? 1 : 0)
+                // }
                 this.$router.push({
                     name: 'my'
                 })
             },
             login_div_click() { //点击我的设备
-                if (this.$store.state.jumpPageData.localModel) {
+                if (this.$store.state.jumpPageData.localFlag) {
                     //如果点击了本地搜索
-                    this.$store.dispatch('setLoginFlag', this.publicFunc.urlParam() && this.publicFunc.urlParam().c == 1 ? 1 : 0)
+                    // this.$store.dispatch('setLoginFlag', this.publicFunc.urlParam() && this.publicFunc.urlParam().c == 1 ? 1 : 0)
                     if (this.$store.state.user.loginFlag) {
                         //已经登录了	点击我的设备无效
-                        this.$store.dispatch('setLocalModel', 0)
-                        if (window.fujikam === 'fujikam') {
-                            // 根据是否是客户端进行两种不同的截取方式 客户端多一个版本号的参数
-                            location.href =
-                                location.href.split('&')[0] + '&' + location.href.split('&')[1] // 将切割后第部分进行拼接保证链接正确
-                        } else {
-                            location.href = location.href.split('&')[0]
-                        }
-                        this.$router.push({
-                            name: 'devlist'
-                        });
+                        this.$store.dispatch('setLocalFlag', 0)
+                        // if (window.fujikam === 'fujikam') {
+                        //     // 根据是否是客户端进行两种不同的截取方式 客户端多一个版本号的参数
+                        //     location.href =
+                        //         location.href.split('&')[0] + '&' + location.href.split('&')[1] // 将切割后第部分进行拼接保证链接正确
+                        //     console.log(location.href, "location.href")
+                        // } else {
+                        //     location.href = location.href.split('&')[0]
+                        // }
+                        // this.$router.push({
+                        //     name: 'devlist'
+                        // });
                     } else {
                         //没有登录点击我的设备 跳转到登录页面
                         location.href = location.href.replace('&l=local&c=0', '')
@@ -274,13 +276,13 @@
                 // this.$router.push({
                 //     name: 'download'
                 // }); //旧版download页面,暂时无用(若由https访问进来时，下载页访问不了)
-				if(this.project_name == 'ebitcam'){
-					window.open("http://www.ebitcam.com/download")
-				}else if(this.project_name == 'mipcm'){
-					window.open("http://www.mipcm.com/download")
-				}else if(this.project_name == 'vsmahome'){
-					window.open("http://www.vsmahome.com/download")
-				}
+                if (this.project_name == 'ebitcam') {
+                    window.open("http://www.ebitcam.com/download")
+                } else if (this.project_name == 'mipcm') {
+                    window.open("http://www.mipcm.com/download")
+                } else if (this.project_name == 'vsmahome') {
+                    window.open("http://www.vsmahome.com/download")
+                }
             },
             menu_more_click() { //点击更多
                 this.switch_more = true;
@@ -334,6 +336,13 @@
                 }
                 if (this.$route.name !== 'login' && this.$store.state.user.name !== '') { // 切换至非登录页面时监听刷新用户名
                     this.username_value = this.$store.state.user.name
+                }
+            },
+            "$store.state.user.loginFlag"(val) {
+                if(val === 1){
+                    this.username_value = this.$store.state.user.name;
+                }else{
+                    this.username_value = mcs_my;
                 }
             }
         }

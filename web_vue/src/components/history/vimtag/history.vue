@@ -152,7 +152,8 @@ export default {
       menu_filter_sign: false, //是否点击筛选
       menu_date_sign: false, //是否点击日期
       photo_list_sign: false, //历史数据是否包含照片格式
-
+      // vimtag即使是日期请求也仅仅为点击后的第一次为使用search_type = 0的日期请求后续点击加载更多则为使用search_type = 1的cid请求
+      max_counts: 15000, // 获取历史录像列表的最大请求segment数量
     }
   },
   async mounted () {
@@ -214,7 +215,8 @@ export default {
           format: _this.filter_type.format_options,
           category: _this.filter_type.category,
           time_length: _this.filter_type.time_length,
-          search_type: 0
+          search_type: 0,
+          max_counts: _this.max_counts // 全局max_counts(最大请求segment数量)
         }).then(res => {
           // console.log(res)
           _this.create_history_list(res)
@@ -365,7 +367,8 @@ export default {
           time_length: this.filter_type.time_length,
           search_type: 1,
           cid: this.prev_cid,
-          sid: this.prev_sid
+          sid: this.prev_sid,
+          max_counts: _this.max_counts // 全局max_counts(最大请求segment数量)
         }).then(res => {
           this.create_history_list(res)
         })

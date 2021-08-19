@@ -184,6 +184,7 @@ export default {
       topControl: false, // 摄像头上转控制标识
       downControl: false, // 摄像头下转控制标识
       playScreenHeight: null, // 播放区域高度样式
+      screenWidth: document.body.clientWidth, // 屏幕宽度
       mipcPlayObj: null, // mipc调用obj
       mode: '', //控制模式（自动，白天，夜间）
       light_mode: '', //控制灯光模式（智能，白光，红外）
@@ -384,6 +385,7 @@ export default {
       })
     },
     clickEnterHistory () { // 跳转至历史页面
+      console.log(1)
       let jumpData = { parent: $("#dev_main_page"), dev_sn: this.$store.state.jumpPageData.selectDeviceIpc, back_page: "playpage" }
       this.$router.push({ name: 'history', params: jumpData })
     },
@@ -580,6 +582,10 @@ export default {
     }
   },
   async mounted () {
+    window.onresize = () => { //屏幕宽度改变
+      window.screenWidth = document.body.clientWidth;
+      this.screenWidth = window.screenWidth;
+    };
     await this.$chooseLanguage.lang(this.$store.state.user.userLanguage)
     console.log(this.$refs.resolute_choice.offsetTop, 'this.$refs.resolute_choice.offsetTop')
     if (this.$refs.resolute_choice.offsetTop) {
@@ -640,6 +646,12 @@ export default {
         }
       },
       deep: true
+    },
+    screenWidth (val){
+      this.playScreenHeight = { height: ((val - document.getElementById('dev_main_left').offsetWidth - 60) * 0.563) + 'px' }
+      this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px";
+      this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
+      this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
     }
   }
 }

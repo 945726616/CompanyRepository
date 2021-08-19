@@ -124,7 +124,7 @@ export default {
       }
       let username_value = mcs_my // 定义用户名
       // console.log(_this.publicFunc.urlParam(), 'url')
-      if (_this.$store.state.jumpPageData.localModel) { // 判断是否为本地离线模式
+      if (_this.$store.state.jumpPageData.localFlag) { // 判断是否为本地离线模式
         _this.$store.state.user.loginFlag = _this.publicFunc.urlParam() && _this.publicFunc.urlParam().c == 1 ? 1 : 0
         l_remember_data = sessionStorage.get('remember_msg_info')
         l_remember_data = eval('(' + l_remember_data + ')')
@@ -164,9 +164,9 @@ export default {
       $('#top_menu_my').click(function () {
         // 点击个人中心
         if (_this.publicFunc.urlParam().l == 'local') {
-          _this.$store.dispatch('setLocalModel', 1)
+          _this.$store.dispatch('setLocalFlag', 1)
         }
-        if (_this.$store.state.jumpPageData.localModel) {
+        if (_this.$store.state.jumpPageData.localFlag) {
           _this.$store.state.user.loginFlag = _this.publicFunc.urlParam() && _this.publicFunc.urlParam().c == 1 ? 1 : 0
         }
         if(_this.$route.path != '/my'){
@@ -178,13 +178,13 @@ export default {
       })
 
       $('#top_login_div').click(function () {
-        if (_this.$store.state.jumpPageData.localModel) {
+        if (_this.$store.state.jumpPageData.localFlag) {
           //如果点击了本地搜索
           _this.$store.state.user.loginFlag = _this.publicFunc.urlParam() && _this.publicFunc.urlParam().c == 1 ? 1 : 0
           if (_this.$store.state.user.loginFlag) {
             //已经登录了	点击我的设备无效
             // console.log('登录状态点击我的设备')
-            _this.$store.dispatch('setLocalModel', 0)
+            _this.$store.dispatch('setLocalFlag', 0)
             // console.log(location.href)  // http://45.113.201.4:7080/dcm/http_v10.1.4.1911140933/device/v10.1.4.1911140…main.product.htm?v10.1.4.19111409331&m=test.vimtag.com&ta=&tp=&l=local&c=1
             // console.log(location.href.split("&"), '切割后的数组')
             if (window.fujikam === 'fujikam') {

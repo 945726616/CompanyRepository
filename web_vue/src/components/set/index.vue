@@ -1226,7 +1226,6 @@ export default {
             $(l_dom_select_network).tzSelect(null, 1);
 
 
-
           }
           function add_network_event () {
             //wifi select
@@ -1560,6 +1559,10 @@ export default {
                 };
               }
             }
+            console.log(_this.$store.state.jumpPageData.selectDeviceIpc,"sn")
+            console.log(now_net_info.ifs,"networks")
+            console.log(now_net_info.dns,"dns")
+            console.log(l_dom_select_nic[l_dom_select_nic.selectedIndex].text,"select")
             _this.$api.set.set_network({
               sn: _this.$store.state.jumpPageData.selectDeviceIpc,
               networks: now_net_info.ifs,
@@ -2209,6 +2212,7 @@ export default {
                     $(l_dom_select_network).html(inner_html);
                   }
                   $(l_dom_select_network).tzSelect(null, 1);
+
                 }
                 else if (now_ifs.phy.info.stat == "err") {
                   l_nic_conn_status_flag = 0;
@@ -2746,7 +2750,7 @@ export default {
           })
           break;
         }
-        case "accessory": {
+        case "accessory": { //外设
           info.dom.innerHTML =
             "<div id='scene_devices_list' class = 'list_right_box'></div>";
           let l_dom_scene_devices_list = _this.publicFunc.mx("#scene_devices_list");
@@ -3302,6 +3306,7 @@ export default {
                 let time_num = 0;
                 if (msg.data.stop) {
                   clearInterval(exdev_get_time);
+                  create_scene_edit_name_page(obj)
                 } else {
                   exdev_get_time = setInterval(function () {
                     time_num++;
@@ -3991,7 +3996,6 @@ export default {
               })
               req_data.info.scene[2].flag = 0;
               req_data.info.scene[2].dev[0].flag = 0;
-              // console.log(req_data)
               _this.$api.set.scene_set(req_data)
             }
 
@@ -12251,8 +12255,7 @@ export default {
           _this.publicFunc.showBufferPage()
           //console.log("get_dev_info_this1111")
           await _this.$api.set.dev_info({ sn: _this.$store.state.jumpPageData.selectDeviceIpc }).then(async res => {
-            //console.log(res, 'get_dev_info_this1111')
-            face_detect = res.face_detect;
+              face_detect = res.face_detect;
             sound_detect = res.sound_detect;
             human_detect = res.human_detect;
             await _this.$api.set.profile_get({
@@ -12406,6 +12409,7 @@ export default {
               l_scene_data_active = l_scene_data[i];
             }
           }
+
           // console.log(human_detect, "human_detect")
           for (let j = 0; j < l_scene_data_out.dev.length; j++) {
             let record_event_name, record_event_type;
@@ -12695,7 +12699,6 @@ export default {
               get_scene_ack(res)
             })
             let l_dom_set_out_time_box = _this.publicFunc.mx("#set_out_time_box");
-
             if (g_total_data != "") {
               schedule_get(g_total_data);
             } else {
@@ -13152,6 +13155,7 @@ export default {
                 function set_time_func (type) {
                   repeat = false;
                   let index = -1;
+                  let tmp_data = "";
                   let time_select = [];
                   let start_time = parseInt(_this.publicFunc.mx("#start_time").innerHTML);
                   let end_time = parseInt(_this.publicFunc.mx("#end_time").innerHTML);
@@ -14392,7 +14396,6 @@ function schedule_time_format (arr) {
           }
         req_data.info.scene[2].flag = 0;
         req_data.info.scene[2].dev[0].flag = 0;
-        // console.log(req_data)
         _this.$api.set.scene_set(req_data)
         })
       }

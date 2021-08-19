@@ -3,14 +3,10 @@ import axios from '@/axios' // 导入http中创建的axios实例
 import login from './login'
 import store from '../store'
 import md5 from '@/util/mmd5.js'
-import mcodec from '@/util/mcodec.js'
-import publicFunc from '@/util/public.js'
-import mme from '@/util/mme.js'
 let default_box_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAAB1BAMAAADNW3IaAAAAIVBMVEXZ2dny8vLX19f19fXs7Ozm5ubw8PDd3d3g4ODp6eni4uJPJfjYAAAEEElEQVRo3u2Zz4sTMRTHQ1Cr3kpK1VsISMVbiBa9WZsW60m0g9WTpeOANy2KxVMVhopHnYp68ldR/0vfy+pkdDsbp5m9SD6XXdhtP/tN8l7edEkgEAgEAoFAIPAfQMUvOHHgK4GvDQIIhCD1W3jjZfRe6yRJYq3Xd18+JXXLzPstomyoDE2mDG29jl4+pAKpx0KepuPhVCnZ/BOUxXo9WRkb99yUxqtITzHHdjCdjEfR99VeNL7bpuB6sYKk3CYTDbaq2yYAvoD1atr1coKp23hIHtps7iiv7ugpA0lVMH4MttWezRFlk/UcUVzRZNNsGxGG0ii4Kd6Y8w+2h/C+f1rMrkCUahb3tsWjF0UPX0Q2Sr2oy9yKOmO7KzXDutesiH6xkpo18v6ST3guunVIcVRrIo6/vcR/exo8xeKsXSMHc/5jpu7lose3hXg2hm5Trye+LU4O4T2v5KJjMr77UPBnY9sO/DXdD5R/ZeBhV3PREclUezShgqfZtBYVk6OlOApxAHYzF52Vpk211tDsG5sMvvWNc2EiTJw9EfkNihAl9XopxPE7Q68lZHLwQjzpoQZhn3PR+fxdIctoMoftutPbOZZq3RadMbN/qe1B5/5s9fHoG8WjkTC1yyG4PrdxkPbcdqC/osOlgkvYSLOZkhU9o4/FOMgFmov4bP8N1tVw4uFo6CqVrFpwdFOMUxRxK+pvrev2AJdwgUfjXw/BUpzDOGUi2i+7UOL1N2GOhvsYMjwEIu3v+72LBdGb8le3Y7OEcCkerGLdwVwcxzgHiW4deE928cRjJU9Z+Xz34JvgaX/bz08XRJ9cbThem+3a6O0dSrXe0a1xkFMF0XPnPoMrghMvFtG+kZIpPAR80y+Je68getR0Y/oubBcxF4pS+ZDa1hOIk5WezCsF0bF/HQ9bg+84ML2KMj1MmkmCDzAg72xmpR71uiA6It0a23dXv0bspzi0mZFzqMpfcJ8SKzphRU5wDh3gQE8EJ41FGukmO8AzoCaQvScqgTsDywbL5xjT5HX0WDpsp4HeSso81yB1EXp0CKq6Yd3bxlNENH70VN2eCzcE2Qe2mF6tqVjrI3q2quD+rtGzFGQ7FMcS32nLls9ckHJANZ6pejzc9QS78FdhmQriAi5UX5W8BmXqhuLEz3ZXMfnOlo87Vcbk7mVK/hmc998quVuZYp5qKtuX/MrUrYKLpqrnBXqqqzop9CX/MnUjbLf1L1O3yt2X7C3nAfalvvIvUzcUVa5UTOIt543g2AK9y7RiX/IvU3dfmknHLVdTKv4k25ZKnbFlWluqFFXu8vE3gUozZV1M4RMYOQTMY61OwLD3UeZ65Sgfv38jNF5tIsB8FOzw+Lks5LChlBJOAoFAIBAIBAKBw+EntmrvbiMfK1MAAAAASUVORK5CYII=";
 let default_online_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATAAAACrAQMAAADb41KEAAAAA1BMVEXZ2dmK1ydDAAAAHUlEQVRYw+3BAQ0AAADCIPuntscHDAAAAAAAgK4DGg0AAQv6NWcAAAAASUVORK5CYII=";
 let default_offline_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAAB1BAMAAADNW3IaAAAAKlBMVEXZ2dny8vLX19fz8/P19fXd3d3l5eXf39/i4uLt7e3x8fHp6env7+/n5+f7WU42AAACeUlEQVRo3u2Yv2sUQRTHhwELsRpm/VEOA7dRgsUwa3J3XHPcEVBjkRN/VlFI0IBgTgQLBTmjjY3kxEpBOATri60ghMNeQ9Lkj8m+N7ndy3HlvCa8T7PsNh++M2/fm13BMAzDMAzDMAzDMAFpAUGNtJVX6+tPXlKrpHnzNWu3240vz0lN0jz1LaeU8q3aKqXJboAG8cs9I6iwD1qqQF/vUJlkmqkJkktUi2f3nJoke0wTSc7jwpXomzSR7C81RfaPIpJMW9MivUQieufUNL4r4mN2MYQbO/DuD0Gk+SZ6jk0+mAjWTt4Ggz+4G6JcuLcD964TXwQ1p6vWboKg3rUpXJP4dVfRINo2Ys7n12tG2D48+B5dlOIW5QHkZlPVOxgxZyG2SF5B0dCIPJI+n1/sZxDVQBS/FtSiEXmkG1ACl6EqIFtk0ZYC6qj4izo0+15kkd1Dkf4BiyaFwJrAsossMjsKwVWDQC9cEA1FZPoK0aPcUgZS+pOJnEgrBHcJd4hIJAYqoC+accmRtNVKIVqkFZlBOYLCcKLao/5EIIxELMJApoyUDCOL5P+yFKSESEQvrNwqA82NMBJNCwpNVVdBsbIMU4KqqZ5F0TaMiUGCHQ93rSZic7UYfCtN1SgG3xLZKMdXNxmZMPhgBEYmBKha+9AplUeyqSNo3lgNIHJr97FF6J93HlEdt8IB0o8PkBqL7paJLoK9KZnZUikP+T0RH4kFXjKruMk+xIYkInmO+tOyjOSoA83+/F+wggj7+sQPja4RVJiNwuTrq0aQISuHmQv701gj/r31cdcD395S/7CzZz48+73/XtJ60IQYwTAMwzAMwzAMc8o4ApYzoABCPc/cAAAAAElFTkSuQmCC";
 let default_InvalidAuth_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATAAAACrBAMAAAATA930AAAAIVBMVEXZ2dny8vLf39/c3Nzv7+/o6Ojk5OTq6urs7Ozm5ubh4eEqh4/4AAACCUlEQVR42u3dPWsUURSH8WUWU9hdiJuUFxWVVIPr+rLdSjSmlDWoXaIiahdNYxnfiHVe6yzkcyY5DMnOGTIQCPwP5HmqvcMWPw4zt7gMTGehH7LDzuPbIfvYedgJ2R1gwOoBkwcMmAuYPGDAXMDkAQPmAiYPGDAXMHnAgLmAyQMGzAVMHjBgLmDyrhC28HVlZe8wHKzY/5NOevUzx4IN36SqF5NIsOFGOmtpEgfW3UlTLZdhYPdTre9RYMV6HTaXg8AeJNevGDAbmBtZCNig4ixubS1WP8chYJ+S9fdDv3/vXbJ6EWDFyCz/sy0ObDGbA8AGRrmVK+ZrW24HgN2tS57Z8rke1l2zgZVnaxtZr9TDNm3ncrvavB52c3R6s6+eX5ixC1kOm7EdtZwaoe23q3KYPZQvG/vaWA57Yg9h4zH9IYc9PWX8bl6Rw6r5NGYYAzau3XUxYI+iwpgYE2Ni0WDNid2IACuO7HTg3+epvtg5wbesgvlDC99yKYQNUktjIWytDdbTwbrrbbC5UgYrNttg81kHG7XBZoEBAwYMGDBgwIABAwYMGDBg1wMW9lCl234MpYP5t438u0c6WLFxsWspi2DWcPftBb2fVH+RvzxZFe3lSWCXDJg8YMBcwOQBA+YCJg8YMBcwecCAuYDJAwbMBUweMGAuYPKAAXMBkxcYFvY7I1G/zHIMMIc+sbj4o2sAAAAASUVORK5CYII=";
-
 const devlist = {
   /*
   ** 获取设备列表
@@ -607,103 +603,6 @@ const devlist = {
       }
     }
     return pic_url_return
-  },
-  /*
-  ** 本地模式获取设备列表 (本地模式下的接口暂时先不调整没有测试环境)
-  ** {sess: nid: create_nid} nid固定格式
-  ** start: 0 固定值
-  ** counts: 1024 固定值
-  */
-  async local_devlist_get () {
-    let is_exist_ipc = [];
-    let return_data = [];
-    console.log('进入1')
-    let l_dom_search = publicFunc.dom_create_child(publicFunc.mx("#app"), "div", "search")
-    console.log(l_dom_search, 'l_dom_search')
-    l_dom_search['style']['cssText'] = "width:1px;height:1px"
-    let mme_params
-    let ua = navigator.userAgent.toLowerCase()
-    let url_params = (location.search || location.hash || "")
-    let obj = {}
-    let params_key = "{key:'data:application/octet-stream;base64,OenOl2/PvPX7EuqqZdvMsNf5PqEOlOJZ4sROOBtnvW8F6Fc+azokLNtti6Cb/oiuO9qhOxvDfL8cVpGY4UcCe81OIVHkbiNzuHKwiE+K6gmmWwIoHgSRn2RN4qsZO62QkqGePdR6L94n2ruSeixjqAgWFTW8AIlQptovRZSN1Dh/8M87RIRdYyVFqKqsZoZTYibPLyDFONKIqxzrFkJPtqR/wn8jnYMc1qUH/w3IYJZh/OqctPTDp8tYuQSWN3EE6+kVmDIMV9F92SZJORMnvxy+zYzpbO7Gz44fBQNQSGMelsf7yQpfTF/X8t1Qn73fu53xp3MTIGH0kklFH2tMPkO/Raelhw5A4JQbczWg0n4pcNxpRl6mCEIjFprTboJ/B2eI0qUX/zTPM7l1hBmxjxsewORsXp0y2+NnCRH0uVBGUq6fOWrdhJwotIIu5ZAZwdoDZZu6eaycol2TIS5smusoD0ODPtQ2xZoCy7djIC4MVhB5uKe0zDXbLr+Serdlq6en5HyvUN0EEmYle0fORmgNFn0DTqqTab6cx8WfFkysciJSveN4swoR66qMQUi9+TfkHTnZ/REp3kHJtSq8XJyzTe+KCXlJXGx07nAbK4svIPanx39A5o5XlpLK/ohxiMpEJZ6OhmWb9yAnL+8Bedw+epvbNQkhADh2QqB4ItsIq5KTOsNzA0aNn3FEXzyd7WLVBqcF1lUVxu1vpYRPKv01im1ORbVhDoJ9eiqkfchutpAGYOwhYzxFWOIhTMouY+m/oQhc1d8FF4T+zSx6WVmj2f+RDUdOKbQVxJdEeiGKyIDm14K34Kz+RdzF0fY50sbs/SUfMWwuKQsEPFU5KQ'}"
-    mme_params = {
-      parent: l_dom_search,
-      enable_native_plug: true,
-      enable_flash_plug: true,
-      params: params_key,
-      on_event: mme_on_event,
-      ref_obj: obj,
-      debug: (0 <= (location.search || location.hash || "").indexOf("debug=1"))
-    }
-    console.log(mme_params, 'mme_params')
-    if (ua.match(/windows|win32/)) {
-      if (0 <= url_params.indexOf("windowless=0")) {
-        mme_params.windowless = false;
-      }
-      else if (0 <= url_params.indexOf("windowless=1")) {
-        mme_params.windowless = true;
-      }
-    }
-    obj.mme = await new mme(mme_params);
-    async function mme_on_event (e) {
-      let local_devs_data
-      async function mme_send (counts) {
-        counts++;
-        if (counts >= 20) return;
-        let send_params = JSON.stringify({ type: "ProbeRequest", data: "{}" });
-        let b = obj.mme.ctrl(0, "mbc.send", send_params);
-        let send_data = eval('(' + b + ')');
-        if (send_data.status !== 0) {
-          await mme_send(counts);
-        }
-      }
-      async function get_local_dev_req (num) {
-        num++;
-        if (num >= 30) return;
-        let a = obj.mme.ctrl(0, "mbc.create", "<aaa></aaa>");
-        let data = eval('(' + a + ')');
-        if (data.status == 0) {
-          await mme_send(0);
-        }
-        else {
-          await get_local_dev_req(num)
-        }
-      }
-      if (e.type == "ready") {
-        await get_local_dev_req(0);
-      }
-      else if (e.type == "ProbeResponse") {
-        local_devs_data = eval('(' + mcodec.obj_2_str(e.data) + ')');
-        // filter duplication ipc
-        for (let i = 0; i < is_exist_ipc.length; i++) {
-          if (is_exist_ipc[i] == local_devs_data.sn) return;
-        }//
-        is_exist_ipc.push(local_devs_data.sn);
-        let tmp_local_dev_password = sessionStorage.getItem("pass_" + local_devs_data.sn);
-        let tmp_local_devs_data = {
-          sn: local_devs_data.sn,
-          type: local_devs_data.type,
-          def_img: tmp_local_dev_password ? "" : default_InvalidAuth_img,
-          nick: (local_devs_data.ProbeMatch[0].Nick ? local_devs_data.ProbeMatch[0].Nick : local_devs_data.sn),
-          addr: local_devs_data.ProbeMatch[0].XAddrs,
-          stat: tmp_local_dev_password ? "Online" : "InvalidAuth"
-        }
-        return_data.push(tmp_local_devs_data);
-      }
-    }
-    function destroyMME (ms) { // 延时销毁mme操作
-      return new Promise((resolve) => {
-        setTimeout(() => resolve(function () {
-          obj.mme.chl_destroy();
-          $("#search").remove();
-        }), ms)
-      })
-    }
-    async function returnData() { // 同步返回获取内容
-      return return_data
-    }
-    await destroyMME(1000) // 通过await造成中断完成同步执行效果
-    return await returnData()
   },
   /*
   ** 以下为设备列表相关操作函数

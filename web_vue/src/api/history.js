@@ -9,7 +9,7 @@ const history = {
   /*
    ** 历史录像列表获取
    */
-  async history_list_get(params) {
+  async history_list_get (params) {
     let returnItem
     let cid = params.cid ? params.cid : -1;
     let sid = params.sid ? params.sid : -1;
@@ -29,10 +29,11 @@ const history = {
         cid: cid,
         sid: sid,
         direction: direction,
-        max_counts: 10000
+        max_counts: params.max_counts
       }
     }).then(res => {
       let result = login.get_ret(res)
+      console.log('history接口获取到的数据', res, '处理后的result', result)
       if (result === '' && res.data) {
         switch (params.flag) {
           case 1:
@@ -56,7 +57,8 @@ const history = {
           case 8:
             returnItem = {
               result: result,
-              segs_sdc: res.data.segs_sdc
+              segs_sdc: res.data.segs_sdc,
+              total_segs_counts: res.data.total_segs_counts
             }
             break
           default:
@@ -70,7 +72,7 @@ const history = {
     })
     return history.ccm_segs_get_ack(returnItem, params)
   },
-  ccm_segs_get_ack(msg, ref) { //msg 第二次ccm_box_get返回的加密数据
+  ccm_segs_get_ack (msg, ref) { //msg 第二次ccm_box_get返回的加密数据
     let returnItem
     if (msg && !msg.result && (msg.segs_sdc || msg.segs)) {
       let videosegs = history.cutVideo({
@@ -80,7 +82,8 @@ const history = {
         dev_sn: ref.dev_sn,
         search_type: ref.search_type
       }); //解密成一个个seg 
-      if(videosegs.length == 0){
+      console.log(videosegs, 'videosegs')
+      if (videosegs.length == 0) {
         return returnItem = {
           video: [],
           time: [],
@@ -96,6 +99,7 @@ const history = {
         format: ref.format,
         category: ref.category
       }); //seg拼接，处理好的视频可以体现出数量 每个视频时间
+      console.log(videoData, 'videoData')
       returnItem = {
         video: videoData.local_cut_video_data,
         time: videoData.local_video_time_duration,
@@ -104,7 +108,8 @@ const history = {
         start_time: ref.start_time,
         end_time: ref.end_time,
         videosegs: videosegs,
-        vedio_day: ref.vedio_day
+        vedio_day: ref.vedio_day,
+        total_segs_counts: msg.total_segs_counts
       }
     } else {
       returnItem = {
@@ -118,7 +123,7 @@ const history = {
     }
     return returnItem
   },
-  cutVideo(obj) { //obj.msg就是第二次请求返回的加密数据
+  cutVideo (obj) { //obj.msg就是第二次请求返回的加密数据
     let l_local_segs = [],
       l_segs = [],
       local_segs_index = 0,
@@ -156,13 +161,15 @@ const history = {
         pos_end: video_segment_end_time,
         token: obj.dev_sn + "_" + l_segs[i].cid + "_" + l_segs[i].sid,
         pic_token: obj.dev_sn + "_p3_" + l_segs[i].cid + "_" + l_segs[i].sid,
-        f: l_segs[i].f
+        f: l_segs[i].f,
+        cid: l_segs[i].cid,
+        sid: l_segs[i].sid
       };
       local_segs_index++;
     }
     return l_local_segs;
   },
-  sdc_decode(pcomp, record_num) {
+  sdc_decode (pcomp, record_num) {
     let l_data = [],
       l_data_index = 0;
     let l_pcomp = mcodec.b64_2_binary(pcomp);
@@ -175,7 +182,7 @@ const history = {
     }
     return array_to_string();
 
-    function sdc_base_decode() /*decode the base area data*/ {
+    function sdc_base_decode () /*decode the base area data*/ {
       let bytes, value;
       let pbase = l_pcomp[0];
       if (l_sdc_len < 1) {
@@ -197,7 +204,7 @@ const history = {
       return 0;
     }
 
-    function sdc_group_decode() /*decode the group area data*/ {
+    function sdc_group_decode () /*decode the group area data*/ {
       let pdelta, is_compress, plen, i, pdata, value, plen_bytes;
       if (l_sdc_len < 1) {
         return 1;
@@ -261,7 +268,7 @@ const history = {
       return 0;
     }
 
-    function array_to_string() {
+    function array_to_string () {
       for (let i = 0; i < l_data.length; i++) {
         if (l_data[i] instanceof Array) {
           l_data[i] = "0x" + (l_data[i][0].toString(16)) + (int_to_string_4(l_data[i][1])) + (int_to_string_4(l_data[i][2])) + (int_to_string_4(l_data[i][3]));
@@ -270,17 +277,17 @@ const history = {
       return l_data;
     }
 
-    function int_to_string_4(data_int) {
+    function int_to_string_4 (data_int) {
       let ret_data = data_int.toString(16);
       return ret_data = (ret_data.length == 4) ? ret_data : (ret_data.length == 3) ? ("0" + ret_data) : (ret_data.length == 2) ? ("00" + ret_data) : ("000" + ret_data);
     }
 
-    function trans_to_4(data_int) {
+    function trans_to_4 (data_int) {
       let return_data;
       return return_data = (data_int.length == 4) ? data_int : (data_int.length == 3) ? ("0" + data_int) : (data_int.length == 2) ? ("00" + data_int) : ("000" + data_int);
     }
 
-    function big_number_add(num_a, num_b) {
+    function big_number_add (num_a, num_b) {
       let num = [],
         sum;
       num_a = to_big_number(num_a);
@@ -304,7 +311,7 @@ const history = {
       return num;
     }
 
-    function to_big_number(num) {
+    function to_big_number (num) {
       let ret = [];
       if (typeof (num) == "number") {
         let tem_num = num.toString(2);
@@ -316,7 +323,7 @@ const history = {
       } else return num;
     }
 
-    function big_number_operation(pdelta, delta_num, ptype) {
+    function big_number_operation (pdelta, delta_num, ptype) {
       let type_num = ptype ? 5 : 1;
       let tdelta = [0, 0, 0, pdelta];
       for (let i = 0; i < delta_num; i++) {
@@ -371,7 +378,7 @@ const history = {
       return tdelta;
     }
   },
-  draw_data_rect(obj) {
+  draw_data_rect (obj) {
     let cut_video_data = [],
       cut_video_data_index = 0,
       cut_photo_data = [],
@@ -391,7 +398,7 @@ const history = {
       door_flag = 16,
       sos_flag = 32;
 
-    function set_flag(c, flag) {
+    function set_flag (c, flag) {
       flag = flag ? flag : {};
       flag.sos_flag = parseInt(c / sos_flag) ? 1 : flag.sos_flag;
       flag.door_flag = parseInt((c % sos_flag) / door_flag) ? 1 : flag.door_flag;
@@ -416,7 +423,7 @@ const history = {
       select_incise_time = 30 * 60 * 1000;
     }
     /*mark_ico mean the source of alarm, mark_ico[0] mean motion 1and8, mark_ico[1] mean snapshot 2, mark_ico[2] mean io 4, mark_ico[3] mean door 16, mark_ico[4] meansos 32*/
-    function mark_alarm_info(a) {
+    function mark_alarm_info (a) {
       let mark_ico = [0, 0, 0, 0, 0];
       let x = l_local_segs[a].f;
       for (let i = 4; i >= 0; i--) {
@@ -523,7 +530,7 @@ const history = {
       };
       local_video_time_duration_index++;
     }
-    function formatSeconds(value) { //将时间转为xx:xx模式
+    function formatSeconds (value) { //将时间转为xx:xx模式
       let theTime = parseInt(value);
       let theTime1 = 0;
       if (theTime > 60) {
@@ -534,7 +541,7 @@ const history = {
       theTime1 = theTime1 > 9 ? theTime1 : "0" + theTime1;
       let result = ":" + theTime;
       result = theTime1 + result;
-  
+
       return result;
     }
     let cutVideoData = {
@@ -547,7 +554,7 @@ const history = {
   /*
    ** 历史录像图片获取
    */
-  history_img_get(data) {
+  history_img_get (data) {
     let img = [];
     let photoNodeList = $(".history_list_img").find(".camera_sign_picture").find("img")
     let photoNodeArr = []
@@ -585,7 +592,7 @@ const history = {
   /*
    ** 盒子设备信息获取
    */
-  async boxlist_device_messages_get(params) {
+  async boxlist_device_messages_get (params) {
     let returnItem
     let cid = params.cid ? params.cid : -1;
     let sid = params.sid ? params.sid : -1;
@@ -604,7 +611,7 @@ const history = {
         cid: cid,
         sid: sid,
         direction: direction,
-        max_counts: 10000
+        max_counts: params.max_counts
       }
     }).then(res => {
       let result = login.get_ret(res)
@@ -645,7 +652,7 @@ const history = {
     })
     return history.boxlist_device_messages_get_ack(returnItem, params)
   },
-  async boxlist_device_messages_get_ack(msg, ref) {
+  async boxlist_device_messages_get_ack (msg, ref) {
     let returnItem;
     if (msg && !msg.result && msg.date_infos) {
       let l_local_date_infos = [];
@@ -700,7 +707,8 @@ const history = {
         cid: cid,
         sid: sid,
         vedio_day: vedio_day,
-        flag: 8
+        flag: 8,
+        max_counts: ref.max_counts
       }).then(res => {
         returnItem = res
       })
@@ -716,14 +724,14 @@ const history = {
     }
     return returnItem
   },
-  getDateForStringDate(strDate) {
+  getDateForStringDate (strDate) {
     let s = strDate.split(".");
     return new Date(s[0], s[1] - 1, s[2], s[3], s[4], s[5]);
   },
   /*
    ** 历史记录删除
    */
-  async history_delete(params) {
+  async history_delete (params) {
     let returnItem
     params.cmd = params.start_time ? "erase" : "erase_all"
     await axios.get('/ccm/ccm_box_set', {

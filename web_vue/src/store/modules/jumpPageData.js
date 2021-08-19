@@ -4,14 +4,13 @@ const jumpPageData = {
     pageDom: '',
     pageObj: {},
     projectName: sessionStorage.getItem('projectName') ? sessionStorage.getItem('projectName') : getProjectName(), // 项目名称获取,考虑后续优化获取方法,并删除相关修改项
-    localModel: 0,
+    localFlag: 0, // 本地模式标识
     loginWaitFlag: 0,
     experienceFlag: 0, // 是否为体验状态
     downloadManualUrl: '', // vsmahome用户手册下载域名
     playDownloadUrl: '', // 视频播放时会用到该地址
     bufferPageFlag: null, // 遮罩层计时器
     // pcOfflineFlag: GetQueryString("pc_is_offline") ? GetQueryString("pc_is_offline") : 0, // 是否为离线模式(没有修改该数据的地方所以不设置mutation以及action)
-    localFlag: 0, // 本地模式标识
     deviceData: [], // 全局设备列表内容数据
     projectFlag: location.href.indexOf('vimtag') > -1 ? 0 : 1, // 项目判断标识(不可修改不添加mutation以及action)
     selectDeviceIpc: null, // 选择中设备sn码
@@ -42,8 +41,8 @@ const jumpPageData = {
     SET_PROJECT_NAME: (state, projectName) => {
       state.projectName = projectName
     },
-    SET_LOCAL_MODEL: (state, localModel) => {
-      state.localModel = localModel
+    SET_LOCAL_FLAG: (state, localFlag) => {
+      state.localFlag = localFlag
     },
     SET_LOGIN_WAIT_FLAG: (state, loginWaitFlag) => {
       state.loginWaitFlag = loginWaitFlag
@@ -62,9 +61,6 @@ const jumpPageData = {
     },
     SET_DEVICE_DATA: (state, deviceData) => {
       state.deviceData = deviceData
-    },
-    SET_LOCAL_FLAG: (state, localFlag) => {
-      state.localFlag = localFlag
     },
     SET_SELECT_DEVICE_IPC: (state, selectDeviceIpc) => {
       state.selectDeviceIpc = selectDeviceIpc
@@ -125,7 +121,7 @@ const jumpPageData = {
     setPageDom: ({ commit }, pageDom) => commit('SET_PAGE_DOM', pageDom),
     setPageObj: ({ commit }, pageObj) => commit('SET_PAGE_OBJ', pageObj),
     setProjectName: ({ commit }, projectName) => commit('SET_PROJECT_NAME', projectName),
-    setLocalModel: ({ commit }, localModel) => commit('SET_LOCAL_MODEL', localModel),
+    setLocalFlag: ({ commit }, localFlag) => commit('SET_LOCAL_FLAG', localFlag),
     setLoginWaitFlag: ({ commit }, loginWaitFlag) => commit('SET_LOGIN_WAIT_FLAG', loginWaitFlag),
     setExperienceFlag: ({ commit }, experienceFlag) => commit('SET_EXPERIENCE_FLAG', experienceFlag),
     setDownloadManualUrl: ({ commit }, downloadManualUrl) => commit('SET_DOWNLOAD_MANUAL_URL', downloadManualUrl),
@@ -136,7 +132,6 @@ const jumpPageData = {
         commit('SET_DEVICE_DATA', deviceData)
       }
     },
-    setLocalFlag: ({ commit }, localFlag) => commit('SET_LOCAL_FLAG', localFlag),
     setSelectDeviceIpc: ({ commit }, selectDeviceIpc) => commit('SET_SELECT_DEVICE_IPC', selectDeviceIpc),
     setSelectNick: ({ commit }, selectNick) => commit('SET_SELECT_NICK', selectNick),
     setFlashIsPlay: ({ commit }, flashIsPlay) => commit('SET_FLASH_IS_PLAY', flashIsPlay),

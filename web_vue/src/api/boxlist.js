@@ -63,6 +63,15 @@ const boxlist = {
       if (store.state.jumpPageData.localFlag) {
         let url = devlist.pic_url_get({ sn: params.sn, token: token, flag: 2, is_history: 1 })
         console.log(url, 'boxlist_img_get_local')
+        if (l_canvas_dom_array[i]) {
+          if (l_canvas_dom_array[i].attribute) {
+            if (l_canvas_dom_array[i].attributes.imgId.nodeValue === (i + "")) {
+              $(".box_camera_sign_picture")[i].attr('src', url)
+            }
+          } else {
+            l_canvas_dom_array[i].src = url;
+          }
+        }
       } else {
         let url;
         if(process.env.NODE_ENV === 'production'){

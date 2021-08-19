@@ -110,7 +110,7 @@ const play = {
    */
   async play (data) { // 播放方式选择接口
     return this.play_flash(data)
-    // if (window.fujikam || navigator.mimeTypes["application/x-shockwave-flash"]) { // 客户端/支付flash的浏览器使用flash播放方法
+    // if (window.fujikam || navigator.mimeTypes["application/x-shockwave-flash"]) { // 客户端/支持flash的浏览器使用flash播放方法
     //   console.log('use flash')
     //   return this.play_flash(data)
     // } else { // 其余则直接使用HLS进行播放
@@ -191,9 +191,9 @@ const play = {
         case "missing": {
           console.log(playback, 'switch playback')
           if (!playback) {
-            if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
-              location.href = "https://www.adobe.com/go/getflashplayer";
-            }
+            // if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
+            //   location.href = "https://www.adobe.com/go/getflashplayer";
+            // }
             if (flash_isplay) clearInterval(flash_isplay);
             // publicFunc.log_upload('play', 'success') //记录日志：实时播放成功(无flash)
             flash_isplay = setInterval(function () {
@@ -223,17 +223,17 @@ const play = {
               play_ack(msg, ref);
             });
           } else {
-            if (store.state.jumpPageData.localFlag) {
-              data.agent.play({
-                sn: ref_obj.sn,
-                token: obj.ref_obj.inner_window_info.profile_token,
-                protocol: proto,
-                ref: obj.ref_obj
-              }, obj.ref_obj, function (msg, ref) {
-                msg.type = "play";
-                play_ack(msg, ref);
-              })
-            } else {
+            // if (store.state.jumpPageData.localFlag) {
+            //   data.agent.play({
+            //     sn: ref_obj.sn,
+            //     token: obj.ref_obj.inner_window_info.profile_token,
+            //     protocol: proto,
+            //     ref: obj.ref_obj
+            //   }, obj.ref_obj, function (msg, ref) {
+            //     msg.type = "play";
+            //     play_ack(msg, ref);
+            //   })
+            // } else {
               // ms.send_msg("play",{sn:"1jfiegbqaml3q",token:"p0_1jfiegbqcip5q", protocol:proto,ref:obj.ref_obj},obj.ref_obj,function(msg,ref){ msg.type = "play" ; play_ack(msg,ref);}); //6.1.2测试云盒子实时视频播放 
               // ms.send_msg("play", { sn: ref_obj.sn, token: obj.ref_obj.inner_window_info.profile_token, protocol: proto, ref: obj.ref_obj }, obj.ref_obj, function (msg, ref) { msg.type = "play"; play_ack(msg, ref); });
               await axios.get('/ccm/ccm_play', {
@@ -258,7 +258,7 @@ const play = {
                 }
               })
               return play_ack(returnItem, store.state.jumpPageData.playInfo)
-            }
+            // }
           }
           break;
         }
@@ -381,7 +381,7 @@ const play = {
             // console.log(string_speed, 'play.js chl_video_create', obj.inner_window_info.video_chls)
             if (string_speed.length >= 150) {
               let json_speed = eval("(" + string_speed + ")");
-              console.log(json_speed, 'json_speed')
+              // console.log(json_speed, 'json_speed')
               if (obj.isDownload) { // 下载调用
                 if (json_speed.data.played_duration / data.videoSize > 1) {
                   json_speed.data.played_duration = data.videoSize;
@@ -416,7 +416,7 @@ const play = {
                 let kb = json_speed.data.p2ping ? "kB" : "KB";
                 l_speed = json_speed.data.total_bytes > l_Last_speed ? parseInt((json_speed.data.total_bytes - l_Last_speed) / 1000) + kb : l_Last_speed = 0;
                 l_Last_speed = json_speed.data.total_bytes;
-                console.log(l_speed, 'l_speed')
+                // console.log(l_speed, 'l_speed')
                 // console.log(json_speed, 'json_speed')
               }
               store.dispatch('setClientP2Ping', l_speed)
@@ -512,11 +512,11 @@ const play = {
       console.log(data, ref_obj, 'data.data.key_mme')
       switch (obj.type) {
         case "missing": {
-          if (!playback) {
-            if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
-              location.href = "https://www.adobe.com/go/getflashplayer";
-            }
-          }
+          // if (!playback) {
+          //   if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
+          //     location.href = "https://www.adobe.com/go/getflashplayer";
+          //   }
+          // }
           var resolution = "p3"
           if (data.data.stream === "major") {
             resolution = "p1"

@@ -84,6 +84,7 @@ export default {
       add_device_input_id: null, // 添加设备输入框输入的id
       imgRefresh: null, // 传递过来的图片是否刷新标识
       clickItemIndex: 0, // 点击添加选中样式index值
+      screenWidth: document.body.clientWidth, // 屏幕宽度
     }
   },
   methods: {
@@ -242,6 +243,10 @@ export default {
   async mounted () {
     // this.publicFunc.projectReload.call(this);
     // console.log(this.$store.state.user, '(this.$store.state.user')
+    window.onresize = () => { //屏幕宽度改变
+      window.screenWidth = document.body.clientWidth;
+      this.screenWidth = window.screenWidth;
+    };
     await this.$chooseLanguage.lang(this.$store.state.user.userLanguage)
     let pageData; //页面创建相关对象
     if (this.$route.params) {
@@ -262,6 +267,13 @@ export default {
       $("#top_experience_div").css("display", "none")
     }
 
+  },
+  watch: {
+    screenWidth (val){
+      this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px";
+      this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
+      this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
+    }
   }
 }
 </script>

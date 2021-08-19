@@ -86,11 +86,9 @@ export default {
       options.sources = [{type: 'rtmp/flv', src: 'rtmp://45.113.201.2:6010/live/1jfiegbqwrviq_p0_LIRAAXECKUQA'}]
     } else {
       options.techOrder = ['html5'] // 启用html5解析
-      options.sources = [{type:'application/x-mpegURL', src: 'http://iqiyi.cdn9-okzy.com/20200916/15483_11c434b2/index.m3u8'}]
+      options.sources = [{type:'application/x-mpegURL', src: this.playerObj.playSrc}]
     }
 
-    // videojs.options = options
-    let playDom = this.$refs[this.playerObj.playRef]
     this.player = videojs(
       this.$refs[this.playerObj.playRef],
       options,

@@ -2871,6 +2871,9 @@ div.ibutton-label-on{
 .menu_list_box{
 	overflow: hidden;
 }
+.menu_list_box :first-child {
+  margin-top: 0;
+}
 .menu_list_children_mode{
 	margin-top: 10px;
 }
@@ -3472,8 +3475,10 @@ line-height: 30px;
 	color: $projectColor;
 }
 .menu_list_mode{
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
+	border-bottom:1px solid #ccc;
+	padding:10px 0;
+	color:#000;
+	margin-top:20px;
 }
 #power_fr_div{
 	width:100%;
