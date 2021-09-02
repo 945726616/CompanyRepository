@@ -11,19 +11,19 @@ import './css/public.scss'
 // 引入多国语言切换插件
 import chooseLanguage from './lib/exportModule/languageExport'
 Vue.prototype.$chooseLanguage = chooseLanguage
-// if (!store.state.user.userLanguage) {
-let chromeLang = (navigator.language || navigator.userLanguage).substr(0, 2)
-if (chromeLang === 'zh') {
-  let originalLang = navigator.language || navigator.userLanguage
-  if (originalLang === 'zh-TW') {
-    chromeLang = 'tw'
+if (!store.state.user.userLanguage) {
+  let chromeLang = (navigator.language || navigator.userLanguage).substr(0, 2)
+  if (chromeLang === 'zh') {
+    let originalLang = navigator.language || navigator.userLanguage
+    if (originalLang === 'zh-TW') {
+      chromeLang = 'tw'
+    }
   }
+  store.dispatch('setUserLanguage', chromeLang)
+  chooseLanguage.lang(chromeLang)
+} else {
+  chooseLanguage.lang(store.state.user.userLanguage)
 }
-store.dispatch('setUserLanguage', chromeLang)
-chooseLanguage.lang(chromeLang)
-// } else {
-//   chooseLanguage.lang(store.state.user.userLanguage)
-// }
 Date.prototype.format = function (format) {
   let o = {
     "M+": this.getMonth() + 1, //month
@@ -62,10 +62,10 @@ router.beforeEach((to, from, next) => {
   if (store.state.user.loginFlag === 1) { // 如果已经登录的话
     next()
   } else {
-    if (to.path === '/' || to.path === '/download' || to.path === '/my') { // 如果是login/my/download页面的话，直接next()
+    if (to.path === '/' || to.path === '/download' || to.path === '/my' || store.state.jumpPageData.experienceFlag) { // 如果是login/my/download页面的话，直接next()
       next()
     } else { //否则 跳转到登录页面
-      next({ name: '/' })
+      next({ path: '/' })
     }
   }
   // next()

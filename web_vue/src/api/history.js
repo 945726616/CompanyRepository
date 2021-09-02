@@ -593,6 +593,7 @@ const history = {
    ** 盒子设备信息获取
    */
   async boxlist_device_messages_get (params) {
+    console.log(params, 'boxlist_device_params')
     let returnItem
     let cid = params.cid ? params.cid : -1;
     let sid = params.sid ? params.sid : -1;

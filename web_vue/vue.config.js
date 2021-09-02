@@ -29,7 +29,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: process.env.VUE_APP_PROJECT_NAME === 'vimtag' ? 'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446' : 'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7443', // 代理目标地址为正式版通用域名地址
+        target: process.env.VUE_APP_PROJECT_NAME === 'vimtag' ? 'http://wsbgp13.vimtag.com:2080' : 'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7443', // 代理目标地址为正式版通用域名地址'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446'
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

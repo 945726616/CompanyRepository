@@ -75,9 +75,9 @@ const boxlist = {
       } else {
         let url;
         if(process.env.NODE_ENV === 'production'){
-          url = window.location.protocol + "//" + window.location.host + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + token + "&dflag=2";
+          url = window.location.protocol + "//" + window.location.host + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + token + "&dflag=2" + "&dencode_type=2";
         }else{
-          url = window.location.protocol + "//" + window.location.host + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + token + "&dflag=2";
+          url = window.location.protocol + "//" + window.location.host + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + token + "&dflag=2" + "&dencode_type=2";
         }
         if (l_canvas_dom_array[i]) {
           if (l_canvas_dom_array[i].attribute) {

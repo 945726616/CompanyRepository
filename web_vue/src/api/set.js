@@ -555,6 +555,11 @@ const set = {
         devlist.ldev_get(params.sn).nick = params.val;
       }
       returnItem = { msg: mcs_set_successfully, type: "success" }
+      //更改vuex里deviceData中的设备昵称
+      let snIndex = store.state.jumpPageData.deviceData.findIndex(({sn})=>sn === store.state.jumpPageData.selectDeviceIpc);
+      let deviceData = store.state.jumpPageData.deviceData;
+      deviceData[snIndex].nick = params.name;
+      store.dispatch('setDeviceData',deviceData)
     } else if (returnItem.result === "permission.denied") {
       returnItem = { msg: mcs_permission_denied, type: "error" }
     } else {

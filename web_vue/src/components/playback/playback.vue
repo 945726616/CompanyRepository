@@ -44,7 +44,8 @@
           <!-- 进度条展示 结束 -->
           <div id="play_menu_right" v-if="clientFlag">
             <div id="playback_download_img" @click="downloadBoxFlag = true"></div>
-            <!-- <div id="playback_voice_close" class="voice_close_open"></div> 声音开关暂且注释-->
+            <!-- 声音开关暂且注释 -->
+            <!-- <div id="playback_voice_close" class="voice_close_open" v-show="clientFlag" @click="clickVoice($event)"></div> -->
             <div id="playback_end_time">
               {{ end_time_show }}
             </div>
@@ -465,13 +466,23 @@ export default {
       }
     },
     clickDownloadStop () { // 点击下载终止
-    this.downloadBufferFlag = false
+      this.downloadBufferFlag = false
       this.$api.playback.video_stop({
         dom: $("#playback_screen"),
         isDownload: 1 // 是否下载中特殊标记
       }).then(res => {
         this.create_preview(res)
       })
+    },
+    clickVoice (event) { // 点击声音图标
+      let class_name = event.target.className
+      if (class_name === "voice_close_close") {
+        this.$api.play.voice({ flag: 0 })
+        event.target.className = "voice_close_open"
+      } else {
+        this.$api.play.voice({ flag: 1 })
+        event.target.className = "voice_close_close"
+      }
     },
     // 点击事件 结束
     // 进度条相关
@@ -504,7 +515,7 @@ export default {
     // 进度条 结束
   },
   watch: {
-    '$store.state.jumpPageData.percent' (val) {
+    "$store.state.jumpPageData.percent" (val) {
       let percent = val
       if (percent > 1 || percent < 0) {
         return

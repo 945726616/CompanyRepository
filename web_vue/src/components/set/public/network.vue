@@ -297,12 +297,12 @@
                             this.client_wifi_array.push(msg_wifi_list[i].ssid)
                             if (msg_wifi_list[i].connect) {
                                 wifi_signal_png.push({
-                                    front_img: '/imgs/device_status_green.png',
-                                    rear_img: '/imgs/wifi_signal' + signal_level + '.png'
+                                    front_img: require('@/assets/device/device_status_green.png'),
+                                    rear_img: require('@/assets/device/wifi_signal' + signal_level + '.png')
                                 })
                             } else {
                                 wifi_signal_png.push({
-                                    rear_img: '/imgs/wifi_signal' + signal_level + '.png'
+                                    rear_img: require('@/assets/device/wifi_signal' + signal_level + '.png')
                                 })
                             }
                         }
@@ -560,12 +560,12 @@
                                         this.client_wifi_array.push(wifi_list[i].ssid)
                                         if (wifi_list[i].connect) {
                                             wifi_signal_png.push({
-                                                front_img: '/imgs/device_status_green.png',
-                                                rear_img: '/imgs/wifi_signal' + signal_level + '.png'
+                                                front_img: require('@/assets/device/device_status_green.png'),
+                                                rear_img: require('@/assets/device/wifi_signal' + signal_level + '.png')
                                             })
                                         } else {
                                             wifi_signal_png.push({
-                                                rear_img: '/imgs/wifi_signal' + signal_level + '.png'
+                                                rear_img: require('@/assets/device/wifi_signal' + signal_level + '.png')
                                             })
                                         }
                                     }
@@ -595,12 +595,12 @@
                                         this.client_wifi_array.push(wifi_list[i].ssid)
                                         if (wifi_list[i].ssid == now_ifs.wifi_client.conf.ssid) {
                                             wifi_signal_png.push({
-                                                front_img: '/imgs/device_status_yellow.png',
-                                                rear_img: '/imgs/wifi_signal' + signal_level + '.png'
+                                                front_img: require('@/assets/device/device_status_yellow.png'),
+                                                rear_img: require('@/assets/device/wifi_signal' + signal_level + '.png')
                                             })
                                         } else {
                                             wifi_signal_png.push({
-                                                rear_img: '/imgs/wifi_signal' + signal_level + '.png'
+                                                rear_img: require('@/assets/device/wifi_signal' + signal_level + '.png')
                                             })
                                         }
                                     }

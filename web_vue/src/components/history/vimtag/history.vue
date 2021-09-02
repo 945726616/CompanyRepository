@@ -166,8 +166,9 @@ export default {
     _this.history_info.start_time = 0;
     _this.history_info.end_time = 0;
     _this.history_info.search_type = 1;
-    _this.a_start = _this.history_info.a_start ? _this.history_info.a_start : 0;
-    _this.b_end = _this.history_info.b_end ? _this.history_info.b_end : 0;
+    _this.history_info.max_counts = _this.max_counts
+    // _this.a_start = _this.history_info.a_start ? _this.history_info.a_start : 0;
+    // _this.b_end = _this.history_info.b_end ? _this.history_info.b_end : 0;
 
     if (_this.history_info.backplay_flag == 4) { // 点击返回无效 修改obj.parent  _this.publicFunc.mx(page
       _this.history_initial_data = _this.$store.state.jumpPageData.historyData;
@@ -196,8 +197,8 @@ export default {
         start_time = _this.$api.history.getDateForStringDate(start_time).getTime();
         let num = _this.vedio_day.length - _this.vedio_day.indexOf(start_time) - 1; //点击完日期cid检索
         let end_time = start_time + 60 * 60 * 24 * 1000;
-        let a_start = start_time;
-        let b_end = end_time;
+        // let a_start = start_time;
+        // let b_end = end_time;
 
         _this.choose_start_time = start_time;
         _this.choose_end_time = end_time;
@@ -368,7 +369,7 @@ export default {
           search_type: 1,
           cid: this.prev_cid,
           sid: this.prev_sid,
-          max_counts: _this.max_counts // 全局max_counts(最大请求segment数量)
+          max_counts: this.max_counts // 全局max_counts(最大请求segment数量)
         }).then(res => {
           this.create_history_list(res)
         })

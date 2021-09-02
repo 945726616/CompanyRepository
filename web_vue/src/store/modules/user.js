@@ -1,5 +1,13 @@
 // 存储用户信息vuex
 let userSession = JSON.parse(sessionStorage.getItem('user_info'))
+let localLanguage = localStorage.getItem('language_choice_info'); 
+let chromeLang = (navigator.language || navigator.userLanguage).substr(0, 2) //浏览器语言
+if (chromeLang === 'zh') {
+  let originalLang = navigator.language || navigator.userLanguage
+  if (originalLang === 'zh-TW') {
+    chromeLang = 'tw'
+  }
+}
 if (!userSession) {
   let userObj = {}
   sessionStorage.setItem('user_info', JSON.stringify(userObj))
@@ -18,7 +26,7 @@ const user = {
     mmqPickTimeFlag1: null, // mmq轮询回调计时器1标识
     mmqPickTimeFlag2: null, // mmq轮询回调计时器2标识
     qid: userSession && userSession.setQid ? userSession.setQid : '', // 存储qid用于请求中
-    userLanguage: userSession && userSession.setUserLanguage ? userSession.setUserLanguage : 'en', // 用户语言
+    userLanguage: userSession && userSession.setUserLanguage ? userSession.setUserLanguage : localLanguage ? localLanguage : chromeLang, // 用户语言
     jmLogoFlag: userSession && userSession.setJmLogoFlag ? userSession.setJmLogoFlag : 0, // 江门帐号logo图标标识
     supportTreeFlag: userSession && userSession.setSupportTreeFlag ? userSession.setSupportTreeFlag : 0, // 是否支持树形结构标识
     supportFilterFlag: userSession && userSession.setSupportFilterFlag ? userSession.setSupportFilterFlag : 0, // 是否支持筛选标识
@@ -90,6 +98,7 @@ const user = {
       let userInfo = JSON.parse(sessionStorage.getItem('user_info'))
       userInfo.setUserLanguage = userLanguage
       sessionStorage.setItem('user_info',JSON.stringify(userInfo))
+      localStorage.setItem("language_choice_info",userLanguage)
     },
     SET_JM_LOGO_FLAG: (state, jmLogoFlag) => {
       state.jmLogoFlag = jmLogoFlag

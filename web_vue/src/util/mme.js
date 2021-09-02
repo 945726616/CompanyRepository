@@ -18,7 +18,7 @@ var mme = function (obj/*
    enable_native_plug:true[default]|false,
    enable_flash_plug:true[default]|false
    */) {
-     console.log('enter this mme create', obj)
+    //  console.log('enter this mme create', obj)
   this.create(obj)
 }
 mme.prototype =
@@ -110,7 +110,7 @@ mme.prototype =
         && (null != navigator.mimeTypes[this.types.xpcom.mime])
         && navigator.mimeTypes[this.types.xpcom.mime].enabledPlugin) {
           type = this.types.xpcom;
-          console.log(type, 'create_plug type')
+          // console.log(type, 'create_plug type')
       }
     }
     if (!type && enable_flash_plug) {/* check flash */
@@ -360,12 +360,12 @@ mme.prototype =
   },
   on_plug_event: function (json) {
     var e = meval(json);
-    console.log('on_plug_event_json', json)
-    console.log('on_plug_event_e', e)
+    // console.log('on_plug_event_json', json)
+    // console.log('on_plug_event_e', e)
     if (null == e) {/* xxxxxx error. what append. */
       return 0;
     }
-    console.log('on_plug_event_e_target', e.target)
+    // console.log('on_plug_event_e_target', e.target)
     if (e.target && e.target.type && e.target.url) {
       e.chl = this.chl_get(e.target.type, e.target.url)
     }
@@ -381,13 +381,13 @@ mme.prototype =
       case "active": { break; }
     }
     if (this.is_created && this.on_event) {
-      console.log('enter is_created', this.on_event())
+      // console.log('enter is_created', this.on_event())
       this.on_event(e);
     }
     return 0;
   },
   create: async function (obj) {
-    console.log('enter mme_create', obj)
+    // console.log('enter mme_create', obj)
     var parent = obj.parent, me = this
     /* init parent and skin */
     this.skin = this.get_default_skin();
@@ -419,7 +419,7 @@ mme.prototype =
     /* do create */
     this.id = (++this.id_allocer.value);
     window["plug_" + this.id + "_on_event"] = function (s) {
-      console.log('window_func_s_2', s)
+      // console.log('window_func_s_2', s)
       return me.on_plug_event(s);
     };
     // console.log('show window', window, 'plug_2_on_event', plug_2_on_event)
@@ -618,26 +618,26 @@ mme.prototype =
     return "\ncam.index=" + cam_index + "\nmic.index=" + mic_index;
   },
   chl_create: function (obj/*{type:"publish"|"play", url:"xxx", params:"", refer:xxx}*/) {
-    console.log('enter mme chl_create', obj)
+    // console.log('enter mme chl_create', obj)
     if (!this.is_ready("chl_create")) {
       return null;
     }
     else {
       var me = this, ret, chl = { params: (obj.params || "") };
-      console.log('me', me)
-      console.log('me.plug_obj', me.plug_obj.chl_create())
-      console.log('chl.params', chl.params)
+      // console.log('me', me)
+      // console.log('me.plug_obj', me.plug_obj.chl_create())
+      // console.log('chl.params', chl.params)
       chl.id = me.plug_obj.chl_create(chl.params) // 该语句创建视频播放通道
       if (0 >= chl.id) {
         return null;
       }
       this.chls[this.chls.length] = chl;
-      console.log('out chl_create chl value', chl)
+      // console.log('out chl_create chl value', chl)
       return chl;
     }
   },
   ctrl: function (chl, method, params) {
-    console.log('enter mme ctrl', 'chl', chl, 'method', method, 'params', params)
+    // console.log('enter mme ctrl', 'chl', chl, 'method', method, 'params', params)
     try {
       return this.is_ready("ctrl") ? this.plug_obj.ctrl(chl ? chl.id : 0, method, params) : "{type:\"error\",status:-1}";
     } catch (e) {

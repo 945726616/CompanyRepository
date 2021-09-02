@@ -1,4 +1,5 @@
 // 跳转页面使用的vuex进行数据存储
+console.log(sessionStorage.getItem('experienceShow') ? sessionStorage.getItem('experienceShow') : true, '1')
 const jumpPageData = {
   state: {
     pageDom: '',
@@ -7,6 +8,7 @@ const jumpPageData = {
     localFlag: 0, // 本地模式标识
     loginWaitFlag: 0,
     experienceFlag: 0, // 是否为体验状态
+    experienceShow: sessionStorage.getItem('experienceShow') === 'false' ? false : true, // 体验是否展示
     downloadManualUrl: '', // vsmahome用户手册下载域名
     playDownloadUrl: '', // 视频播放时会用到该地址
     bufferPageFlag: null, // 遮罩层计时器
@@ -49,6 +51,10 @@ const jumpPageData = {
     },
     SET_EXPERIENCE_FLAG: (state, experienceFlag) => {
       state.experienceFlag = experienceFlag
+    },
+    SET_EXPERIENCE_SHOW: (state, experienceShow) => {
+      sessionStorage.setItem('experienceShow', experienceShow)
+      state.experienceShow = experienceShow
     },
     SET_DOWNLOAD_MANUAL_URL: (state, downloadManualUrl) => {
       state.downloadManualUrl = downloadManualUrl
@@ -124,6 +130,7 @@ const jumpPageData = {
     setLocalFlag: ({ commit }, localFlag) => commit('SET_LOCAL_FLAG', localFlag),
     setLoginWaitFlag: ({ commit }, loginWaitFlag) => commit('SET_LOGIN_WAIT_FLAG', loginWaitFlag),
     setExperienceFlag: ({ commit }, experienceFlag) => commit('SET_EXPERIENCE_FLAG', experienceFlag),
+    setExperienceShow: ({ commit }, experienceShow) => commit('SET_EXPERIENCE_SHOW', experienceShow),
     setDownloadManualUrl: ({ commit }, downloadManualUrl) => commit('SET_DOWNLOAD_MANUAL_URL', downloadManualUrl),
     setPlayDownloadUrl: ({ commit }, playDownloadUrl) => commit('SET_PLAY_DOWNLOAD_URL', playDownloadUrl),
     setBufferPageFlag: ({ commit }, bufferPageFlag) => commit('SET_BUFFER_PAGE_FLAG', bufferPageFlag),
