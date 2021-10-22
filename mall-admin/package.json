@@ -20,7 +20,7 @@
     "js-md5": "^0.7.3",
     "save-dev": "0.0.1-security",
     "sortablejs": "^1.7.0",
-    "tinymce": "^4.9.7",
+    "tinymce": "^5.9.0",
     "vue": "^2.5.2",
     "vue-cookies": "^1.5.4",
     "vue-cropperjs": "^4.0.0",
