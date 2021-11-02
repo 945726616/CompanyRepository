@@ -24,6 +24,7 @@ const playback = {
     if (flash_isplay) {
       clearInterval(flash_isplay)
     }
+    console.log('vc_1')
     if (play_info.inner_window_info.video_chls) {
       play_info.inner_window_info.mme.chl_destroy(play_info.inner_window_info.video_chls);
     }
@@ -80,6 +81,7 @@ const playback = {
       ref_obj.inner_window_info.mme = await new mme(mme_params);
     }
     store.dispatch('setPlayInfo', ref_obj)
+    console.log('vc_2')
     function create_play_ipc (obj) { // 整理传递的数据(用于创建mme实例)
       obj.protocol = "auto";
       obj.videoSize = obj.videoSize ? obj.videoSize : 0;
@@ -248,14 +250,17 @@ const playback = {
       } else {
         params_data = "{" + ((obj.type == "publish") ? "dst" : "src") + ":[{url:\"" + uri + "\"}]" + trans_params + chl_params + "}";
       }
+      console.log('vc_3')
       obj.inner_window_info.video_chls = obj.inner_window_info.mme.chl_create({
         params: params_data
       });
+      console.log('vc_4')
       if (obj.inner_window_info.video_chls !== null) {
         obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "speaker.mute", obj.type == "playback" ? "{value:0}" : "{value:1}") // 参考旧代码此处原本含有一处全局变量判断,但未发现该值有后赋值行为默认删减成单一属性
         if (l_ipc_speed_time) {
           clearInterval(l_ipc_speed_time);
         }
+        console.log('vc_5')
         if (l_plug_type !== "flash") { // 该判断条件中需要添加!此为客户端逻辑(去掉!用于在浏览器中测试使用)
           l_ipc_speed_time = setInterval(function () {
             let string_speed = obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "query", "{}");
@@ -327,16 +332,16 @@ const playback = {
       let urls;
       if (!playbackFlag) {
         if (process.env.NODE_ENV === 'production') {
-          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=2";
+          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=1&dpic_types_support=7&dflag=2";
         } else {
-          urls = "http://45.113.201.4:7080/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=2";
+          urls = "http://45.113.201.4:7080/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=1&dpic_types_support=7&dflag=2";
         }
       } else {
         let pic_token = data.token[i];
         if (process.env.NODE_ENV === 'production') {
-          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=2";
+          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=1&dpic_types_support=7&dflag=2";
         } else {
-          urls = "http://localhost:8080/api/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dflag=2" + "&dencode_type=2";
+          urls = "http://localhost:8080/api/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=1&dpic_types_support=7&dflag=2";
         }
       }
       data.dom.html("<img id='flash_img' width='1px' src='" + urls + "'>")
@@ -546,15 +551,18 @@ const playback = {
       } else {
         params_data = "{" + ((obj.type == "publish") ? "dst" : "src") + ":[{url:\"" + uri + "\"}]" + trans_params + chl_params + "}";
       }
+      console.log('vc_6')
       obj.inner_window_info.video_chls = obj.inner_window_info.mme.chl_create({
         params: params_data
       })
+      console.log('vc_7')
       if (obj.inner_window_info.video_chls !== null) {
         // console.log('准备下载', obj.inner_window_info.mme)
         obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "speaker.mute", obj.type == "playback" ? "{value:0}" : "{value:1}") // 参考旧代码此处原本含有一处全局变量判断,但未发现该值有后赋值行为默认删减成单一属性
         if (l_ipc_speed_time) {
           clearInterval(l_ipc_speed_time);
         }
+        console.log('vc_8')
         l_ipc_speed_time = setInterval(function () {
           let string_speed = obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "query", "{}");
           // console.log(string_speed, 'download_string_speed', obj, 'download_obj')
@@ -625,6 +633,7 @@ const playback = {
         }, 1000)
       }
       function play_ipc (obj) {
+        console.log('vc_9')
         obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "play", "");
         obj.inner_window_info.playback_state = "play";
         return 0;
@@ -655,6 +664,7 @@ const playback = {
   async pause_ipc () {
     let play_info = store.state.jumpPageData.playInfo
     if (play_info.inner_window_info.mme) {
+      console.log('vc_10')
       play_info.inner_window_info.mme.ctrl(play_info.inner_window_info.video_chls, "pause", "")
     }
     play_info.inner_window_info.playback_state = "pause";
@@ -664,6 +674,7 @@ const playback = {
   */
   async play_download_continue () {
     let play_info = store.state.jumpPageData.playInfo
+    console.log('vc_11')
     play_info.inner_window_info.mme.ctrl(play_info.inner_window_info.video_chls, "play", "");
     play_info.inner_window_info.playback_state = "play";
   },
@@ -673,9 +684,9 @@ const playback = {
   play_preview_img (data) {
     let url;
     if (process.env.NODE_ENV === 'production') {
-      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dflag=2";
+      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=1&dpic_types_support=7&dflag=2";
     } else {
-      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dflag=2";
+      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=1&dpic_types_support=7&dflag=2";
     }
     data.dom[0].style.backgroundImage = 'url(' + url + ')';
     data.dom[0].style.backgroundSize = '100% 100%';

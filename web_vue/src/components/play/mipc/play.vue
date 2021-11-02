@@ -129,7 +129,10 @@
     <!-- 截图弹窗 -->
     <div id='snapshot_preview_div' v-show="snapshotFlag">
       <div id='snapshot_preview_inner'>
-        <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl"><img id='snapshot_preview_content' :src="snapshotUrl"></a>
+        <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl">
+          <img id='snapshot_preview_content' :src="snapshotUrl">
+          <div id='snapshot_img_page_download'></div>
+        </a>
       </div>
       <div id='snapshot_preview_close' @click="snapshotFlag = false"></div>
     </div>

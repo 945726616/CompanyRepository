@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     create_playback_page (obj) {
+      console.log(obj, '进入create_playBack_page函数的obj')
       this.createPlaybackObj = obj // 存储调用时的obj内容
       this.$store.dispatch('setPlayBackObj', this.createPlaybackObj)
       if (obj.data) { // 移动侦测标识数组

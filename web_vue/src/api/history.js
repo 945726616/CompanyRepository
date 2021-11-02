@@ -4,17 +4,20 @@ import login from './login'
 import store from '../store'
 import devlist from './devlist'
 import mcodec from '@/util/mcodec.js'
+import { param } from 'jquery'
 // import md5 from '@/util/mmd5.js'
 const history = {
   /*
    ** 历史录像列表获取
    */
   async history_list_get (params) {
+    console.log(params, '录像列表获取参数')
     let returnItem
     let cid = params.cid ? params.cid : -1;
     let sid = params.sid ? params.sid : -1;
     let direction = params.direction ? 1 : 0;
-    params.flag = 8;
+    let flag = params.flag ? params.flag : 8
+    console.log(params, '整理后的参数')
     await axios.get('/ccm/ccm_box_get', {
       params: {
         sess: {
@@ -22,7 +25,7 @@ const history = {
           sn: params.box_sn
         },
         sn: params.dev_sn,
-        flag: params.flag,
+        flag: flag,
         start_time: params.start_time,
         end_time: params.end_time,
         search_type: params.search_type,
@@ -33,9 +36,11 @@ const history = {
       }
     }).then(res => {
       let result = login.get_ret(res)
-      console.log('history接口获取到的数据', res, '处理后的result', result)
+      console.log('history接口获取到的数据', res)
+      console.log('处理后的result', result)
+      console.log('switch的flag值', flag)
       if (result === '' && res.data) {
-        switch (params.flag) {
+        switch (flag) {
           case 1:
             returnItem = {
               result: result,
@@ -72,44 +77,105 @@ const history = {
     })
     return history.ccm_segs_get_ack(returnItem, params)
   },
-  ccm_segs_get_ack (msg, ref) { //msg 第二次ccm_box_get返回的加密数据
+  async ccm_segs_get_ack (msg, ref) { //msg 第二次ccm_box_get返回的加密数据
     let returnItem
-    if (msg && !msg.result && (msg.segs_sdc || msg.segs)) {
-      let videosegs = history.cutVideo({
-        msg: msg,
-        base_start_time: ref.start_time,
-        base_end_time: ref.end_time,
-        dev_sn: ref.dev_sn,
-        search_type: ref.search_type
-      }); //解密成一个个seg 
-      console.log(videosegs, 'videosegs')
-      if (videosegs.length == 0) {
-        return returnItem = {
-          video: [],
-          time: [],
+    console.log(msg, 'ccm_res', ref, 'ccm_ref')
+    if (msg && !msg.result) {
+      if (ref.flag === 2 && msg.date_infos) { // flag为2时获取的是含有录像的日期需要获取全部录像的时间段并进行处理
+        let l_local_date_infos = [];
+        let date_infos_time = [];
+        let vedio_day = []; //标记哪些天有视频 去了重
+        let l_date_infos = msg.date_infos; //第一次知道哪些天有视频返回的日期
+        let start_time, end_time, search_type, cid, sid;
+        for (let i = 0; i < l_date_infos.length; i++) {
+          let date_mis = new Date(l_date_infos[i].date * 1000).format("yyyy.MM.dd.00.00.00");
+          if (i > 0) {
+            l_local_date_infos[l_local_date_infos.length] = date_mis;
+            date_infos_time[date_infos_time.length] = (this.getDateForStringDate(l_local_date_infos[l_local_date_infos.length - 1])).getTime();
+          } else if (i === 0) {
+            l_local_date_infos[i] = date_mis;
+            date_infos_time[i] = (this.getDateForStringDate(l_local_date_infos[i])).getTime();
+          }
+        }
+        let nowtime = new Date().getTime(); //当前的时间 如果记录哪天有视频的返回时间超过该值，过滤掉
+        for (let i = 0; i < date_infos_time.length; i++) { //6.4.3 onvif录像
+          if (date_infos_time[i] > nowtime) {
+            continue;
+          } else if (vedio_day.indexOf(date_infos_time[i]) == -1) {
+            vedio_day.push(date_infos_time[i])
+          }
+        }
+        vedio_day.sort(function (a, b) {
+          return a - b
+        }); //从小到大排序
+        if (ref.start_time === 0) {
+          start_time = new Date(l_date_infos[l_date_infos.length - 1].date * 1000).format("yyyy.MM.dd.00.00.00");
+          start_time = this.getDateForStringDate(start_time).getTime();
+          if (start_time === -28800000) {
+            start_time = 0
+          }
+          end_time = start_time + 60 * 60 * 24 * 1000; //第二次请求开始时间：最后一天凌晨 结束时间：次日凌晨
+          search_type = ref.search_type;
+        } else { //如果点击日期播放返回到该日期的录像
+          start_time = ref.start_time;
+          end_time = ref.end_time;
+          search_type = ref.search_type;
+        }
+        await history.history_list_get({
+          box_sn: ref.box_sn,
+          dev_sn: ref.dev_sn,
+          start_time: start_time,
+          end_time: end_time,
+          date_infos_time: date_infos_time,
+          format: 2,
+          category: 0,
+          time_length: "30min",
+          search_type: search_type,
+          cid: cid,
+          sid: sid,
+          vedio_day: vedio_day,
+          flag: 8,
+          max_counts: ref.max_counts
+        }).then(res => {
+          returnItem = res
+        })
+      } else if (ref.flag === 8 && (msg.segs_sdc || msg.segs)) { // flag为8时获取的是当前起止时间段内的录像内容,需要对录像片段进行处理
+        let videosegs = history.cutVideo({
+          msg: msg,
+          base_start_time: ref.start_time,
+          base_end_time: ref.end_time,
+          dev_sn: ref.dev_sn,
+          search_type: ref.search_type
+        }); //解密成一个个seg
+        console.log(videosegs, 'videosegs')
+        if (videosegs.length == 0) {
+          return returnItem = {
+            video: [],
+            time: [],
+            date_infos_time: ref.date_infos_time,
+            dev_sn: ref.dev_sn,
+            start_time: ref.start_time,
+            end_time: ref.end_time
+          }
+        }
+        let videoData = history.draw_data_rect({
+          videosegs: videosegs,
+          time_length: ref.time_length,
+          format: ref.format,
+          category: ref.category
+        }); //seg拼接，处理好的视频可以体现出数量 每个视频时间
+        console.log(videoData, 'videoData')
+        returnItem = {
+          video: videoData.local_cut_video_data,
+          time: videoData.local_video_time_duration,
           date_infos_time: ref.date_infos_time,
           dev_sn: ref.dev_sn,
           start_time: ref.start_time,
-          end_time: ref.end_time
+          end_time: ref.end_time,
+          videosegs: videosegs,
+          vedio_day: ref.vedio_day,
+          total_segs_counts: msg.total_segs_counts
         }
-      }
-      let videoData = history.draw_data_rect({
-        videosegs: videosegs,
-        time_length: ref.time_length,
-        format: ref.format,
-        category: ref.category
-      }); //seg拼接，处理好的视频可以体现出数量 每个视频时间
-      console.log(videoData, 'videoData')
-      returnItem = {
-        video: videoData.local_cut_video_data,
-        time: videoData.local_video_time_duration,
-        date_infos_time: ref.date_infos_time,
-        dev_sn: ref.dev_sn,
-        start_time: ref.start_time,
-        end_time: ref.end_time,
-        videosegs: videosegs,
-        vedio_day: ref.vedio_day,
-        total_segs_counts: msg.total_segs_counts
       }
     } else {
       returnItem = {
@@ -379,6 +445,7 @@ const history = {
     }
   },
   draw_data_rect (obj) {
+    console.log(obj, 'in draw_data_rect')
     let cut_video_data = [],
       cut_video_data_index = 0,
       cut_photo_data = [],
@@ -415,6 +482,7 @@ const history = {
       io_flag: 0,
       snapshot_flag: 0
     }
+    console.log(obj.time_length, '时间长度')
     if (obj.time_length == "5min") {
       select_incise_time = 5 * 60 * 1000;
     } else if (obj.time_length == "1h") {
@@ -548,6 +616,7 @@ const history = {
       local_cut_video_data: local_cut_video_data,
       local_video_time_duration: local_video_time_duration
     };
+    console.log('out cutVideo', cutVideoData)
     return cutVideoData;
   },
 
@@ -592,139 +661,140 @@ const history = {
   /*
    ** 盒子设备信息获取
    */
-  async boxlist_device_messages_get (params) {
-    console.log(params, 'boxlist_device_params')
-    let returnItem
-    let cid = params.cid ? params.cid : -1;
-    let sid = params.sid ? params.sid : -1;
-    let direction = params.direction ? 1 : 0;
-    await axios.get('/ccm/ccm_box_get', {
-      params: {
-        sess: {
-          nid: login.create_nid(),
-          sn: params.box_sn
-        },
-        sn: params.dev_sn,
-        flag: params.flag,
-        start_time: params.start_time,
-        end_time: params.end_time,
-        search_type: params.search_type,
-        cid: cid,
-        sid: sid,
-        direction: direction,
-        max_counts: params.max_counts
-      }
-    }).then(res => {
-      let result = login.get_ret(res)
-      if (result === '' && res.data) {
-        switch (params.flag) {
-          case 1:
-            returnItem = {
-              result: result,
-              ipcs: res.data.ipcs
-            }
-            break
-          case 2:
-            returnItem = {
-              result: result,
-              date_infos: res.data.date_infos
-            }
-            break
-          case 4:
-            returnItem = {
-              result: result,
-              segs: res.data.segs
-            }
-            break
-          case 8:
-            returnItem = {
-              result: result,
-              segs_sdc: res.data.segs_sdc
-            }
-            break
-          default:
-            break
-        }
-      } else {
-        returnItem = {
-          result: result
-        }
-      }
-    })
-    return history.boxlist_device_messages_get_ack(returnItem, params)
-  },
-  async boxlist_device_messages_get_ack (msg, ref) {
-    let returnItem;
-    if (msg && !msg.result && msg.date_infos) {
-      let l_local_date_infos = [];
-      let date_infos_time = [];
-      let vedio_day = []; //标记哪些天有视频 去了重
-      let l_date_infos = msg.date_infos; //第一次知道哪些天有视频返回的日期
-      let start_time, end_time, search_type, cid, sid;
-      for (let i = 0; i < l_date_infos.length; i++) {
-        let date_mis = new Date(l_date_infos[i].date * 1000).format("yyyy.MM.dd.00.00.00");
-        if (i > 0) {
-          l_local_date_infos[l_local_date_infos.length] = date_mis;
-          date_infos_time[date_infos_time.length] = (this.getDateForStringDate(l_local_date_infos[l_local_date_infos.length - 1])).getTime();
-        } else if (i === 0) {
-          l_local_date_infos[i] = date_mis;
-          date_infos_time[i] = (this.getDateForStringDate(l_local_date_infos[i])).getTime();
-        }
-      }
-      let nowtime = new Date().getTime(); //当前的时间 如果记录哪天有视频的返回时间超过该值，过滤掉
-      for (let i = 0; i < date_infos_time.length; i++) { //6.4.3 onvif录像
-        if (date_infos_time[i] > nowtime) {
-          continue;
-        } else if (vedio_day.indexOf(date_infos_time[i]) == -1) {
-          vedio_day.push(date_infos_time[i])
-        }
-      }
-      vedio_day.sort(function (a, b) {
-        return a - b
-      }); //从小到大排序
-      if (ref.start_time === 0) {
-        start_time = new Date(l_date_infos[l_date_infos.length - 1].date * 1000).format("yyyy.MM.dd.00.00.00");
-        start_time = this.getDateForStringDate(start_time).getTime();
-        if (start_time === -28800000) {
-          start_time = 0
-        }
-        end_time = start_time + 60 * 60 * 24 * 1000; //第二次请求开始时间：最后一天凌晨 结束时间：次日凌晨 
-        search_type = ref.search_type;
-      } else { //如果点击日期播放返回到该日期的录像
-        start_time = ref.start_time;
-        end_time = ref.end_time;
-        search_type = ref.search_type;
-      }
-      await history.history_list_get({
-        box_sn: ref.box_sn,
-        dev_sn: ref.dev_sn,
-        start_time: start_time,
-        end_time: end_time,
-        date_infos_time: date_infos_time,
-        format: 2,
-        category: 0,
-        time_length: "30min",
-        search_type: search_type,
-        cid: cid,
-        sid: sid,
-        vedio_day: vedio_day,
-        flag: 8,
-        max_counts: ref.max_counts
-      }).then(res => {
-        returnItem = res
-      })
-    } else {
-      returnItem = {
-        video: [],
-        time: [],
-        date_infos_time: [],
-        dev_sn: ref.dev_sn,
-        start_time: ref.start_time,
-        end_time: ref.end_time
-      }
-    }
-    return returnItem
-  },
+  // async boxlist_device_messages_get (params) {
+  //   console.log(params, 'boxlist_device_params')
+  //   let returnItem
+  //   let cid = params.cid ? params.cid : -1;
+  //   let sid = params.sid ? params.sid : -1;
+  //   let direction = params.direction ? 1 : 0;
+  //   await axios.get('/ccm/ccm_box_get', {
+  //     params: {
+  //       sess: {
+  //         nid: login.create_nid(),
+  //         sn: params.box_sn
+  //       },
+  //       sn: params.dev_sn,
+  //       flag: params.flag,
+  //       start_time: params.start_time,
+  //       end_time: params.end_time,
+  //       search_type: params.search_type,
+  //       cid: cid,
+  //       sid: sid,
+  //       direction: direction,
+  //       max_counts: params.max_counts
+  //     }
+  //   }).then(res => {
+  //     let result = login.get_ret(res)
+  //     console.log('首次获取result', result, '首次获取res', res)
+  //     if (result === '' && res.data) {
+  //       switch (params.flag) {
+  //         case 1:
+  //           returnItem = {
+  //             result: result,
+  //             ipcs: res.data.ipcs
+  //           }
+  //           break
+  //         case 2:
+  //           returnItem = {
+  //             result: result,
+  //             date_infos: res.data.date_infos
+  //           }
+  //           break
+  //         case 4:
+  //           returnItem = {
+  //             result: result,
+  //             segs: res.data.segs
+  //           }
+  //           break
+  //         case 8:
+  //           returnItem = {
+  //             result: result,
+  //             segs_sdc: res.data.segs_sdc
+  //           }
+  //           break
+  //         default:
+  //           break
+  //       }
+  //     } else {
+  //       returnItem = {
+  //         result: result
+  //       }
+  //     }
+  //   })
+  //   return history.boxlist_device_messages_get_ack(returnItem, params)
+  // },
+  // async boxlist_device_messages_get_ack (msg, ref) {
+  //   let returnItem;
+  //   if (msg && !msg.result && msg.date_infos) {
+  //     let l_local_date_infos = [];
+  //     let date_infos_time = [];
+  //     let vedio_day = []; //标记哪些天有视频 去了重
+  //     let l_date_infos = msg.date_infos; //第一次知道哪些天有视频返回的日期
+  //     let start_time, end_time, search_type, cid, sid;
+  //     for (let i = 0; i < l_date_infos.length; i++) {
+  //       let date_mis = new Date(l_date_infos[i].date * 1000).format("yyyy.MM.dd.00.00.00");
+  //       if (i > 0) {
+  //         l_local_date_infos[l_local_date_infos.length] = date_mis;
+  //         date_infos_time[date_infos_time.length] = (this.getDateForStringDate(l_local_date_infos[l_local_date_infos.length - 1])).getTime();
+  //       } else if (i === 0) {
+  //         l_local_date_infos[i] = date_mis;
+  //         date_infos_time[i] = (this.getDateForStringDate(l_local_date_infos[i])).getTime();
+  //       }
+  //     }
+  //     let nowtime = new Date().getTime(); //当前的时间 如果记录哪天有视频的返回时间超过该值，过滤掉
+  //     for (let i = 0; i < date_infos_time.length; i++) { //6.4.3 onvif录像
+  //       if (date_infos_time[i] > nowtime) {
+  //         continue;
+  //       } else if (vedio_day.indexOf(date_infos_time[i]) == -1) {
+  //         vedio_day.push(date_infos_time[i])
+  //       }
+  //     }
+  //     vedio_day.sort(function (a, b) {
+  //       return a - b
+  //     }); //从小到大排序
+  //     if (ref.start_time === 0) {
+  //       start_time = new Date(l_date_infos[l_date_infos.length - 1].date * 1000).format("yyyy.MM.dd.00.00.00");
+  //       start_time = this.getDateForStringDate(start_time).getTime();
+  //       if (start_time === -28800000) {
+  //         start_time = 0
+  //       }
+  //       end_time = start_time + 60 * 60 * 24 * 1000; //第二次请求开始时间：最后一天凌晨 结束时间：次日凌晨
+  //       search_type = ref.search_type;
+  //     } else { //如果点击日期播放返回到该日期的录像
+  //       start_time = ref.start_time;
+  //       end_time = ref.end_time;
+  //       search_type = ref.search_type;
+  //     }
+  //     await history.history_list_get({
+  //       box_sn: ref.box_sn,
+  //       dev_sn: ref.dev_sn,
+  //       start_time: start_time,
+  //       end_time: end_time,
+  //       date_infos_time: date_infos_time,
+  //       format: 2,
+  //       category: 0,
+  //       time_length: "30min",
+  //       search_type: search_type,
+  //       cid: cid,
+  //       sid: sid,
+  //       vedio_day: vedio_day,
+  //       flag: 8,
+  //       max_counts: ref.max_counts
+  //     }).then(res => {
+  //       returnItem = res
+  //     })
+  //   } else {
+  //     returnItem = {
+  //       video: [],
+  //       time: [],
+  //       date_infos_time: [],
+  //       dev_sn: ref.dev_sn,
+  //       start_time: ref.start_time,
+  //       end_time: ref.end_time
+  //     }
+  //   }
+  //   return returnItem
+  // },
   getDateForStringDate (strDate) {
     let s = strDate.split(".");
     return new Date(s[0], s[1] - 1, s[2], s[3], s[4], s[5]);

@@ -173,7 +173,7 @@ export default {
     if (_this.history_info.backplay_flag == 4) { // 点击返回无效 修改obj.parent  _this.publicFunc.mx(page
       _this.history_initial_data = _this.$store.state.jumpPageData.historyData;
     } else {
-      await _this.$api.history.boxlist_device_messages_get(_this.history_info).then(res => {
+      await _this.$api.history.history_list_get(_this.history_info).then(res => {
         _this.history_initial_data = res;
       })
     }
@@ -375,7 +375,31 @@ export default {
         })
       }
       this.num++;
-    }
+    },
+    video_delete_btn (e) { //删除录像
+      let _this = this;
+      let history_dom = e.currentTarget.parentNode.parentNode;
+      let start_time = history_dom.childNodes[3].getAttribute("start_time");
+      let end_time = history_dom.childNodes[3].getAttribute("end_time");
+      _this.publicFunc.delete_tips({
+        content: mcs_delete + "?",
+        func: function () {
+          _this.$api.history.history_delete({ // 调用历史删除接口
+            box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
+            dev_sn: _this.history_info.dev_sn,
+            start_time: start_time,
+            end_time: end_time
+          }).then(res => {
+            if (res.type === 'success') {
+              history_dom.style.display = "none";
+              _this.publicFunc.msg_tips({ msg: mcs_delete_success, type: "success", timeout: 3000 })
+            } else {
+              _this.publicFunc.msg_tips({ msg: mcs_delete_fail, type: "error", timeout: 3000 })
+            }
+          })
+        }
+      })
+    },
   },
   watch: {
     menu_filter_sign (val) {

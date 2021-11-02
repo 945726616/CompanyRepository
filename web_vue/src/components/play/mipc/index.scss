@@ -428,6 +428,17 @@
     height: 100%;
 }
 
+#snapshot_img_page_download {
+  position: absolute;
+  cursor: pointer; 
+  background: url(~@/assets/device/snap_download.png) no-repeat;
+  background-size: 100%;
+  width: 20px;
+  height: 25px;
+  right: 10px;
+  bottom: 5px;
+}
+
 #snapshot_preview_close {
     position: absolute;
     right: 6px;
