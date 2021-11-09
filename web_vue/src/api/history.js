@@ -18,6 +18,7 @@ const history = {
     let direction = params.direction ? 1 : 0;
     let flag = params.flag ? params.flag : 8
     console.log(params, '整理后的参数')
+    params.flag = flag // 为参数中不带flag标识的添加flag(用于后续函数的判断)
     await axios.get('/ccm/ccm_box_get', {
       params: {
         sess: {

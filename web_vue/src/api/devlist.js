@@ -7,6 +7,7 @@ let default_box_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAAB1BAM
 let default_online_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATAAAACrAQMAAADb41KEAAAAA1BMVEXZ2dmK1ydDAAAAHUlEQVRYw+3BAQ0AAADCIPuntscHDAAAAAAAgK4DGg0AAQv6NWcAAAAASUVORK5CYII=";
 let default_offline_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAAB1BAMAAADNW3IaAAAAKlBMVEXZ2dny8vLX19fz8/P19fXd3d3l5eXf39/i4uLt7e3x8fHp6env7+/n5+f7WU42AAACeUlEQVRo3u2Yv2sUQRTHhwELsRpm/VEOA7dRgsUwa3J3XHPcEVBjkRN/VlFI0IBgTgQLBTmjjY3kxEpBOATri60ghMNeQ9Lkj8m+N7ndy3HlvCa8T7PsNh++M2/fm13BMAzDMAzDMAzDMAFpAUGNtJVX6+tPXlKrpHnzNWu3240vz0lN0jz1LaeU8q3aKqXJboAG8cs9I6iwD1qqQF/vUJlkmqkJkktUi2f3nJoke0wTSc7jwpXomzSR7C81RfaPIpJMW9MivUQieufUNL4r4mN2MYQbO/DuD0Gk+SZ6jk0+mAjWTt4Ggz+4G6JcuLcD964TXwQ1p6vWboKg3rUpXJP4dVfRINo2Ys7n12tG2D48+B5dlOIW5QHkZlPVOxgxZyG2SF5B0dCIPJI+n1/sZxDVQBS/FtSiEXmkG1ACl6EqIFtk0ZYC6qj4izo0+15kkd1Dkf4BiyaFwJrAsossMjsKwVWDQC9cEA1FZPoK0aPcUgZS+pOJnEgrBHcJd4hIJAYqoC+accmRtNVKIVqkFZlBOYLCcKLao/5EIIxELMJApoyUDCOL5P+yFKSESEQvrNwqA82NMBJNCwpNVVdBsbIMU4KqqZ5F0TaMiUGCHQ93rSZic7UYfCtN1SgG3xLZKMdXNxmZMPhgBEYmBKha+9AplUeyqSNo3lgNIHJr97FF6J93HlEdt8IB0o8PkBqL7paJLoK9KZnZUikP+T0RH4kFXjKruMk+xIYkInmO+tOyjOSoA83+/F+wggj7+sQPja4RVJiNwuTrq0aQISuHmQv701gj/r31cdcD395S/7CzZz48+73/XtJ60IQYwTAMwzAMwzAMc8o4ApYzoABCPc/cAAAAAElFTkSuQmCC";
 let default_InvalidAuth_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATAAAACrBAMAAAATA930AAAAIVBMVEXZ2dny8vLf39/c3Nzv7+/o6Ojk5OTq6urs7Ozm5ubh4eEqh4/4AAACCUlEQVR42u3dPWsUURSH8WUWU9hdiJuUFxWVVIPr+rLdSjSmlDWoXaIiahdNYxnfiHVe6yzkcyY5DMnOGTIQCPwP5HmqvcMWPw4zt7gMTGehH7LDzuPbIfvYedgJ2R1gwOoBkwcMmAuYPGDAXMDkAQPmAiYPGDAXMHnAgLmAyQMGzAVMHjBgLmDyrhC28HVlZe8wHKzY/5NOevUzx4IN36SqF5NIsOFGOmtpEgfW3UlTLZdhYPdTre9RYMV6HTaXg8AeJNevGDAbmBtZCNig4ixubS1WP8chYJ+S9fdDv3/vXbJ6EWDFyCz/sy0ObDGbA8AGRrmVK+ZrW24HgN2tS57Z8rke1l2zgZVnaxtZr9TDNm3ncrvavB52c3R6s6+eX5ixC1kOm7EdtZwaoe23q3KYPZQvG/vaWA57Yg9h4zH9IYc9PWX8bl6Rw6r5NGYYAzau3XUxYI+iwpgYE2Ni0WDNid2IACuO7HTg3+epvtg5wbesgvlDC99yKYQNUktjIWytDdbTwbrrbbC5UgYrNttg81kHG7XBZoEBAwYMGDBgwIABAwYMGDBg1wMW9lCl234MpYP5t438u0c6WLFxsWspi2DWcPftBb2fVH+RvzxZFe3lSWCXDJg8YMBcwOQBA+YCJg8YMBcwecCAuYDJAwbMBUweMGAuYPKAAXMBkxcYFvY7I1G/zHIMMIc+sbj4o2sAAAAASUVORK5CYII=";
+
 const devlist = {
   /*
   ** 获取设备列表
@@ -587,18 +588,18 @@ const devlist = {
     let locationProtocol = process.env.NODE_ENV === 'production' ? window.location.protocol : 'http://'
     if (params.is_history) {
       if (locationProtocol === "file:") {
-        pic_url_return = "http://" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=1&dpic_types_support=7&dflag=2";
+        pic_url_return = "http://" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=3&dpic_types_support=2";
       } else {
-        pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=1&dpic_types_support=7&dflag=2";
+        pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=3&dpic_types_support=2";
       }
     } else {
       if (locationProtocol === "file:") {
-        pic_url_return = "http://" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "_xxxxxxxxxx" + "&dencode_type=1&dpic_types_support=7&dflag=2";
+        pic_url_return = "http://" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "_xxxxxxxxxx" + "&dencode_type=3&dpic_types_support=2";
       } else {
         if (params.box_ipc == 1) { //如果云盒子列表请求图片
-          pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=1&dpic_types_support=7&dflag=2";
+          pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=3&dpic_types_support=2";
         } else {
-          pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "_xxxxxxxxxx" + "&dencode_type=1&dpic_types_support=7&dflag=2";
+          pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "_xxxxxxxxxx" + "&dencode_type=3&dpic_types_support=2";
         }
       }
     }

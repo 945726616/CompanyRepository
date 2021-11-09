@@ -226,6 +226,7 @@ export default {
       }
     },
     create_history_list (data) { // 创建历史页表
+      console.log(data, 'create_history_list_data')
       let _this = this;
       _this.history_info_data = data;
       _this.publicFunc.closeBufferPage();

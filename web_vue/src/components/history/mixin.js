@@ -116,7 +116,7 @@ export const historyMixin = {
             this.iscid = 0;
             this.publicFunc.showBufferPage()
             this.$api.history.history_list_get({ // 调用获取历史记录列表
-                agent: this.history_initial_data.agent,
+                // agent: this.history_initial_data.agent,
                 box_sn: this.$store.state.jumpPageData.selectDeviceIpc,
                 dev_sn: this.history_initial_data.dev_sn,
                 start_time: this.choose_start_time,
@@ -134,7 +134,7 @@ export const historyMixin = {
             this.iscid = 0;
             this.publicFunc.showBufferPage()
             this.$api.history.history_list_get({ // 调用获取历史记录列表
-                agent: this.history_initial_data.agent,
+                // agent: this.history_initial_data.agent,
                 box_sn: this.$store.state.jumpPageData.selectDeviceIpc,
                 dev_sn: this.history_initial_data.dev_sn,
                 start_time: this.choose_start_time,
@@ -152,7 +152,7 @@ export const historyMixin = {
             this.iscid = 0;
             this.publicFunc.showBufferPage()
             this.$api.history.history_list_get({ // 调用获取历史记录列表
-                agent: this.history_initial_data.agent,
+                // agent: this.history_initial_data.agent,
                 box_sn: this.$store.state.jumpPageData.selectDeviceIpc,
                 dev_sn: this.history_initial_data.dev_sn,
                 start_time: this.choose_start_time,

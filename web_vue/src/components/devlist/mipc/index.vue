@@ -96,13 +96,13 @@ export default {
       this.get_dev_list() // 获取设备列表
     },
     get_dev_list (type) { // 获取设备列表
-      if (this.$store.state.jumpPageData.deviceData.length === 0 || type === 'refresh') { // 如果存储的设备列表数组中没有内容则调用接口获取
+      // if (this.$store.state.jumpPageData.deviceData.length === 0 || type === 'refresh') { // 如果存储的设备列表数组中没有内容则调用接口获取
         this.$api.devlist.devs_refresh().then(res => {
           this.device_list(res)
         })
-      } else { // 直接拿取存储的设备列表
-        this.device_list(this.$store.state.jumpPageData.deviceData)
-      }
+      // } else { // 直接拿取存储的设备列表
+      //   this.device_list(this.$store.state.jumpPageData.deviceData)
+      // }
     },
     device_list (msg) { // 设备列表数据整理, 用于渲染
       let listArr = []

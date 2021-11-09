@@ -472,15 +472,15 @@ export default {
         })
       } else {
         if (!this.device_offline_sign) {
-          if (this.$store.state.jumpPageData.deviceData.length === 0 || type === 'refresh') {
+          // if (this.$store.state.jumpPageData.deviceData.length === 0 || type === 'refresh') {
             //发送设备列表请求
             this.$api.devlist.devs_refresh().then(res => {
               // console.log(res, '获取设备列表数据')
               this.devlist_get_ack(res)
             })
-          } else {
-            this.devlist_get_ack(this.$store.state.jumpPageData.deviceData)
-          }
+          // } else {
+          //   this.devlist_get_ack(this.$store.state.jumpPageData.deviceData)
+          // }
         }
       }
     },
@@ -1195,7 +1195,11 @@ export default {
     // this.publicFunc.projectReload.call(this);
   },
   created () {
+    console.log('enter created deviceList')
     this.$chooseLanguage.lang(this.$store.state.user.userLanguage)
+  },
+  destroyed () {
+    console.log('destroty devlist')
   },
   watch: {
     "$store.state.jumpPageData.localFlag" (val) {
