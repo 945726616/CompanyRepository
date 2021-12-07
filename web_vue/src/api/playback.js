@@ -332,16 +332,16 @@ const playback = {
       let urls;
       if (!playbackFlag) {
         if (process.env.NODE_ENV === 'production') {
-          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=3&dpic_types_support=2";
+          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
         } else {
-          urls = "http://45.113.201.4:7080/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=3&dpic_types_support=2";
+          urls = "http://45.113.201.4:7080/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
         }
       } else {
         let pic_token = data.token[i];
         if (process.env.NODE_ENV === 'production') {
-          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=3&dpic_types_support=2";
+          urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
         } else {
-          urls = "http://localhost:8080/api/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=3&dpic_types_support=2";
+          urls = "http://localhost:8080/api/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
         }
       }
       data.dom.html("<img id='flash_img' width='1px' src='" + urls + "'>")
@@ -470,6 +470,7 @@ const playback = {
       sessionStorage.setItem("code_tip", obj.code);
       switch (obj.type) {
         case "ready": {
+        // case "link": {
           let proto = 'rtdp'
           let res = await axios.get('/ccm/ccm_replay', { // 客户端调用回放下载接口
             params: {
@@ -684,9 +685,9 @@ const playback = {
   play_preview_img (data) {
     let url;
     if (process.env.NODE_ENV === 'production') {
-      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=3&dpic_types_support=2";
+      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
     } else {
-      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=3&dpic_types_support=2";
+      url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
     }
     data.dom[0].style.backgroundImage = 'url(' + url + ')';
     data.dom[0].style.backgroundSize = '100% 100%';

@@ -430,6 +430,7 @@ export default {
             _this.$api.local.local_sign_in({
               data: local_play_sign
             }).then(res => {
+              console.log('setLid', res.lid)
               if (res.result === '') {
                 _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                 _this.$store.dispatch('setSid', res.sid)
@@ -1111,12 +1112,7 @@ export default {
         })
       }
     },
-    clickAdjust (event) { // 点击设备调整按钮
-      if (event.target.className === "adjust_off_picture") {
-        event.target.className = "adjust_on_picture";
-        this.$api.play.adjust_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
-          this.cam_conf = res;
-          this.cam_conf.sn = this.$store.state.jumpPageData.selectDeviceIpc;
+            adjust_show() { //显示亮度等参数
           if (this.cam_conf.day) {
             //night,white;night,auto,1;auto,2,white;auto,2,auto,1
             if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1)) {
@@ -1150,6 +1146,14 @@ export default {
           if (this.whiteLight) {
             this.light_mode = this.cam_conf.light_mode;
           }
+            },
+            clickAdjust(event) { // 点击设备调整按钮
+                if (event.target.className === "adjust_off_picture") {
+                    event.target.className = "adjust_on_picture";
+                    this.$api.play.adjust_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
+                        this.cam_conf = res;
+                        this.cam_conf.sn = this.$store.state.jumpPageData.selectDeviceIpc;
+                        this.adjust_show();
         })
         this.adjustSettingFlag = true
       } else {
@@ -1306,6 +1310,7 @@ export default {
     mode (val) {
       if (val) {
         this.cam_conf.day_night = val;
+                    this.adjust_show();
       }
     },
     light_mode (val) {

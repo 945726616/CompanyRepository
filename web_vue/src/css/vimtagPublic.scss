@@ -4815,9 +4815,9 @@ input[type='radio']{
 	background:url(../assets/device/check.png) no-repeat;
 	margin-top:15px;
 }
-#dev_cloudbox{
-	margin-top:10px;
-}
+// #dev_cloudbox{
+// 	margin-top:10px;
+// }
 .record_box_top{
  background-color:#EFEFF4;
  height:40px;
@@ -5692,6 +5692,9 @@ input[type='range'] {
 	background-color: $projectColor !important;
 }
 #input_password_submit {
+	background-color: $projectColor;
+}
+#back_to_dev_list {
 	background-color: $projectColor;
 }
 // 样式颜色 结束

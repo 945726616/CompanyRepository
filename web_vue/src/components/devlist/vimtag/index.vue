@@ -36,14 +36,14 @@
         <div id='device_add_btn_down' v-show="addHoverflag">{{mcs_click_add_equipment}}</div><!-- 点击添加设备(hover提示框) -->
       </div>
       <!-- 分屏轮播 -->
-      <!-- <div id="split_screen" @click="jumpToSplitScreen">Split Screen</div> -->
+      <div id="split_screen" @click="jumpToSplitScreen">Split Screen</div>
     </div>
     <!-- 顶部设备列表菜单栏 结束 -->
     <!-- 设备列表展示部分 -->
     <div id='vimtag_device_list_box' :class="{'device_tree_class': treeListFlag === 1 && treeClassFlag}">
       <div v-if="!devlistEmptyFlag" style='overflow:hidden'>
         <!-- 摄像机展示 -->
-        <div style='overflow:hidden;font-size:15px'>
+        <div class='dev_box' style='overflow:hidden;font-size:15px'>
           <div id='dev_camera' :style="ipc_num === 1 ? 'display:block' : 'display:none'">{{mcs_camera}}</div><!-- 摄像机 -->
           <!-- 实现拖拽功能 -->
           <div :style='{width: autoImgWidth + "%", height: autoImgHeight + "px"}' class='device_list_img' v-for="IPCCamera in dev_list_dom" :key="IPCCamera.sn" :play='IPCCamera.play' :img='IPCCamera.img' :nick='IPCCamera.nick' :state='IPCCamera.stat' :sn="IPCCamera.sn" :dtype='IPCCamera.type' :addr='IPCCamera.addr' :sort="IPCCamera.sort ? IPCCamera.sort : ''" :tree="IPCCamera.tree ? IPCCamera.tree : ''" @ondrop='drop(event,this)' @ondragover='allowDrop(event)' draggable='true' @ondragstart='drag(event, this)'>
@@ -70,7 +70,7 @@
         </div>
         <!-- 摄像机展示结束 -->
         <!-- 云盒子展示 -->
-        <div style='display:block;font-size:15px'>
+        <div class='dev_box' style='display:block;font-size:15px'>
           <div id='dev_cloudbox' :style="box_num == 1 ? 'display:block' : 'display:none'">{{mcs_cloud_box}}</div><!-- 云盒子 -->
           <div :style='{width: autoImgWidth + "%", height: autoImgHeight + "px"}' class='device_list_img' v-for="BoxItem in dev_list_dom_box" :key="BoxItem.sn" :play='BoxItem.play' :img='BoxItem.img' :nick='BoxItem.nick' :state='BoxItem.stat' :box_live='BoxItem.box_live ? BoxItem.box_live : 0' :sn="BoxItem.sn" :dtype='BoxItem.type' :addr='BoxItem.addr' :sort="BoxItem.sort ? BoxItem.sort : ''" :tree="BoxItem.tree ? BoxItem.tree : ''" @ondrop='drop(event,this)' @ondragover='allowDrop(event)' draggable='true' @ondragstart='drag(event, this)'>
             <div class='device_list_alert_box'>
@@ -631,6 +631,7 @@ export default {
                   local_play_data.profile_token = "p3";
 
                   await _this.$api.local.local_sign_in({ data: local_play_data }).then(async res => {
+                    console.log('setLid', res.lid)
                     if (res.result === '') {
                       _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                       _this.$store.dispatch('setSid', res.sid)
@@ -648,6 +649,7 @@ export default {
                   local_play_data.profile_token = "p3";
 
                   await _this.$api.local.local_sign_in({ data: local_play_data }).then(async res => {
+                    console.log('setLid', res.lid)
                     if (res.result === '') {
                       _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                       _this.$store.dispatch('setSid', res.sid)
@@ -1156,6 +1158,7 @@ export default {
       this.$api.local.local_sign_in({
         data: local_play_data
       }).then(res => {
+        console.log('setLid', res.lid)
         if (res.result === "accounts.pass.invalid") {
           this.publicFunc.msg_tips({ msg: mcs_invalid_password, type: "error", timeout: 3000 })
         } else if (res.result === '') {

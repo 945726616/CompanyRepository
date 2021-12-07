@@ -21,7 +21,7 @@ const play = {
       if (data.dom[k].getAttribute("state") === "offline") continue
       images[k] = new Image();
       if (store.state.jumpPageData.localFlag) {
-        images[k].src = "http://" + data.dom[k].getAttribute("addr") + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=&dsess_sn=" + data.dom[k].getAttribute("sn") + "&dtoken=p1&dencode_type=1&dpic_types_support=7&dflag=2" + "&dencode_type=3&dpic_types_support=2";
+        images[k].src = "http://" + data.dom[k].getAttribute("addr") + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=&dsess_sn=" + data.dom[k].getAttribute("sn") + "&dtoken=p1&dencode_type=1&dpic_types_support=7" + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
       } else {
         if (sessionStorage.getItem(sn) && data.box_ipc !== 1) {
           $(data.dom).eq(k).children()[0].style.backgroundImage = "url(" + sessionStorage.getItem(sn) + ")";
@@ -170,9 +170,9 @@ const play = {
       let urls
       if (process.env.NODE_ENV === 'production') { // 正式环境下截图播放地址
         // urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value;
-        urls = window.location.protocol + "//" + window.location.host + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=3&dpic_types_support=2";
+        urls = window.location.protocol + "//" + window.location.host + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
       } else { // 测试环境下截图播放地址
-        urls = window.location.protocol + "//" + window.location.host + "/api/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=3&dpic_types_support=2";
+        urls = window.location.protocol + "//" + window.location.host + "/api/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
       }
       // console.log(urls, 'urls')
       data.dom.html("<img id='flash_img' width='1px' src='" + urls + "'>") // 写入封面图
@@ -783,9 +783,9 @@ const play = {
     params.dom.css('background-size', '100% 100%')
     params.dom.css('background-repeat', 'no-repeat')
     if (process.env.NODE_ENV === 'production') {
-      url = (params.addr ? "http://" + params.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.pic_token + "&dencode_type=3&dpic_types_support=2";
+      url = (params.addr ? "http://" + params.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
     } else {
-      url = (params.addr ? "http://" + params.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.pic_token + "&dencode_type=3&dpic_types_support=2";
+      url = (params.addr ? "http://" + params.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
     }
     params.dom.css('background-image', 'url(' + url + ')')
   },

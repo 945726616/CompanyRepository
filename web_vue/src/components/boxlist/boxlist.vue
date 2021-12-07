@@ -274,6 +274,7 @@
                     _this.$api.local.local_sign_in({
                         data: local_play_data
                     }).then(res => {
+                        console.log('setLid', res.lid)
                         if (res.result === '') {
                             _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                             _this.$store.dispatch('setSid', res.sid)

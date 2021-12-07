@@ -605,9 +605,10 @@ export default {
             login_ack(res.data)
             // 登录回调处理
             function login_ack (msg) {
+              console.log(msg, 'login_ack')
               //There is a problem before returning, no result is a successful login
               if (msg.result === '') {
-                _this.$store.dispatch('setLid', msg.lid) //登录返回lid head中
+                // _this.$store.dispatch('setLid', msg.lid) //登录返回lid head中
                 _this.$store.dispatch('setName', username_value)
                 _this.$store.dispatch('setSid', msg.sid)
                 _this.$store.dispatch('setGuest', msg.guest)

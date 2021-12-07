@@ -16,7 +16,7 @@
         <div class='menu_list_box_title3' style='height:2rem;margin-top:1rem'> {{mcs_Event_record}} </div>
         <div class='menu_list2_box' id='record_event'>
             <div v-for='(item, index) in scene_data_out.dev' :key='item.id'>
-                <div v-if='item.record_event_name && item.record_event_type' class='menu_list record_event_btn' :index='index' :sn='item.id' :type='item.type' @click='record_event_btn'>
+                <div v-if='item.record_event_name && item.record_event_type' class='menu_list record_event_btn' :index='index+1' :sn='item.id' :type='item.type' @click='record_event_btn'>
                     <div class='list_name'>
                         <div class='list_name_title'> {{item.record_event_name}} </div>
                         <div class='list_name_tips'> {{sd_sign?item.record_event_type:mcs_turn_off}} </div>
