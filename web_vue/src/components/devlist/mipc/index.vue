@@ -91,7 +91,8 @@ export default {
     mipcDevlist (obj) {
       this.imgRefresh = obj.refresh // 拿到图片刷新标识
       this.publicFunc.mx("#dev_main_right").style.width = document.body.clientWidth - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px"
-      this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
+      this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 62) + "px"
+      this.publicFunc.mx("#dev_main_right").style.minHeight = (document.documentElement.clientHeight - 17) + "px"
       this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
       this.get_dev_list() // 获取设备列表
     },
@@ -124,7 +125,7 @@ export default {
           }
           let itemNick = msg[i].nick.length < 15 ? msg[i].nick : msg[i].nick.substr(0, 13) + "..."
           msg[i].nick = itemNick
-          console.log(device_status_img, 'device_status_img')
+          // console.log(device_status_img, 'device_status_img')
           msg[i].imgClass = device_status_img
           if (!no_get_img) { // 设备在线直接添加设备图片地址
             msg[i].def_img = this.$api.devlist.pic_url_get({ sn: msg[i].sn, token: "p1" })

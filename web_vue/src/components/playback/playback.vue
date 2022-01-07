@@ -10,9 +10,9 @@
       </div>
       <!-- vimtag专属返回栏 结束 -->
       <div id="playback_view">
-        <div id="playback_buffer_ret">
+        <div id="playback_buffer_ret" ref='downloadBufferFlag'>
           <!-- 下载弹窗 -->
-          <div id='download_info_box' v-show="downloadBufferFlag">
+          <div id='download_info_box'>
             <div id='download_progress'></div>
             <div id='download_stop' @click="clickDownloadStop">{{mcs_stop}}</div>
             <div id='download_pause' @click="clickDownloadPause">{{downloadShowWorld}}</div>
@@ -103,7 +103,6 @@ export default {
       play_progress: null, // 回放进度条参数
       percent: 0,
       downloadBoxFlag: false, // 下载提示框标识
-      downloadBufferFlag: false, // 下载进度弹窗标识
       downloadShowWorld: null, // 下载中暂停/开始按钮文字
       clientP2PingValue: '0kB', // 客户端视频播放流数据值显示
     }
@@ -127,15 +126,10 @@ export default {
       let l_dom_playback_view = this.publicFunc.mx("#playback_view")
       let l_dom_playback_screen = this.publicFunc.mx("#playback_screen")
       let l_dom_playback_menu_box = this.publicFunc.mx("#playback_menu_box")
-      let l_dom_playback_download_path_box = this.publicFunc.mx("#playback_download_path_box")
       let l_height = this.publicFunc.mx("#top").offsetWidth * 0.4 + 11
-      let l_download_path_box_top = this.publicFunc.mx("#playback_box").offsetTop + 200
-      let l_download_path_box_left = this.publicFunc.mx("#playback_box").offsetLeft + 430
       let l_playback_menu_box_height = l_dom_playback_menu_box.offsetHeight - 1
       l_dom_playback_view.style.height = l_height + "px" // 回放页面高度设置
       l_dom_playback_screen.style.height = (l_height - l_playback_menu_box_height) + "px" // 播放器高度设置
-      l_dom_playback_download_path_box.style.top = l_download_path_box_top + "px" // 下载弹窗高度偏移量设置
-      l_dom_playback_download_path_box.style.left = l_download_path_box_left + "px" // 下载弹窗左侧偏移量设置
       // this.publicFunc.mx("#playback_buffer_ret").style.left = (l_dom_playback_screen.offsetLeft + l_dom_playback_screen.offsetWidth - 50) + "px" // 下载进度偏移量设置
       // 回放页面相关尺寸设置 结束
       // 获取回放开始时间戳
@@ -427,7 +421,7 @@ export default {
       this.downloadBoxFlag = false
       // 添加下载弹窗内容
       this.publicFunc.mx("#playback_screen").style.background = "#000" // 播放区域黑色背景
-      this.downloadBufferFlag = true // 下载进度弹出
+      this.$refs.downloadBufferFlag.style.display = 'block' // 下载进度弹出
       if (this.publicFunc.mx('#play_view_box')) { // 如果有播放遮罩层也为黑色
         this.publicFunc.mx('#play_view_box').style.background = '#000'
       }
@@ -467,7 +461,7 @@ export default {
       }
     },
     clickDownloadStop () { // 点击下载终止
-      this.downloadBufferFlag = false
+      this.$refs.downloadBufferFlag.style.display = 'none' 
       this.$api.playback.video_stop({
         dom: $("#playback_screen"),
         isDownload: 1 // 是否下载中特殊标记

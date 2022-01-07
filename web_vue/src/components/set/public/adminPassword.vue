@@ -33,42 +33,38 @@
         },
         methods: {
             apply_btn() { //点击应用
-                if (this.$store.state.user.guest) {
-                    this.publicFunc.msg_tips({ msg: mcs_permission_denied, type: "error", timeout: 3000 });
-                } else {
-                    if (this.admin_pwd_value === "amdin") {
-                        this.admin_pwd_value = "admin";
-                    }
-                    if (this.admin_pwd_value === "@M!N*T") {
-                        this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty + ".", type: "error", timeout: 3000 });
-                        return;
-                    }
-                    if (this.new_admin_pwd_value === "@M!N*T") {
-                        this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty + ".", type: "error", timeout: 3000 });
-                        return;
-                    }
-                    if (this.new_admin_pwd_value === this.admin_pwd_value) {
-                        this.publicFunc.msg_tips({ msg: mrs_new_password_setting_failed, type: "error", timeout: 3000 });
-                        return;
-                    }
-                    if (this.new_admin_pwd_value !== this.confirm_admin_pwd_value) {
-                        this.publicFunc.msg_tips({ msg: mcs_two_password_input_inconsistent + ".", type: "error", timeout: 3000 });
-                        return;
-                    } else {
-                        let reg = /^\S{6,20}$/;
-                        if (!reg.exec(this.new_admin_pwd_value)) {
-                            this.publicFunc.msg_tips({ msg: mcs_password_demand + ".", type: "error", timeout: 3000 });
-                            return;
-                        }
-                    }
-                    this.$api.set.admin_password_set({
-                        sn: this.$store.state.jumpPageData.selectDeviceIpc,
-                        old_pass: this.admin_pwd_value,
-                        new_pass: this.new_admin_pwd_value
-                    }).then(res => {
-                        this.publicFunc.msg_tips({ msg: res.msg, type: res.type, timeout: 3000 })
-                    })
+                if (this.admin_pwd_value === "amdin") {
+                    this.admin_pwd_value = "admin";
                 }
+                if (this.admin_pwd_value === "@M!N*T") {
+                    this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty + ".", type: "error", timeout: 3000 });
+                    return;
+                }
+                if (this.new_admin_pwd_value === "@M!N*T") {
+                    this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty + ".", type: "error", timeout: 3000 });
+                    return;
+                }
+                if (this.new_admin_pwd_value === this.admin_pwd_value) {
+                    this.publicFunc.msg_tips({ msg: mrs_new_password_setting_failed, type: "error", timeout: 3000 });
+                    return;
+                }
+                if (this.new_admin_pwd_value !== this.confirm_admin_pwd_value) {
+                    this.publicFunc.msg_tips({ msg: mcs_two_password_input_inconsistent + ".", type: "error", timeout: 3000 });
+                    return;
+                } else {
+                    let reg = /^\S{6,20}$/;
+                    if (!reg.exec(this.new_admin_pwd_value)) {
+                        this.publicFunc.msg_tips({ msg: mcs_password_demand + ".", type: "error", timeout: 3000 });
+                        return;
+                    }
+                }
+                this.$api.set.admin_password_set({
+                    sn: this.$store.state.jumpPageData.selectDeviceIpc,
+                    old_pass: this.admin_pwd_value,
+                    new_pass: this.new_admin_pwd_value
+                }).then(res => {
+                    this.publicFunc.msg_tips({ msg: res.msg, type: res.type, timeout: 3000 })
+                })
             },
             focus_input(e) { //若输入框内容为@M!N*T，则点击置为空
                 let input_id = e.currentTarget.getAttribute('id')

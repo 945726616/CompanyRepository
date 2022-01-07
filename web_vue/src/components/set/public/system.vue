@@ -97,24 +97,20 @@
                 this.publicFunc.delete_tips({
                     content: mcs_restore_factory_settings_prompt + "<br><input type='checkbox' id='save_configuration' checked='checked'>&nbsp;" + mcs_keep_network_settings,
                     func: () => {
-                        if (this.$store.state.user.guest) {
-                            this.publicFunc.msg_tips({ msg: mcs_permission_denied, type: "error", timeout: 3000 });
+                        if (document.getElementById("save_configuration").checked) {
+                            this.$api.set.reset_device({ sn: this.$store.state.jumpPageData.selectDeviceIpc, keep_cofig: 1 }).then(res => {
+                                setTimeout(() => {
+                                    this.publicFunc.msg_tips({ msg: mcs_set_successfully, type: "success", timeout: 3000 })
+                                    this.$router.push({ name: 'devlist' })
+                                }, 3000)
+                            })
                         } else {
-                            if (document.getElementById("save_configuration").checked) {
-                                this.$api.set.reset_device({ sn: this.$store.state.jumpPageData.selectDeviceIpc, keep_cofig: 1 }).then(res => {
-                                    setTimeout(() => {
-                                        this.publicFunc.msg_tips({ msg: mcs_set_successfully, type: "success", timeout: 3000 })
-                                        this.$router.push({ name: 'devlist' })
-                                    }, 3000)
-                                })
-                            } else {
-                                this.$api.set.reset_device({ sn: this.$store.state.jumpPageData.selectDeviceIpc, keep_cofig: 0 }).then(res => {
-                                    setTimeout(() => {
-                                        this.publicFunc.msg_tips({ msg: mcs_set_successfully, type: "success", timeout: 3000 })
-                                        this.$router.push({ name: 'devlist' })
-                                    }, 3000)
-                                })
-                            }
+                            this.$api.set.reset_device({ sn: this.$store.state.jumpPageData.selectDeviceIpc, keep_cofig: 0 }).then(res => {
+                                setTimeout(() => {
+                                    this.publicFunc.msg_tips({ msg: mcs_set_successfully, type: "success", timeout: 3000 })
+                                    this.$router.push({ name: 'devlist' })
+                                }, 3000)
+                            })
                         }
                     }
                 });
@@ -123,16 +119,12 @@
                 this.publicFunc.delete_tips({
                     content: mcs_restart_prompt,
                     func: () => {
-                        if (this.$store.state.user.guest) {
-                            this.publicFunc.msg_tips({ msg: mcs_permission_denied, type: "error", timeout: 3000 });
-                        } else {
-                            this.$api.set.reboot_device({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
-                                setTimeout(() => {
-                                    this.publicFunc.msg_tips({ msg: mcs_set_successfully, type: "success", timeout: 3000 })
-                                    this.$router.push({ name: 'devlist' })
-                                }, 3000)
-                            })
-                        }
+                        this.$api.set.reboot_device({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
+                            setTimeout(() => {
+                                this.publicFunc.msg_tips({ msg: mcs_set_successfully, type: "success", timeout: 3000 })
+                                this.$router.push({ name: 'devlist' })
+                            }, 3000)
+                        })
                     }
                 });
             },
@@ -274,38 +266,35 @@
                 let img_ver = this.$api.devlist.ldev_get(this.$store.state.jumpPageData.selectDeviceIpc).img_ver;
                 let valid_ver = this.ver_valid;
                 let ver_update_warn = "";
-                if (!this.$store.state.user.guest) {
-                    this.$api.set.desc_get({
-                        ver_type: "windows",
-                        ver_from: img_ver,
-                        ver_to: this.ver_valid,
-                        lang: this.$store.state.user.userLanguage
-                    }).then(res => {
-                        if (res.result === '') {
-                            if (res.data.desc) {
-                                for (let i = 0; i < res.data.desc.length; i++) {
-                                    ver_update_warn += res.data.desc[i] + "<br>";
-                                }
+                this.$api.set.desc_get({
+                    ver_type: "windows",
+                    ver_from: img_ver,
+                    ver_to: this.ver_valid,
+                    lang: this.$store.state.user.userLanguage
+                }).then(res => {
+                    if (res.result === '') {
+                        if (res.data.desc) {
+                            for (let i = 0; i < res.data.desc.length; i++) {
+                                ver_update_warn += res.data.desc[i] + "<br>";
                             }
-                            this.publicFunc.delete_tips({
-                                content: (ver_update_warn ? ver_update_warn : (mcs_upgrade_to_the_latest_version + valid_ver)),
-                                func: () => {
-                                    this.system_upgrade_sign = false;
-                                    this.$api.set.upgrade_set({
-                                        sn: this.$store.state.jumpPageData.selectDeviceIpc,
-                                        check: 1
-                                    }).then(() => {
-                                        this.$api.set.upgrade_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc, check: 1 }).then(res => {
-                                            this.system_dev_upgrade_get_ack(res)
-                                        })
-                                    })
-                                }
-                            })
                         }
-                    })
-                } else {
-                    this.publicFunc.msg_tips({ msg: mcs_permission_denied, type: "error", timeout: 3000 });
-                }
+                        this.publicFunc.delete_tips({
+                            content: (ver_update_warn ? ver_update_warn : (mcs_upgrade_to_the_latest_version + valid_ver)),
+                            func: () => {
+                                this.system_upgrade_sign = false;
+                                this.$api.set.upgrade_set({
+                                    sn: this.$store.state.jumpPageData.selectDeviceIpc,
+                                    check: 1
+                                }).then(() => {
+                                    this.$api.set.upgrade_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc, check: 1 }).then(res => {
+                                        this.system_dev_upgrade_get_ack(res)
+                                    })
+                                })
+                            }
+                        })
+                    }
+                })
+
             }
         }
     }

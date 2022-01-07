@@ -29,7 +29,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: process.env.VUE_APP_PROJECT_NAME === 'vimtag' ? 'https://wsbgp12.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446' : 'https://wsbgp12.' + process.env.VUE_APP_PROJECT_NAME + '.com:7443', // 代理目标地址为正式版通用域名地址'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446'
+        // target: process.env.VUE_APP_PROJECT_NAME === 'vimtag' ? 'https://wsbgp12.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446' : 'https://wsbgp12.' + process.env.VUE_APP_PROJECT_NAME + '.com:7443', // 代理目标地址为正式版通用域名地址'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446'
+        target: process.env.VUE_APP_PROJECT_NAME === 'vimtag' ? 'http://45.120.103.34:7080/' : 'http://45.120.103.34:7080/', // 代理目标地址为正式版通用域名地址'https://wsbgp14.' + process.env.VUE_APP_PROJECT_NAME + '.com:7446'
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
@@ -60,6 +61,7 @@ module.exports = {
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') { // 生产环境打包使用插件
       // 为生产环境修改配置...
+      // config.entry = ['babel-polyfill', './src/main.js'] //转换一些IE不支持的API，达成IE,客户端可用firebase
       config.optimization.minimize = true // 是否压缩代码
       config.mode = 'production'
       config.plugins.push(

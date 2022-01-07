@@ -11,10 +11,6 @@
                         <div class='set_img' id='manage_password'></div>
                         <div class='set_name'> {{mcs_user_admin_password}} </div>
                     </li>
-                    <li :class='my_enter_list.guest_password?"set_list active_list":"set_list"' v-if='login_sign' @click='enter_page'>
-                        <div class='set_img' id='guest_password'></div>
-                        <div class='set_name'> {{mcs_user_guest_password}} </div>
-                    </li>
                     <li :class='my_enter_list.add_email?"set_list active_list":"set_list"' v-if='login_sign' @click='enter_page'>
                         <div class='set_img' id='add_email'></div>
                         <div class='set_name'> {{mcs_binding_email}} </div>
@@ -46,9 +42,6 @@
                 <div id='set_right_content'>
                     <div id='set_manage_password_page' class='set_page' v-if='my_enter_list.manage_password'>
                         <manage-password></manage-password>
-                    </div>
-                    <div id='set_guest_password_page' class='set_page' v-if='my_enter_list.guest_password'>
-                        <guest-password></guest-password>
                     </div>
                 </div>
                 <div id='set_add_email_page' class='set_page' v-if='my_enter_list.add_email'>
@@ -117,7 +110,6 @@
 <script>
     import mme from '@/util/mme.js'
     import ManagePassword from '../public/managePassword.vue'
-    import GuestPassword from '../public/guestPassword.vue'
     import AddEmail from '../public/addEmail.vue'
     export default {
         data() {
@@ -125,7 +117,6 @@
                 //多国语言
                 mcs_software_version: mcs_software_version, //软件版本 
                 mcs_user_admin_password: mcs_user_admin_password, //用户管理密码
-                mcs_user_guest_password: mcs_user_guest_password, //用户访客密码
                 mcs_binding_email: mcs_binding_email, //绑定邮箱
                 mcs_feedback: mcs_feedback, //意见反馈
                 mcs_export_sd_data: mcs_export_sd_data, //导出SD卡数据
@@ -138,7 +129,7 @@
                 version_number: '', //版本号
                 feedback_url: '',
                 login_sign: false, //是否登录
-                my_enter_list: { about: true, manage_password: false, guest_password: false, add_email: false, feedback: false, sd_export: false, developer_option: false, local_devs: false, exit_btn_img: false }, //进入功能详情页
+                my_enter_list: { about: true, manage_password: false, add_email: false, feedback: false, sd_export: false, developer_option: false, local_devs: false, exit_btn_img: false }, //进入功能详情页
                 sd_is_export: 0,
                 sd_exist_sign: false, //判断是否存在sd卡
                 set_mme: {},
@@ -199,7 +190,7 @@
                                 }
                                 _this.$router.push({ name: 'login' })
                                 sessionStorage.clear()
-                                location.reload()
+                                location.reload();
                             }
                         })
 
@@ -238,7 +229,7 @@
                 this.set_mme.mme = new mme(mme_params);
             },
         },
-        components: { ManagePassword, AddEmail, GuestPassword }
+        components: { ManagePassword, AddEmail }
     }
 </script>
 

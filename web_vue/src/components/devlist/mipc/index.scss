@@ -61,7 +61,12 @@
     float: left;
   }
 }
-
+#dev_main_page::after{
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+}
 #dev_list{ // 设备列表详细div样式
 	width:100%;
   overflow-y: scroll;

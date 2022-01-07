@@ -32,7 +32,6 @@ const user = {
     supportFilterFlag: userSession && userSession.setSupportFilterFlag ? userSession.setSupportFilterFlag : 0, // 是否支持筛选标识
     autoPlayFlag: 0, // 自动播放标识(存储在localStorage中)
     loginFlag: userSession && userSession.setLoginFlag ? userSession.setLoginFlag : 0, // 是否登录标识
-    guest: userSession && userSession.setGuest == 0? userSession.setGuest : 1, //是否为访客模式
   },
 
   mutations: {
@@ -127,12 +126,6 @@ const user = {
       userInfo.setLoginFlag = loginFlag
       sessionStorage.setItem('user_info',JSON.stringify(userInfo))
     },
-    SET_GUEST: (state, guest) => {
-      state.guest = guest
-      let userInfo = JSON.parse(sessionStorage.getItem('user_info'))
-      userInfo.setGuest = guest
-      sessionStorage.setItem('user_info',JSON.stringify(userInfo))
-    },
   },
 
   actions: {
@@ -154,7 +147,6 @@ const user = {
     setSupportFilterFlag: ({ commit }, supportFilterFlag) => commit('SET_SUPPORT_FILTER_FLAG', supportFilterFlag),
     setAutoPlayFlag: ({ commit }, autoPlayFlag) => commit('SET_AUTO_PLAY_FLAG', autoPlayFlag),
     setLoginFlag: ({ commit }, loginFlag) => commit('SET_LOGIN_FLAG', loginFlag),
-    setGuest: ({ commit }, guest) => commit('SET_GUEST', guest),
   }
 }
 

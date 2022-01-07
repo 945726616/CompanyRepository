@@ -112,8 +112,8 @@
       <div id='history_img_box'>
         <div id='history_img_page_close' @click="picture_data_sign.src = ''"></div>
         <div id='history_img_main'>
+          <img id='history_img_show' :src='picture_data_sign.src'>
           <a id='history_img_a' :href="picture_data_sign.src" :download="picture_data_sign.time + '.jpg'">
-            <img id='history_img_show' :src='picture_data_sign.src'>
             <div id='history_img_page_download'></div>
           </a>
         </div>
@@ -375,30 +375,6 @@ export default {
         })
       }
       this.num++;
-    },
-    video_delete_btn (e) { //删除录像
-      let _this = this;
-      let history_dom = e.currentTarget.parentNode.parentNode;
-      let start_time = history_dom.childNodes[3].getAttribute("start_time");
-      let end_time = history_dom.childNodes[3].getAttribute("end_time");
-      _this.publicFunc.delete_tips({
-        content: mcs_delete + "?",
-        func: function () {
-          _this.$api.history.history_delete({ // 调用历史删除接口
-            box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-            dev_sn: _this.history_info.dev_sn,
-            start_time: start_time,
-            end_time: end_time
-          }).then(res => {
-            if (res.type === 'success') {
-              history_dom.style.display = "none";
-              _this.publicFunc.msg_tips({ msg: mcs_delete_success, type: "success", timeout: 3000 })
-            } else {
-              _this.publicFunc.msg_tips({ msg: mcs_delete_fail, type: "error", timeout: 3000 })
-            }
-          })
-        }
-      })
     },
   },
   watch: {

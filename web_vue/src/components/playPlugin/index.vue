@@ -72,8 +72,8 @@ export default {
   },
   methods: {
     clickDelPlayer () { // 点击删除时注销播放器
-      this.player.dispose()
       this.$emit('hiddenPlayer', this.playerObj.playRef.charAt(this.playerObj.playRef.length - 1))
+      this.player.dispose()
     }
   },
   //初始化播放器
@@ -107,6 +107,7 @@ export default {
       userActions: {
         hotkeys: true //是否支持热键
       },
+      muted: 'muted',
       notSupportedMessage: "此视频暂无法播放，请稍后再试",
       // techOrder: ["flash"],//定义Video.js技术首选的顺序 "html5",
       // techOrder: ["html5"],

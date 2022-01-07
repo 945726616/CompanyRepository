@@ -22,11 +22,6 @@
                         <div class='set_name'> {{mcs_user_admin_password}} </div>
                     </li>
                     <li class='set_list' v-if="login_sign" @click="enter_page">
-                        <div class='set_img' id='guest_password'></div>
-                        <!-- 用户访客密码 -->
-                        <div class='set_name'> {{mcs_user_guest_password}} </div>
-                    </li>
-                    <li class='set_list' v-if="login_sign" @click="enter_page">
                         <div class='set_img' id='add_email'></div>
                         <!-- 绑定邮箱 -->
                         <div class='set_name'> {{mcs_binding_email}} </div>
@@ -89,11 +84,6 @@
                         <manage-password></manage-password>
                     </div>
 
-                    <div id='set_guest_password_page' class='set_page' v-if='my_enter_list.guest_password'>
-                        <!-- 设置访客密码 -->
-                        <guest-password></guest-password>
-                    </div>
-
                     <div id='set_add_email_page' class='set_page' v-if='my_enter_list.add_email'>
                         <!-- 绑定邮箱 -->
                         <add-email></add-email>
@@ -148,7 +138,6 @@
 <script>
     import mme from '@/util/mme.js'
     import ManagePassword from '../public/managePassword'
-    import GuestPassword from '../public/guestPassword'
     import AddEmail from '../public/addEmail'
     import Feedback from '../public/feedback'
     import SwitchButton from '@/module/switchButton'
@@ -160,7 +149,6 @@
                 mcs_exit: mcs_exit, //退出
                 mcs_local_search: mcs_local_search, //本地搜索
                 mcs_user_admin_password: mcs_user_admin_password, //用户管理密码
-                mcs_user_guest_password: mcs_user_guest_password, //用户访客密码
                 mcs_binding_email: mcs_binding_email, //绑定邮箱
                 mcs_auto_play: mcs_auto_play, //自动播放
                 mcs_export_sd_data: mcs_export_sd_data, //导出SD卡数据
@@ -184,7 +172,7 @@
                 auto_play_sign: false, //控制是否自动播放
                 auto_play_page_sign: false, //控制是否显示自动播放
                 sd_is_export: 0,
-                my_enter_list: { my_other: false, about: false, manage_password: false, guest_password: false, add_email: false, auto_play: false, feedback: false, sd_export: false, developer_option: false, local_devs: false, my_page: true }, //进入功能详情页               
+                my_enter_list: { my_other: false, about: false, manage_password: false, add_email: false, auto_play: false, feedback: false, sd_export: false, developer_option: false, local_devs: false, my_page: true }, //进入功能详情页               
                 sd_exist_sign: false, //判断是否存在sd卡
                 dev_set_input_num: '', //设备列表单行显示数
                 set_mme: {},
@@ -282,7 +270,7 @@
                     })
                 } else {
                     _this.$router.push({ name: 'login' })
-                    if (_this.$store.state.jumpPageData.localFlag) {
+                     if (_this.$store.state.jumpPageData.localFlag) {
                         let url = location.href;
                         location.href = url.replace("&l=local&c=0", "");
                         sessionStorage.clear();
@@ -524,7 +512,7 @@
                 }
             }
         },
-        components: { ManagePassword, AddEmail, GuestPassword, Feedback, SwitchButton }
+        components: { ManagePassword, AddEmail, Feedback, SwitchButton }
     }
 </script>
 

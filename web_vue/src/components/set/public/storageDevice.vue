@@ -66,35 +66,31 @@
         },
         methods: {
             storage_device_button_setup_btn() { //应用
-                if (this.$store.state.user.guest) {
-                    this.publicFunc.msg_tips({ msg: mcs_permission_denied, type: "error", timeout: 3000 });
-                } else {
-                    let flag = Number(this.storage_device_sign);
-                    if (flag) {
-                        if (this.input_device_id == '') {
-                            this.publicFunc.msg_tips({ msg: mcs_blank_device_id, type: "warning", timeout: 3000 })
+                let flag = Number(this.storage_device_sign);
+                if (flag) {
+                    if (this.input_device_id == '') {
+                        this.publicFunc.msg_tips({ msg: mcs_blank_device_id, type: "warning", timeout: 3000 })
+                        return;
+                    }
+                    if (this.input_password == '') {
+                        this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty, type: "warning", timeout: 3000 })
+                        return;
+                    } else {
+                        let reg = /^\S{6,20}$|admin/;
+                        if (!reg.exec(this.input_password)) {
+                            this.publicFunc.msg_tips({ msg: mcs_password_demand, type: "warning", timeout: 3000 })
                             return;
-                        }
-                        if (this.input_password == '') {
-                            this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty, type: "warning", timeout: 3000 })
-                            return;
-                        } else {
-                            let reg = /^\S{6,20}$|admin/;
-                            if (!reg.exec(this.input_password)) {
-                                this.publicFunc.msg_tips({ msg: mcs_password_demand, type: "warning", timeout: 3000 })
-                                return;
-                            }
                         }
                     }
-                    this.$api.set.storage_device_set({
-                        box_sn: this.$store.state.jumpPageData.selectDeviceIpc,
-                        enable: flag,
-                        username: this.input_device_id,
-                        password: this.input_password
-                    }).then(res => {
-                        this.publicFunc.msg_tips({ msg: res.msg, type: res.type, timeout: 3000 })
-                    })
                 }
+                this.$api.set.storage_device_set({
+                    box_sn: this.$store.state.jumpPageData.selectDeviceIpc,
+                    enable: flag,
+                    username: this.input_device_id,
+                    password: this.input_password
+                }).then(res => {
+                    this.publicFunc.msg_tips({ msg: res.msg, type: res.type, timeout: 3000 })
+                })
             },
             storage_device_updata(data) { //更新存储设备按钮
                 this.storage_device_sign = data;

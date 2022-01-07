@@ -1,6 +1,7 @@
 import store from '../store'
 import router from '../router'
-
+// import firebase from "firebase/app";
+// import "firebase/analytics"
 const publicFunc = {
   async importCss (docPath) { // 引入CSS文件
     if (window.location.href.indexOf('vimtag') > -1) {
@@ -189,6 +190,43 @@ const publicFunc = {
       flashObj = navigator.plugins['Shockwave Flash']
     }
     return flashObj ? true : false
+  },
+  log_upload(event,result,failDesc) { //日志上传
+    let analytics;
+    console.log(event,"event")
+    console.log(result,"result")
+    console.log(failDesc,"failDesc")
+    console.log(firebase.analytics().logEvent,"firebase.analytics().logEvent")
+    firebase.analytics.isSupported().then((isSupported) => {
+      console.log(isSupported,"isSupported")
+      if (isSupported) {
+        analytics = firebase.analytics();
+        console.log(analytics,"analytics new")
+        if(result === '' || result === undefined){
+          // firebase.analytics().logEvent(event);
+          analytics.logEvent(event);
+          console.log("enter undefined")
+        }else if(result === 'success'){
+          // firebase.analytics().logEvent(event, { 
+          //   result: 'success'
+          // });
+          analytics.logEvent(event, { 
+            result: 'success'
+          });
+          console.log("enter success")
+        }else if(result === 'fail'){
+          // firebase.analytics().logEvent(event, {
+          //   result: 'fail',
+          //   failDesc: failDesc
+          // });
+          analytics.logEvent(event, {
+            result: 'fail',
+            failDesc: failDesc
+          });
+          console.log("enter fail")
+        }
+      }
+    })
   }
 }
 

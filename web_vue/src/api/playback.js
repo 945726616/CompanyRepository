@@ -10,9 +10,8 @@ import mme from '@/util/mme.js'
 import publicFunc from '@/util/public.js'
 import fdSliderController from '@/util/fdSliderController'
 import chooseLanguage from '@/lib/exportModule/languageExport'
-console.log('language', store.state.user.userLanguage)
 chooseLanguage.lang(store.state.user.userLanguage)
-let mrs_download_completed = mrs_download_completed
+
 const playback = {
   /*
   ** 停止视频播放

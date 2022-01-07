@@ -22,7 +22,6 @@ const my = {
     }).then(res => {
       returnItem = { result: login.get_ret(res) }
     })
-    returnItem.is_guest = params.is_guest // 添加游客标识属性
     return returnItem
   },
   /*

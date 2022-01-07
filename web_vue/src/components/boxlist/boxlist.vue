@@ -278,7 +278,6 @@
                         if (res.result === '') {
                             _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                             _this.$store.dispatch('setSid', res.sid)
-                            _this.$store.dispatch('setGuest', res.guest)
                             _this.$store.dispatch('setSeq', res.seq)
 
                             _this.$api.boxlist.box_get({ //返回onvif后发送ccm_box_get，解决有时私有去不掉onvif问题

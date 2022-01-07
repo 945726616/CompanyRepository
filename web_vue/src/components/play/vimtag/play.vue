@@ -161,7 +161,8 @@
       <!-- 截图弹窗 -->
       <div id='snapshot_preview_div' v-show="snapshotFlag">
         <div id='snapshot_preview_inner'>
-          <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl"><img id='snapshot_preview_content' :src="snapshotUrl">
+          <img id='snapshot_preview_content' :src="snapshotUrl">
+          <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl">
             <div id='snapshot_img_page_download'></div>
           </a>
         </div>
@@ -434,7 +435,6 @@ export default {
               if (res.result === '') {
                 _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                 _this.$store.dispatch('setSid', res.sid)
-                _this.$store.dispatch('setGuest', res.guest)
                 _this.$store.dispatch('setSeq', res.seq)
               }
               _this.local_play_data.agent = _this.$store.state.jumpPageData.localFlag_agent;

@@ -478,7 +478,6 @@ export default {
               // _this.$store.dispatch('setLid', msg.lid) //登录返回lid head中
               _this.$store.dispatch('setName', username_value)
               _this.$store.dispatch('setSid', msg.sid)
-              _this.$store.dispatch('setGuest', msg.guest)
               _this.$store.dispatch('setSeq', msg.seq)
 
               let version_type = ''

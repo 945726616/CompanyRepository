@@ -297,9 +297,9 @@ export default {
 @import '../../css/public.scss';
 
 #add_device_box {
-  width: 100%;
   position: absolute;
   top: 0;
+  left: 50%;
   z-index: 1099;
 }
 

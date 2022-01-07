@@ -91,6 +91,8 @@ const devlist = {
         returnItem = "";
       } else if (res && res.result === "accounts.system") {
         returnItem = "accounts.system";
+      } else if (res && res.result === "permission.denied") {
+        returnItem = mcs_permission_denied;
       }
     })
     return returnItem
@@ -594,7 +596,7 @@ const devlist = {
       }
     } else {
       if (locationProtocol === "file:") {
-        pic_url_return = "http://" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "_xxxxxxxxxx" + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
+        pic_url_return = "http://" + locationHost + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "_xxxxxxxxxx" + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
       } else {
         if (params.box_ipc == 1) { //如果云盒子列表请求图片
           pic_url_return = locationProtocol + "//" + locationHost + "/ccm/ccm_pic_get.jpg?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.token + "&dflag=" + params.flag + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";

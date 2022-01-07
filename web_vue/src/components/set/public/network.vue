@@ -1001,9 +1001,9 @@
                     $("#nic_enabled_content").fadeOut();
                     return;
                 }
-                if (val) {
+                if (val) { //启用状态为打开时
                     $("#nic_enabled_content").fadeIn();
-                    if (this.network_card == mcs_ethernet) {
+                    if (this.network_card == mcs_ethernet) { //当前为网线连接状态
                         $("#mac_address").fadeIn(450);
                         $("#nic_mode_select").fadeOut();
                         if (this.l_nic_conn_status_flag) {
@@ -1019,7 +1019,7 @@
                                 // $("#manager_page").mCustomScrollbar("update");
                             });
                         }
-                    } else if (this.network_card == mcs_wifi) {
+                    } else if (this.network_card == mcs_wifi) { //当前为wifi连接状态
                         if (!this.l_nic_conn_status_flag) {
                             this.l_nic_conn_status_flag = 0;
                             this.publicFunc.trigger_click(this.publicFunc.mx("#radio_auto_obtain_ip"));
@@ -1035,7 +1035,7 @@
                         $("#nic_mode_select").fadeIn();
                         this.wifi_mode = mcs_client;
                     }
-                } else {
+                } else { //启用状态为关闭时
                     $("#nic_enabled_content").fadeOut();
                     if (this.network_card == mcs_wifi) {
                         $("#select_network_li").fadeOut();

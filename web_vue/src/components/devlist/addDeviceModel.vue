@@ -233,6 +233,7 @@ export default {
       resetDeviceId: null,
       project_name: this.$store.state.jumpPageData.projectName, //项目名
       wifiListFlag: false, // 控制打开关闭下拉列表弹窗
+      box_ipc: null, //判断设备是摄像头还是盒子(盒子1,摄像头0)
       // 多国语言
       mcs_back: mcs_back,
       mcs_cloud_camera: mcs_cloud_camera,
@@ -338,9 +339,15 @@ export default {
       console.log(item.type, 'item.type')
       this.$set(this.addDeviceModelObj, 'typeUrlInputId', this.$store.state.jumpPageData.projectName + '_add_device_sample_img_' + item.type) // 设置输入设备Id页面图片Class
       this.$set(this.addDeviceModelObj, 'menuTitle', mcs_action_add_device) // 设置填写设备Id页面顶部菜单标题
+      if(item.type === 's1') { //如果添加的是盒子，后续步骤不显示wifi列表
+        this.box_ipc = 1; //代表此设备为盒子
+      }else {
+        this.box_ipc = 0; //代表此设备为摄像头
+      }
     },
     inputDeviceIdNext () { // 输入设备Id点击确定事件
-      this.add_device_input_id_model = this.add_device_input_id_model.toLowerCase() // 统一为小写设备id进行匹配和对比
+      if(this.add_device_input_id_model && this.add_device_input_id_model.length !== 0)
+        this.add_device_input_id_model = this.add_device_input_id_model.toLowerCase() // 统一为小写设备id进行匹配和对比
       let reg = new RegExp(/1jfie(.){8}$/i) // 正则判断匹配输入的设备号
       let device_existed = 0
       // let add_device_stat 日志用暂时注释
@@ -502,10 +509,14 @@ export default {
               sn: this.add_device_input_id_model,
               password: password
             }).then(res => { // 跳转至设置wifi页面
-              this.$set(this.addDeviceModelObj, 'addDeviceBodyFlag', 'setDeviceWifi') // 切换至设置wifi页面
-              this.$set(this.addDeviceModelObj, 'menuTitle', mcs_action_add_device) // 设置修改密码页面顶部菜单标题
-              this.getDropdownDom() // 调用获取下拉列表内容函数
-              // add_device_set_wifi(res)
+              if(this.box_ipc === 1){ //此设备为盒子
+                this.skipToNick() // 跳转至设置昵称页面
+              } else {
+                this.$set(this.addDeviceModelObj, 'addDeviceBodyFlag', 'setDeviceWifi') // 切换至设置wifi页面
+                this.$set(this.addDeviceModelObj, 'menuTitle', mcs_action_add_device) // 设置修改密码页面顶部菜单标题
+                this.getDropdownDom() // 调用获取下拉列表内容函数
+                // add_device_set_wifi(res)
+              }
             })
           } else {
             this.publicFunc.msg_tips({ msg: mcs_failed_to_set_the, type: "error", timeout: 3000 })

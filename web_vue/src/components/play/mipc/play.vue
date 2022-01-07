@@ -129,8 +129,8 @@
         <!-- 截图弹窗 -->
         <div id='snapshot_preview_div' v-show="snapshotFlag">
             <div id='snapshot_preview_inner'>
+                <img id='snapshot_preview_content' :src="snapshotUrl">
                 <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl">
-                    <img id='snapshot_preview_content' :src="snapshotUrl">
                     <div id='snapshot_img_page_download'></div>
                 </a>
             </div>
@@ -231,8 +231,19 @@
                 } else {
                     if (msg.s_sensor === 'ok') {
                         this.highDefinitionClear = msg.def
-                        this.definitionSelect = msg.def
                         this.support_1080p = msg.def
+                        
+                        if (sessionStorage.getItem("PlayProfile")) {
+                            let playProfile = sessionStorage.getItem("PlayProfile");
+                            if (playProfile === 'p0')
+                                this.definitionSelect = msg.def;
+                            else if (playProfile === 'p1')
+                                this.definitionSelect = this.mcs_standard_clear;
+                            else if (playProfile === 'p2')
+                                this.definitionSelect = this.mcs_fluent_clear;
+                        } else {
+                            this.definitionSelect = msg.def
+                        }
                     } else {
                         this.highDefinitionClear = 'NULL'
                         this.definitionSelect = 'NULL'

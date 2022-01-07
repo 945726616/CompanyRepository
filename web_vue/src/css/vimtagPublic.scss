@@ -1050,11 +1050,7 @@ div.ibutton-label-on {
 	min-height:30px;
 	padding:2px;
 }
-#snapshot_preview_content{
-	width:100%;
-	/*height:88%; 6.1.2*/
-	vertical-align: top;
-}
+
 #snapshot_preview_close{
 	position: absolute;
 	right: 343px;
@@ -5286,18 +5282,7 @@ line-height: 30px;
 	color:$projectColor;
 	border:1px solid $projectColor;
 }
-#add_onvif_devices_box{
-    width:840px;
-    min-height:580px;
-    background: #fff;
-    border-radius: 10px;
-    position:absolute;
-    left:50%;
-    top:300px;
-    margin-left:-420px;
-    margin-top:-290px;
-    box-sizing: border-box;
-}
+
 #disk_describe{
 	height:40px;
 	line-height: 40px;

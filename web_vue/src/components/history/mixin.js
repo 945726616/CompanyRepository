@@ -23,6 +23,42 @@ export const historyMixin = {
         }
     },
     methods: {
+        video_delete_btn(e) { //删除录像
+            let _this = this;
+            let history_dom = e.currentTarget.parentNode.parentNode;
+            let start_time = history_dom.childNodes[3].getAttribute("start_time");
+            let end_time = history_dom.childNodes[3].getAttribute("end_time");
+            _this.publicFunc.delete_tips({
+                content: mcs_delete + "?",
+                func: function() {
+                    _this.$api.history.history_delete({ // 调用历史删除接口
+                        box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
+                        dev_sn: _this.history_info.dev_sn,
+                        start_time: start_time,
+                        end_time: end_time
+                    }).then(res => {
+                        if (res.type === 'success') {
+                            _this.publicFunc.msg_tips({ msg: mcs_delete_success, type: "success", timeout: 3000 })
+                            _this.$api.history.history_list_get({ // 调用获取历史记录列表 
+                                agent: _this.history_initial_data.agent,
+                                box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
+                                dev_sn: _this.history_initial_data.dev_sn,
+                                start_time: _this.choose_start_time,
+                                end_time: _this.choose_end_time,
+                                format: _this.filter_type.format_options,
+                                category: _this.filter_type.category,
+                                time_length: _this.filter_type.time_length,
+                                search_type: 0
+                            }).then(res => {
+                                _this.create_history_list(res)
+                            })
+                        } else {
+                            _this.publicFunc.msg_tips({ msg: mcs_delete_fail, type: "error", timeout: 3000 })
+                        }
+                    })
+                }
+            })
+        },
         filter_snapshot_btn() { //点击格式-快照
             this.filter_type.format_options = 1;
             this.iscid = 0;

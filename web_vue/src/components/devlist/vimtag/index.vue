@@ -36,7 +36,7 @@
         <div id='device_add_btn_down' v-show="addHoverflag">{{mcs_click_add_equipment}}</div><!-- 点击添加设备(hover提示框) -->
       </div>
       <!-- 分屏轮播 -->
-      <div id="split_screen" @click="jumpToSplitScreen">Split Screen</div>
+      <!-- <div id="split_screen" @click="jumpToSplitScreen">Split Screen</div> -->
     </div>
     <!-- 顶部设备列表菜单栏 结束 -->
     <!-- 设备列表展示部分 -->
@@ -635,7 +635,6 @@ export default {
                     if (res.result === '') {
                       _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                       _this.$store.dispatch('setSid', res.sid)
-                      _this.$store.dispatch('setGuest', res.guest)
                       _this.$store.dispatch('setSeq', res.seq)
                       await _this.$api.local.local_play({ data: local_play_data })
                     }
@@ -653,7 +652,6 @@ export default {
                     if (res.result === '') {
                       _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
                       _this.$store.dispatch('setSid', res.sid)
-                      _this.$store.dispatch('setGuest', res.guest)
                       _this.$store.dispatch('setSeq', res.seq)
                       await _this.$api.local.local_box({ data: local_play_data })
                     }
@@ -1164,7 +1162,6 @@ export default {
         } else if (res.result === '') {
           this.$store.dispatch('setLid', res.lid) //登录返回lid head中
           this.$store.dispatch('setSid', res.sid)
-          this.$store.dispatch('setGuest', res.guest)
           this.$store.dispatch('setSeq', res.seq)
           if (data.type == "IPC") {
             obj.addr = data.addr;

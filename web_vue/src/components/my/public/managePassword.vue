@@ -59,69 +59,65 @@
         methods: {
             mp_btn() { //点击提交修改管理密码按钮
                 let _this = this;
-                if (_this.$store.state.user.guest) {
-                    _this.publicFunc.msg_tips({ msg: mcs_permission_denied, type: "error", timeout: 3000 });
-                } else {
-                    let reg;
-                    if (!_this.old_password || _this.old_password == "") { // 未输入当前管理密码
-                        _this.password_empty_tip.old = true; // 错误提示语句
-                        setTimeout(function() {
-                            _this.password_empty_tip.old = false;
-                        }, 3000)
-                        return;
-                    }
-                    if (!_this.new_password || _this.new_password == "") { // 未输入新管理密码
-                        _this.password_empty_tip.new = true;
-                        setTimeout(function() {
-                            _this.password_empty_tip.new = false;
-                        }, 3000)
-                        return;
-                    }
-                    if (!_this.confirm_password || _this.confirm_password == "") { // 未输入确认密码
-                        _this.password_empty_tip.confirm = true;
-                        setTimeout(function() {
-                            _this.password_empty_tip.confirm = false;
-                        }, 3000)
-                        return;
-                    } else {
-                        reg = /^(?![^A-z]+$)(?!\D+$)[A-z\d]{8,32}$/; // 密码格式验证(8-32位字母数字)
-                        if (!reg.exec(_this.new_password)) {
-                            _this.password_demand_tip.new = true;
-                            setTimeout(function() {
-                                _this.password_demand_tip.new = false;
-                            }, 3000)
-                            return;
-                        }
-                    }
-                    if (_this.new_password != _this.confirm_password) { // 两次输入的新密码不一致
-                        _this.password_inconsistent_tip = true;
-                        setTimeout(function() {
-                            _this.password_inconsistent_tip = false;
-                        }, 3000)
-                        return;
-                    }
-                    if (_this.old_password === _this.new_password) { // 修改密码时新密码不能与旧密码一致
-                        _this.publicFunc.msg_tips({ msg: mrs_new_password_setting_failed, type: "error", timeout: 3000 })
-                        return;
-                    }
-                    _this.$api.my.account_passwd_set({ // 修改管理密码
-                        old_pass: _this.old_password,
-                        new_pass: _this.new_password,
-                        is_guest: 0
-                    }).then(res => {
-                        if (!res.result) {
-                            _this.updata_password_tip = true;
-                            setTimeout(function() {
-                                _this.updata_password_tip = true;
-                            }, 3000)
-                        } else if (res.result == "accounts.pass.invalid") {
-                            _this.updata_password_error_tip = true;
-                            setTimeout(function() {
-                                _this.updata_password_error_tip = false;
-                            }, 3000)
-                        }
-                    })
+                let reg;
+                if (!_this.old_password || _this.old_password == "") { // 未输入当前管理密码
+                    _this.password_empty_tip.old = true; // 错误提示语句
+                    setTimeout(function() {
+                        _this.password_empty_tip.old = false;
+                    }, 3000)
+                    return;
                 }
+                if (!_this.new_password || _this.new_password == "") { // 未输入新管理密码
+                    _this.password_empty_tip.new = true;
+                    setTimeout(function() {
+                        _this.password_empty_tip.new = false;
+                    }, 3000)
+                    return;
+                }
+                if (!_this.confirm_password || _this.confirm_password == "") { // 未输入确认密码
+                    _this.password_empty_tip.confirm = true;
+                    setTimeout(function() {
+                        _this.password_empty_tip.confirm = false;
+                    }, 3000)
+                    return;
+                } else {
+                    reg = /^(?![^A-z]+$)(?!\D+$)[A-z\d]{8,32}$/; // 密码格式验证(8-32位字母数字)
+                    if (!reg.exec(_this.new_password)) {
+                        _this.password_demand_tip.new = true;
+                        setTimeout(function() {
+                            _this.password_demand_tip.new = false;
+                        }, 3000)
+                        return;
+                    }
+                }
+                if (_this.new_password != _this.confirm_password) { // 两次输入的新密码不一致
+                    _this.password_inconsistent_tip = true;
+                    setTimeout(function() {
+                        _this.password_inconsistent_tip = false;
+                    }, 3000)
+                    return;
+                }
+                if (_this.old_password === _this.new_password) { // 修改密码时新密码不能与旧密码一致
+                    _this.publicFunc.msg_tips({ msg: mrs_new_password_setting_failed, type: "error", timeout: 3000 })
+                    return;
+                }
+                _this.$api.my.account_passwd_set({ // 修改管理密码
+                    old_pass: _this.old_password,
+                    new_pass: _this.new_password,
+                    is_guest: 0
+                }).then(res => {
+                    if (!res.result) {
+                        _this.updata_password_tip = true;
+                        setTimeout(function() {
+                            _this.updata_password_tip = true;
+                        }, 3000)
+                    } else if (res.result == "accounts.pass.invalid") {
+                        _this.updata_password_error_tip = true;
+                        setTimeout(function() {
+                            _this.updata_password_error_tip = false;
+                        }, 3000)
+                    }
+                })
             }
         },
     }

@@ -86,8 +86,9 @@
       <div id='history_img_box'>
         <div id='history_img_page_close' @click="picture_data_sign.src = ''"></div>
         <div id='history_img_main'>
+          <img id='history_img_show' :src='picture_data_sign.src'>
           <a id='history_img_a' :href="picture_data_sign.src" :download="picture_data_sign.time + '.jpg'">
-            <img id='history_img_show' :src='picture_data_sign.src'>
+            <div id='history_img_page_download'></div>
           </a>
         </div>
       </div>
@@ -147,12 +148,12 @@ export default {
     _this.menu_right_style.width = document.getElementById('history').offsetWidth - 20 - 260;
     _this.menu_right_style.height = document.documentElement.clientHeight - 54;
     await _this.$api.history.history_list_get(_this.history_info).then(res => {
-      console.log(res, '获取到的res')
+      //console.log(res, '获取到的res')
       _this.history_initial_data = res;
     })
     _this.choose_start_time = _this.history_initial_data.start_time;
     _this.choose_end_time = _this.history_initial_data.end_time;
-    console.log('boxlist_device_message', _this.history_initial_data)
+    //console.log('boxlist_device_message', _this.history_initial_data)
     _this.create_history_list(_this.history_initial_data)
     $("#mipc_datepicker").datepicker({
       showOn: 'button',
@@ -160,6 +161,7 @@ export default {
       date_infos: _this.history_initial_data.date_infos_time,
       onSelect: function (dateText, inst) {
         _this.now_page = 1
+        _this.all_page_num = 1
         let start_time = new Date(dateText).format("yyyy.MM.dd.00.00.00");
         start_time = _this.$api.history.getDateForStringDate(start_time).getTime();
         let end_time = start_time + 60 * 60 * 24 * 1000;
@@ -179,9 +181,12 @@ export default {
         console.log(this.history_info, 'history_info')
         this.near_get_history_param_obj = this.history_info
       }
-      console.log(params, 'params history_list_get_func', this.near_get_history_param_obj)
+      //console.log(params, 'params history_list_get_func', this.near_get_history_param_obj)
       let response
       let history_list = _this.$refs.history_list
+      if (!history_list) {
+        history_list = []
+      }
       let get_histoty_param = {} // 初始化历史列表请求参数
       if (flag === 0) { // 重复上一次请求的参数
         get_histoty_param = this.near_get_history_param_obj
@@ -202,12 +207,12 @@ export default {
         }
       }
       this.near_get_history_param_obj = get_histoty_param // 暂存当前请求的参数到全局
-      console.log(_this.near_get_history_param_obj, '暂存的请求参数')
+      //console.log(_this.near_get_history_param_obj, '暂存的请求参数')
       await this.$api.history.history_list_get(get_histoty_param).then(async res => {
         for (let i = 0; i < history_list.length; i++) { //修复删除一天录像而导致其他时间录像不显示的问题
           history_list[i].style.display = "block";
         }
-        console.log(res, '点击日期获取到的数据')
+        //console.log(res, '点击日期获取到的数据')
         if (flag === 1) { // 第一次请求则分配到两个不同的处理函数中
           if (res.total_segs_counts > _this.max_counts) { // 第一次请求后未能完全获取全部录像
             _this.get_history_list(res)
@@ -215,7 +220,7 @@ export default {
             _this.create_history_list(res)
           }
         }else if (flag === 0) { // flag为0时重新排版录像
-          console.log(_this.now_page, 'now_page')
+          //console.log(_this.now_page, 'now_page')
           _this.create_history_list(res)
         } else {
           response = res
@@ -226,7 +231,7 @@ export default {
       }
     },
     create_history_list (data) { // 创建历史页表
-      console.log(data, 'create_history_list_data')
+      //console.log(data, 'create_history_list_data')
       let _this = this;
       _this.history_info_data = data;
       _this.publicFunc.closeBufferPage();
@@ -270,7 +275,7 @@ export default {
     async get_history_list (data) { // 如果单次获取单日录像未获取完全, 则调用该方法获取剩余的录像内容并将其拼接
       let saveGetData = data
       let i = 1
-      console.log(saveGetData, '存储之前获取到的数据', (i + 1) * this.max_counts)
+      //console.log(saveGetData, '存储之前获取到的数据', (i + 1) * this.max_counts)
       for (; saveGetData.total_segs_counts > i * this.max_counts; i++) {
         let nextGetData = saveGetData
         let nextCid = nextGetData.videosegs[nextGetData.videosegs.length - 1].cid
@@ -282,46 +287,22 @@ export default {
         } else {
           nextGetData = await this.history_list_get_func(0, { cid: nextCid, sid: nextSid, direction: 1, search_type: 1 })
         }
-        console.log(nextGetData, 'nextData')
+        //console.log(nextGetData, 'nextData')
         let newTimeArr = saveGetData.time.concat(nextGetData.time)
         let newVideo = saveGetData.video.concat(nextGetData.video)
         let newVideosegs = saveGetData.videosegs.concat(nextGetData.videosegs)
-        console.log(newTimeArr, 'newTimeArr')
+        //console.log(newTimeArr, 'newTimeArr')
         saveGetData.time = newTimeArr
         saveGetData.video = newVideo
         saveGetData.videosegs = newVideosegs
       }
-      console.log(saveGetData, 'saveGetData')
+      //console.log(saveGetData, 'saveGetData')
       this.create_history_list(saveGetData)
-    },
-    video_delete_btn (e) { // 删除录像
-      let _this = this;
-      let history_dom = e.currentTarget.parentNode.parentNode;
-      let start_time = history_dom.childNodes[3].getAttribute("start_time");
-      let end_time = history_dom.childNodes[3].getAttribute("end_time");
-      _this.publicFunc.delete_tips({
-        content: mcs_delete + "?",
-        func: function () {
-          _this.$api.history.history_delete({ // 调用历史删除接口
-            box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-            dev_sn: _this.history_info.dev_sn,
-            start_time: start_time,
-            end_time: end_time
-          }).then(res => {
-            if (res.type === 'success') {
-              _this.history_list_get_func(0)
-              _this.publicFunc.msg_tips({ msg: mcs_delete_success, type: "success", timeout: 3000 })
-            } else {
-              _this.publicFunc.msg_tips({ msg: mcs_delete_fail, type: "error", timeout: 3000 })
-            }
-          })
-        }
-      })
     },
     page_jump_btn (e) { // 点击页数
       this.now_page = Number(e.currentTarget.getAttribute('value'));
       this.history_info_data.noreverse = 1;
-      console.log(this.page_list, 'page_list', this.now_page, 'now_page')
+      //console.log(this.page_list, 'page_list', this.now_page, 'now_page')
       this.create_history_list(this.history_info_data);
     },
     page_jump_click () { // 输入页数跳转

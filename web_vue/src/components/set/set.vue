@@ -22,7 +22,6 @@
                     <about-info v-if="right_show_sign.about" @system_new_event='system_new_sign_event'></about-info> <!-- 关于 -->
                     <nickname v-if="right_show_sign.nickname"></nickname> <!-- 设备昵称 -->
                     <admin-password v-if="right_show_sign.admin_password"></admin-password> <!-- 管理密码 -->
-                    <guest-password v-if="right_show_sign.guest_password"></guest-password> <!-- 访客密码 -->
                     <osd v-if="right_show_sign.osd"></osd> <!-- OSD -->
                     <record v-if="right_show_sign.record"></record> <!-- 录像 -->
                     <accessory v-if="right_show_sign.accessory"></accessory> <!-- 外设 -->
@@ -50,7 +49,6 @@
     import aboutInfo from './public/aboutInfo.vue'
     import nickname from './public/nickname.vue'
     import adminPassword from './public/adminPassword.vue'
-    import guestPassword from './public/guestPassword.vue'
     import network from './public/network.vue'
     import osd from './public/osd.vue'
     import sdcord from './public/sdcord.vue'
@@ -81,7 +79,6 @@
                     about: true,
                     nickname: false,
                     admin_password: false,
-                    guest_password: false,
                     network: false,
                     osd: false,
                     sdcord: false,
@@ -160,7 +157,6 @@
                             { name: mcs_about, type: "about" },
                             { name: mcs_nickname, type: "nickname" },
                             { name: mcs_admin_password, type: "admin_password" },
-                            { name: mcs_guest_password, type: "guest_password" },
                             { name: mcs_network, type: "network" },
                             { name: mcs_osd, type: "osd" },
                             { name: mcs_sdcord, type: "sdcord" },
@@ -183,7 +179,6 @@
                             { name: mcs_about, type: "about" },
                             { name: mcs_nickname, type: "nickname" },
                             { name: mcs_admin_password, type: "admin_password" },
-                            { name: mcs_guest_password, type: "guest_password" },
                             { name: mcs_network, type: "network" },
                             { name: mcs_hard_disk, type: "sdcord" },
                             { name: mcs_date_time, type: "date_time" },
@@ -198,7 +193,6 @@
                             { name: mcs_about, type: "about" },
                             { name: mcs_nickname, type: "nickname" },
                             { name: mcs_admin_password, type: "admin_password" },
-                            { name: mcs_guest_password, type: "guest_password" },
                             { name: mcs_network, type: "network" },
                             { name: mcs_osd, type: "osd" },
                             { name: mcs_sdcord, type: "sdcord" },
@@ -252,7 +246,6 @@
             aboutInfo,
             nickname,
             adminPassword,
-            guestPassword,
             network,
             osd,
             sdcord,
