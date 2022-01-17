@@ -21,7 +21,7 @@
                         <!-- 用户管理密码 -->
                         <div class='set_name'> {{mcs_user_admin_password}} </div>
                     </li>
-                    <li class='set_list' v-if="login_sign" @click="enter_page">
+                    <li class='set_list' v-if="login_sign && email_sign_in" @click="enter_page">
                         <div class='set_img' id='add_email'></div>
                         <!-- 绑定邮箱 -->
                         <div class='set_name'> {{mcs_binding_email}} </div>
@@ -178,6 +178,7 @@
                 set_mme: {},
                 sd_export_path: "c:\\downloads", //sd导出地址
                 version_number: '', //版本号
+                email_sign_in: true, //是否为邮箱登录(true非邮箱/false邮箱登录)
             }
         },
         async mounted() {
@@ -213,6 +214,12 @@
                 _this.auto_play_sign = false;
             } else {
                 _this.auto_play_sign = true;
+            }
+
+            let user_name = _this.$store.state.user.name; //登录时用户名
+            let email_reg = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/; //邮箱字符串验证
+            if (email_reg.test(user_name)) { //若登录用户名为邮箱
+                _this.email_sign_in = false;
             }
         },
         methods: {

@@ -826,11 +826,6 @@ $projectColor: #2988cc !global;
 	height: 100%;
 }
 
-#history_list_main {
-	height: 100%;
-	float: left;
-}
-
 .history_select_data {
 	float: left;
 	color: #6b7a99;
@@ -1031,13 +1026,6 @@ $projectColor: #2988cc !global;
 #page_num_box {
 	/* width:350px; */
 	margin: 0 auto;
-}
-
-#page_num_main {
-	/* float:left; */
-	/* width:355px; */
-	display: flex;
-	justify-content: space-around;
 }
 
 .page_num_btn {

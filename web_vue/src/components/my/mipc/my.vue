@@ -11,7 +11,7 @@
                         <div class='set_img' id='manage_password'></div>
                         <div class='set_name'> {{mcs_user_admin_password}} </div>
                     </li>
-                    <li :class='my_enter_list.add_email?"set_list active_list":"set_list"' v-if='login_sign' @click='enter_page'>
+                    <li :class='my_enter_list.add_email?"set_list active_list":"set_list"' v-if='login_sign && email_sign_in' @click='enter_page'>
                         <div class='set_img' id='add_email'></div>
                         <div class='set_name'> {{mcs_binding_email}} </div>
                     </li>
@@ -133,6 +133,7 @@
                 sd_is_export: 0,
                 sd_exist_sign: false, //判断是否存在sd卡
                 set_mme: {},
+                email_sign_in: true, //是否为邮箱登录(true非邮箱/false邮箱登录)
             }
         },
         async mounted() {
@@ -151,6 +152,12 @@
             }
             this.set_creat_mme({});
             this.$store.dispatch('setHostname', "vimtag.com");
+            
+            let user_name = this.$store.state.user.name; //登录时用户名
+            let email_reg = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/; //邮箱字符串验证
+            if (email_reg.test(user_name)) { //若登录用户名为邮箱
+                this.email_sign_in = false;
+            }
         },
         methods: {
             enter_page(e) { //进入功能页

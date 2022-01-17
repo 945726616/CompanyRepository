@@ -2,11 +2,7 @@
     <div id='sd_info' class='list_right_box'>
         <div class='list_right_item'>
             <span class='attribute_key_text'> {{mcs_enabled}} </span>
-            <div id='label_sd' @click='label_sd_btn' :class='switch_flag?"":"switch_close_color"'>
-                <!--  <span id='label_text_left_sd' class='label_text_left'>ON</span> -->
-                <div id='label_img_sd' class='label_img'></div>
-                <!--  <span id='label_text_right_sd' class='label_text_right'>OFF</span> -->
-            </div>
+            <switch-button v-model='switch_flag' @data_updata_event='switch_flag_updata'></switch-button>
         </div>
         <div id='open_switch'>
             <div class='list_right_item'>
@@ -73,6 +69,7 @@
 </template>
 
 <script>
+    import SwitchButton from '@/module/switchButton'
     export default {
         data() {
             return {
@@ -121,6 +118,7 @@
             this.project_name = this.$store.state.jumpPageData.projectName;
             this.$api.set.sd_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
                 if (res) {
+                    this.switch_flag = res.enable ? true : false;
                     this.input_capacity = res.capacity + "MB";
                     this.input_available = res.availableSize + "MB";
                     switch (res.status) {
@@ -169,22 +167,6 @@
             })
         },
         methods: {
-            label_sd_btn() { //启动状态
-                this.switch_flag = !this.switch_flag;
-                if (this.switch_flag) {
-                    $(this.l_dom_label_text_right_sd).fadeOut("fast");
-                    $(this.l_dom_label_img_sd).animate({ marginRight: "0px" });
-                    $(this.l_dom_open_switch).fadeIn("slow");
-                    // $(l_dom_labels).css({ "background": "#00a6ba" }); //修改了这里 
-                    // $(l_dom_label_text_left_sd).fadeIn("fast");
-                } else {
-                    $(this.l_dom_label_text_right_sd).fadeIn("fast");
-                    $(this.l_dom_label_img_sd).animate({ marginRight: "40px" });
-                    $(this.l_dom_open_switch).fadeOut("slow");
-                    // $(l_dom_labels).css({ "background": "#dedede" }); //修改了这里
-                    // $(l_dom_label_text_left_sd).fadeOut("fast");
-                }
-            },
             format_btn() { //格式化
                 let flag = this.switch_flag ? 1 : 0;
                 this.publicFunc.delete_tips({
@@ -201,7 +183,30 @@
                 this.$api.set.sd_set({ sn: this.$store.state.jumpPageData.selectDeviceIpc, ctrl_type: "", flag: flag }).then(res => {
                     this.publicFunc.msg_tips({ msg: res.msg, type: res.type, timeout: 3000 })
                 })
+            },
+            switch_flag_updata(data) { //更新SD卡启动按钮
+                this.switch_flag = data;
             }
+        },
+        watch: {
+            switch_flag(val) { //启用状态
+                if (val) {
+                    $(this.l_dom_label_text_right_sd).fadeOut("fast");
+                    $(this.l_dom_label_img_sd).animate({ marginRight: "0px" });
+                    $(this.l_dom_open_switch).fadeIn("slow");
+                    // $(l_dom_labels).css({ "background": "#00a6ba" }); //修改了这里 
+                    // $(l_dom_label_text_left_sd).fadeIn("fast");
+                } else {
+                    $(this.l_dom_label_text_right_sd).fadeIn("fast");
+                    $(this.l_dom_label_img_sd).animate({ marginRight: "40px" });
+                    $(this.l_dom_open_switch).fadeOut("slow");
+                    // $(l_dom_labels).css({ "background": "#dedede" }); //修改了这里
+                    // $(l_dom_label_text_left_sd).fadeOut("fast");
+                }
+            }
+        },
+        components: {
+            SwitchButton
         }
     }
 </script>
@@ -212,37 +217,6 @@
     .list_right_box {
         width: 520px;
         margin: 0 auto;
-    }
-
-    #label_sd {
-        width: 60px;
-        height: 12px;
-        background-color: $projectColor;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-        position: relative;
-        float: right;
-        margin-top: 7px;
-        z-index: 1;
-        cursor: pointer;
-    }
-
-    .label_img {
-        float: right;
-        margin-top: -4px;
-        margin-left: 1px;
-        width: 17px;
-        height: 17px;
-        background-color: #fff;
-        border-radius: 10px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border: 1px solid #ccc;
-    }
-
-    .switch_close_color {
-        background-color: #dedede !important
     }
 
     #sd_describe {

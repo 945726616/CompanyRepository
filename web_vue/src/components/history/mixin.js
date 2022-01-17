@@ -18,6 +18,7 @@ export const historyMixin = {
             choose_start_time: '', //选择日期的开始时间
             choose_end_time: '', //选择日期的结束时间
             filter_type: { format_options: 2, category: 0, time_length: '30min' }, //筛选条件(格式：快照1/录像2/全选0，类别：事件1/全选0，时长：1h/30min/5min)
+            search_type: 1, //搜索类型(获取一定数量并根据最近时间1/按照指定时间0)
             picture_data_sign: { src: '', time: '' }, //是否点击照片获取照片数据
             token: [], //图片token
         }
@@ -31,6 +32,7 @@ export const historyMixin = {
             _this.publicFunc.delete_tips({
                 content: mcs_delete + "?",
                 func: function() {
+                    _this.publicFunc.showBufferPage(); // 展示遮罩层
                     _this.$api.history.history_delete({ // 调用历史删除接口
                         box_sn: _this.$store.state.jumpPageData.selectDeviceIpc,
                         dev_sn: _this.history_info.dev_sn,
@@ -90,7 +92,7 @@ export const historyMixin = {
                 format: this.filter_type.format_options,
                 category: this.filter_type.category,
                 time_length: this.filter_type.time_length,
-                search_type: 1
+                search_type: 0
             }).then(res => {
                 this.create_history_list(res)
             })
@@ -212,7 +214,7 @@ export const historyMixin = {
             jumpData.data = this.history_data[num].cut_video_data;
             jumpData.a_start = this.a_start;
             jumpData.b_end = this.b_end;
-            if(this.history_info.box_ipc){ //云盒子
+            if (this.history_info.box_ipc) { //云盒子
                 jumpData.box_ipc = this.history_info.box_ipc;
             }
             this.$router.push({ name: 'playback', params: jumpData })
