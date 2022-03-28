@@ -1568,8 +1568,10 @@ export default {
       this.$nextTick(() => {
         let week_dom = document.getElementsByClassName('week_list')
         if (week_dom.length > 0) {
-          let last_week_dom = week_dom[week_dom.length - 1]
-          last_week_dom.children[0].style.display = 'none'
+          for(let i = 0; i < week_dom.length; i++)
+            week_dom[i].children[0].style.display = 'inline';
+          let last_week_dom = week_dom[week_dom.length - 1];
+          last_week_dom.children[0].style.display = 'none';
           this.week[this.select_index] = '';
           this.week_num[this.select_index] = '';
           if (val.indexOf('0') > -1) {

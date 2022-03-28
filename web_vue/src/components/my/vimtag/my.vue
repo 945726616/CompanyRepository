@@ -257,7 +257,7 @@
                         flag: "my_page",
                         func: function() {
                             localStorage.setItem("auto_login", 0);
-                            _this.$store.dispatch("setLoginFlag",0)
+                            _this.$store.dispatch("setLoginFlag", 0)
                             if (!localStorage.getItem("keep_pw")) {
                                 let remember_msg_info_data = localStorage.getItem("remember_msg_info");
                                 let remember_msg_info_json = eval("(" + remember_msg_info_data + ")");
@@ -277,7 +277,7 @@
                     })
                 } else {
                     _this.$router.push({ name: 'login' })
-                     if (_this.$store.state.jumpPageData.localFlag) {
+                    if (_this.$store.state.jumpPageData.localFlag) {
                         let url = location.href;
                         location.href = url.replace("&l=local&c=0", "");
                         sessionStorage.clear();

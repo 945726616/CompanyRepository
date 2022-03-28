@@ -217,6 +217,12 @@ export const historyMixin = {
             if (this.history_info.box_ipc) { //云盒子
                 jumpData.box_ipc = this.history_info.box_ipc;
             }
+            let historyFilterData = this.$store.state.jumpPageData.historyFilterData;
+            historyFilterData.filter_type = this.filter_type;
+            historyFilterData.data_start_time = this.choose_start_time;
+            historyFilterData.data_end_time = this.choose_end_time;
+            historyFilterData.now_page = this.now_page;
+            this.$store.dispatch('setHistoryFilterData', historyFilterData) //保存进入历史播放前的历史筛选数据
             this.$router.push({ name: 'playback', params: jumpData })
         },
         photo_sign_picture_btn(e) { //点击照片

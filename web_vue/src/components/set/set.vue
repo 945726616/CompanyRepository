@@ -1,11 +1,11 @@
 <template>
     <div id='set'>
-        <div id='device_setting_page' :style='project_flag?"width:100%":"width:90%"'>
-            <div id='set_back' v-if="!project_flag">
-                <div id='back' @click="back_btn">
-                    <div id='main_title_box_return_img'></div> {{mcs_back}}
-                </div>
+        <div id='set_back' v-if="!project_flag">
+            <div id='back' @click="back_btn">
+                <div id='main_title_box_return_img'></div> {{mcs_back}}
             </div>
+        </div>
+        <div id='device_setting_page' :style='project_flag?"width:100%":"width:90%"'>
             <div id='create_setting_page_left'>
                 <div v-for='(item,index) in menu_data' :key='index' :class='right_show_sign[item.type]?[page_left_class_name,page_left_active_class_name]:page_left_class_name' :type='item.type' @click='left_list_btn'>
                     <div class='list_left_img' :style='"background-image:url(" + item.imgSrc + ")"' v-show="!project_flag"></div>

@@ -227,12 +227,13 @@
             },
             dev_info_get_ack(msg) { // 获取窗口大小并绘制播放内容回调处理函数
                 if (this.$store.state.jumpPageData.projectName === "vsmahome") {
-                    this.highDefinitionClear = this.mcs_high_clear
+                    this.highDefinitionClear = this.mcs_high_clear;
+                    this.definitionSelect = this.mcs_high_clear;
                 } else {
                     if (msg.s_sensor === 'ok') {
                         this.highDefinitionClear = msg.def
                         this.support_1080p = msg.def
-                        
+
                         if (sessionStorage.getItem("PlayProfile")) {
                             let playProfile = sessionStorage.getItem("PlayProfile");
                             if (playProfile === 'p0')
@@ -399,8 +400,7 @@
                 })
             },
             clickEnterHistory() { // 跳转至历史页面
-                console.log(1)
-                let jumpData = { parent: $("#dev_main_page"), dev_sn: this.$store.state.jumpPageData.selectDeviceIpc, back_page: "playpage" }
+                let jumpData = { parent: $("#dev_main_page"), dev_sn: this.$store.state.jumpPageData.selectDeviceIpc, back_page: "play" }
                 this.$router.push({ name: 'history', params: jumpData })
             },
             clickVoice(event) { // 点击声音图标
@@ -627,22 +627,22 @@
                 this.mipcPlay()
             },
             sharpness_value(val) {
-                if (val) {
+                if (val || val == 0) {
                     this.$refs.sharpness.style.backgroundSize = val + '% 100%';
                 }
             },
             contrast_value(val) {
-                if (val) {
+                if (val || val == 0) {
                     this.$refs.contrast.style.backgroundSize = val + '% 100%';
                 }
             },
             color_saturation_value(val) {
-                if (val) {
+                if (val || val == 0) {
                     this.$refs.color_saturation.style.backgroundSize = val + '% 100%';
                 }
             },
             brightness_value(val) {
-                if (val) {
+                if (val || val == 0) {
                     this.$refs.brightness.style.backgroundSize = val + '% 100%';
                 }
             },

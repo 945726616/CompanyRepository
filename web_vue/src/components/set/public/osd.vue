@@ -151,6 +151,11 @@
                     $("#time_format_content").fadeOut();
                 }
             },
+            input_display_name(val) { //osd名称不允许输入汉字
+                if(val) {
+                    this.input_display_name=val.replace(/[\u4e00-\u9fa5]/ig,"");
+                }
+            }
         },
         components: {
             DropdownMenu,

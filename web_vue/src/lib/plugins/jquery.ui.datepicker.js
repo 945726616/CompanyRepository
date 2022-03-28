@@ -11,6 +11,7 @@
  * Depends:
  *	jquery.ui.core.jsjquery.ui.datepicker
  */
+import store from '@/store'
 (function( $, undefined ) {
 
 $.extend($.ui, { datepicker: { version: "1.8.18" } });
@@ -1404,9 +1405,16 @@ $.extend(Datepicker.prototype, {
 		var origMonth = inst.selectedMonth;
 		var origYear = inst.selectedYear;
 		var newDate = this._restrictMinMax(inst, this._determineDate(inst, date, new Date()));
-		inst.selectedDay = inst.currentDay = newDate.getDate();
+		// inst.selectedDay = inst.currentDay = newDate.getDate(); //旧代码-首次进入显示最新日期
 		inst.drawMonth = inst.selectedMonth = inst.currentMonth = newDate.getMonth();
 		inst.drawYear = inst.selectedYear = inst.currentYear = newDate.getFullYear();
+		if(!inst.settings.date_infos[inst.settings.date_infos.length-1]){
+			inst.selectedDay = inst.currentDay = newDate.getDate(); //旧代码-首次进入显示最新日期
+		} else if(store.state.jumpPageData.historyFilterData && store.state.jumpPageData.historyFilterData.filter_type) {
+			inst.selectedDay = inst.currentDay = new Date(store.state.jumpPageData.historyFilterData.data_start_time).getDate(); //新改动-进入历史播放后返回之前选中的日期
+		} else {
+			inst.selectedDay = inst.currentDay = new Date(inst.settings.date_infos[inst.settings.date_infos.length-1]).getDate(); //新改动-首次进入显示最近有数据日期
+		}
 		if ((origMonth != inst.selectedMonth || origYear != inst.selectedYear) && !noChange)
 			this._notifyChange(inst);
 		this._adjustInstDate(inst);
@@ -1553,7 +1561,7 @@ $.extend(Datepicker.prototype, {
 							beforeShowDay.apply((inst.input ? inst.input[0] : null), [printDate]) : [true, '']);
 						var otherMonth = (printDate.getMonth() != drawMonth);
 						var isHaveData=0;
-						for(tmp_time in inst.settings.date_infos)
+						for(var tmp_time in inst.settings.date_infos)
 						{
 						    if(printDate.getTime() == inst.settings.date_infos[tmp_time]){
 

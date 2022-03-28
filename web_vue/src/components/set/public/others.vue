@@ -164,12 +164,12 @@ export default {
   },
   watch: {
     input_speaker (val) {
-      if (val) {
+      if (val || val == 0) {
         this.$refs.speaker.style.backgroundSize = val + '% 100%';
       }
     },
     input_microphone (val) {
-      if (val) {
+      if (val || val == 0) {
         this.$refs.microphone.style.backgroundSize = val + '% 100%';
       }
     },

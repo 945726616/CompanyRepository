@@ -11,13 +11,13 @@ const history = {
      ** 历史录像列表获取
      */
     async history_list_get(params) {
-        console.log(params, '录像列表获取参数')
+        // console.log(params, '录像列表获取参数')
         let returnItem
         let cid = params.cid ? params.cid : -1;
         let sid = params.sid ? params.sid : -1;
         let direction = params.direction ? 1 : 0;
         let flag = params.flag ? params.flag : 8
-        console.log(params, '整理后的参数')
+        //console.log(params, '整理后的参数')
         params.flag = flag // 为参数中不带flag标识的添加flag(用于后续函数的判断)
         await axios.get('/ccm/ccm_box_get', {
             params: {
@@ -37,9 +37,9 @@ const history = {
             }
         }).then(res => {
             let result = login.get_ret(res)
-            console.log('history接口获取到的数据', res)
-            console.log('处理后的result', result)
-            console.log('switch的flag值', flag)
+            //console.log('history接口获取到的数据', res)
+            //console.log('处理后的result', result)
+            //console.log('switch的flag值', flag)
             if (result === '' && res.data) {
                 switch (flag) {
                     case 1:
@@ -80,7 +80,7 @@ const history = {
     },
     async ccm_segs_get_ack(msg, ref) { //msg 第二次ccm_box_get返回的加密数据
         let returnItem
-        console.log(msg, 'ccm_res', ref, 'ccm_ref')
+        //console.log(msg, 'ccm_res', ref, 'ccm_ref')
         if (msg && !msg.result) {
             if (ref.flag === 2 && msg.date_infos) { // flag为2时获取的是含有录像的日期需要获取全部录像的时间段并进行处理
                 let l_local_date_infos = [];
@@ -122,24 +122,47 @@ const history = {
                     end_time = ref.end_time;
                     search_type = ref.search_type;
                 }
-                await history.history_list_get({
-                    box_sn: ref.box_sn,
-                    dev_sn: ref.dev_sn,
-                    start_time: start_time,
-                    end_time: end_time,
-                    date_infos_time: date_infos_time,
-                    format: 2,
-                    category: 0,
-                    time_length: "30min",
-                    search_type: search_type,
-                    cid: cid,
-                    sid: sid,
-                    vedio_day: vedio_day,
-                    flag: 8,
-                    max_counts: ref.max_counts
-                }).then(res => {
-                    returnItem = res
-                })
+
+                //如果是点击某一录像的历史播放页返回的历史页，则使用保存的筛选条件来过滤历史数据
+                if(store.state.jumpPageData.historyFilterData && store.state.jumpPageData.historyFilterData.filter_type) {
+                    await history.history_list_get({
+                        box_sn: ref.box_sn,
+                        dev_sn: ref.dev_sn,
+                        start_time: store.state.jumpPageData.historyFilterData.data_start_time,
+                        end_time: store.state.jumpPageData.historyFilterData.data_end_time,
+                        date_infos_time: date_infos_time,
+                        format: store.state.jumpPageData.historyFilterData.filter_type.format_options,
+                        category: store.state.jumpPageData.historyFilterData.filter_type.category,
+                        time_length: store.state.jumpPageData.historyFilterData.filter_type.time_length,
+                        search_type: search_type,
+                        cid: cid,
+                        sid: sid,
+                        vedio_day: vedio_day,
+                        flag: 8,
+                        max_counts: ref.max_counts
+                    }).then(res => {
+                        returnItem = res
+                    })
+                } else {
+                    await history.history_list_get({
+                        box_sn: ref.box_sn,
+                        dev_sn: ref.dev_sn,
+                        start_time: start_time,
+                        end_time: end_time,
+                        date_infos_time: date_infos_time,
+                        format: 2,
+                        category: 0,
+                        time_length: "30min",
+                        search_type: search_type,
+                        cid: cid,
+                        sid: sid,
+                        vedio_day: vedio_day,
+                        flag: 8,
+                        max_counts: ref.max_counts
+                    }).then(res => {
+                        returnItem = res
+                    })
+                }
             } else if (ref.flag === 8 && (msg.segs_sdc || msg.segs)) { // flag为8时获取的是当前起止时间段内的录像内容,需要对录像片段进行处理
                 let videosegs = history.cutVideo({
                     msg: msg,
@@ -148,7 +171,7 @@ const history = {
                     dev_sn: ref.dev_sn,
                     search_type: ref.search_type
                 }); //解密成一个个seg
-                console.log(videosegs, 'videosegs')
+                //console.log(videosegs, 'videosegs')
                 if (videosegs.length == 0) {
                     return returnItem = {
                         video: [],
@@ -165,7 +188,7 @@ const history = {
                     format: ref.format,
                     category: ref.category
                 }); //seg拼接，处理好的视频可以体现出数量 每个视频时间
-                console.log(videoData, 'videoData')
+                //console.log(videoData, 'videoData')
                 returnItem = {
                     video: videoData.local_cut_video_data,
                     time: videoData.local_video_time_duration,
@@ -455,7 +478,7 @@ const history = {
         }
     },
     draw_data_rect(obj) {
-        console.log(obj, 'in draw_data_rect')
+        //console.log(obj, 'in draw_data_rect')
         let cut_video_data = [],
             cut_video_data_index = 0,
             cut_photo_data = [],
@@ -492,7 +515,7 @@ const history = {
             io_flag: 0,
             snapshot_flag: 0
         }
-        console.log(obj.time_length, '时间长度')
+        //console.log(obj.time_length, '时间长度')
         if (obj.time_length == "5min") {
             select_incise_time = 5 * 60 * 1000;
         } else if (obj.time_length == "1h") {
@@ -545,7 +568,7 @@ const history = {
                     let end_to_start_time = Math.abs(l_local_segs[j].pos_start - l_local_segs[j - 1].pos_end);
                     if (l_local_segs[j].f != 2) {
                         if (l_local_segs[j].pos_start == l_local_segs[j].pos_end) {
-                            // console.log(l_local_segs[j].pos_start == l_local_segs[j].pos_end)
+                            // //console.log(l_local_segs[j].pos_start == l_local_segs[j].pos_end)
                         } else if ((end_to_start_time <= 7 * 1000) && (l_local_segs[j].pos_end - mark_video_segment_start_time < select_incise_time)) {
                             cut_video_data[cut_video_data_index] = l_local_segs[j];
                             cut_video_data_index++;
@@ -627,7 +650,7 @@ const history = {
             local_cut_video_data: local_cut_video_data,
             local_video_time_duration: local_video_time_duration
         };
-        console.log('out cutVideo', cutVideoData)
+        //console.log('out cutVideo', cutVideoData)
         return cutVideoData;
     },
 
@@ -673,7 +696,7 @@ const history = {
      ** 盒子设备信息获取
      */
     // async boxlist_device_messages_get (params) {
-    //   console.log(params, 'boxlist_device_params')
+    //   //console.log(params, 'boxlist_device_params')
     //   let returnItem
     //   let cid = params.cid ? params.cid : -1;
     //   let sid = params.sid ? params.sid : -1;
@@ -696,7 +719,7 @@ const history = {
     //     }
     //   }).then(res => {
     //     let result = login.get_ret(res)
-    //     console.log('首次获取result', result, '首次获取res', res)
+    //     //console.log('首次获取result', result, '首次获取res', res)
     //     if (result === '' && res.data) {
     //       switch (params.flag) {
     //         case 1:

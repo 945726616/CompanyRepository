@@ -32,7 +32,7 @@
         <!-- 播放菜单控制 -->
         <div id="playback_menu_box">
           <div id="play_menu_left">
-            <div id="video_play" class="video_play_start" @click="clickPlay"></div>
+            <div id="video_play" class="video_play_stop" @click="clickPlay"></div>
             <div id="playback_start_time" v-if="clientFlag">
               {{ start_time_show }}
             </div>
@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     create_playback_page (obj) {
-      console.log(obj, '进入create_playBack_page函数的obj')
+      // console.log(obj, '进入create_playBack_page函数的obj')
       this.createPlaybackObj = obj // 存储调用时的obj内容
       this.$store.dispatch('setPlayBackObj', this.createPlaybackObj)
       if (obj.data) { // 移动侦测标识数组
@@ -117,7 +117,7 @@ export default {
           this.video_flag_arr.push(obj.data[j].f)
         }
       }
-      console.log(this.video_flag_arr, 'video_flag_arr')
+      // console.log(this.video_flag_arr, 'video_flag_arr')
 
       if (this.publicFunc.mx("#playback_download_path_input")) { // 下载地址填充(windos: c:/downloads/  其他(mac): /Users/Shared/)
         this.publicFunc.mx("#playback_download_path_input").value = (navigator.platform.indexOf("Win") > -1 ? ('c:/downloads/') : ('/Users/Shared/'))
@@ -150,7 +150,7 @@ export default {
       this.play_menu_control({ parent: l_dom_playback_menu_box }) // 调用播放器控制菜单渲染
       this.create_preview({ parent: $("#playback_screen") }) // 创建暂停遮罩层渲染
       window.onresize = () => { // 更改页面大小时重新设置相应高度
-        console.log('enter onresize')
+        // console.log('enter onresize')
         this.create_playback_page(obj)
       }
     },
@@ -166,31 +166,31 @@ export default {
         let r_width = this.publicFunc.mx("#play_menu_right") ? this.publicFunc.mx("#play_menu_right").offsetWidth : null
         let box_width = this.publicFunc.mx("#playback_menu_box").offsetWidth
         this.publicFunc.mx("#playback_progress_bar").style.width = (box_width - l_width - r_width - 180) + "px"
-        console.log(box_width, l_width, r_width, 'style_null')
+        // console.log(box_width, l_width, r_width, 'style_null')
       }
       // 添加移动侦测进度条标识
       function create_flag_item (msg) {
         for (let i = 0; i < msg.length; i++) {
-          console.log(msg[i], 'create_flag_item msg[i]')
+          // console.log(msg[i], 'create_flag_item msg[i]')
           if (msg[i] !== 0) {
-            console.log('enter true')
+            // console.log('enter true')
             let process_flag_true = document.createElement("span");
             process_flag_true.setAttribute("class", "flag_item");
             process_flag_true.style.width = (1 / msg.length * 100 + "%");
             process_flag_dom.appendChild(process_flag_true);
           } else {
-            console.log('enter false')
+            // console.log('enter false')
             let process_flag_false = document.createElement("span");
             process_flag_false.setAttribute("class", "no_flag_item");
             process_flag_false.style.width = (1 / msg.length * 100 + "%");
             process_flag_dom.appendChild(process_flag_false);
           }
-          console.log(process_flag_dom, 'process_flag_dom')
+          // console.log(process_flag_dom, 'process_flag_dom')
         }
       }
       let process_flag_dom = document.createElement("span")
       process_flag_dom.setAttribute("class", "fd_slider_flag")
-      console.log(document.getElementById('barProgress'), 'progress_extend')
+      // console.log(document.getElementById('barProgress'), 'progress_extend')
       if (document.getElementById('barProgress')) { // 进度条相关报错
         document.getElementById('barProgress').appendChild(process_flag_dom)
       }
@@ -217,7 +217,7 @@ export default {
       }
     },
     playback_speed (data, progress, record_played_duration) { // 视频播放速度
-      console.log('enter Play_speed playBack.vue')
+      // console.log('enter Play_speed playBack.vue')
       let progress2 = sessionStorage.getItem("aaa")
       sessionStorage.setItem("aaa", progress)
       if (this.bo_type) {
@@ -251,7 +251,7 @@ export default {
       //   let play_start_time = new Date(drag_start_time).format("hh:mm:ss")
       //   let play_start_time_stop = new Date(drag_start_time).format("yyyy-MM-dd hh:mm:ss") // 对比用时间戳(开始时间)
       //   // $("#playback_start_time").html(play_start_time);
-      //   console.log(play_start_time, 'play_start_time')
+      //   // console.log(play_start_time, 'play_start_time')
       //   this.start_time_show = play_start_time // 赋值展示开始时间
       //   let play_end_time = new Date(this.end_time).format("hh:mm:ss")
       //   let play_end_time_stop = new Date(this.end_time).format("yyyy-MM-dd hh:mm:ss") // 对比用时间戳(结束时间)
@@ -268,7 +268,7 @@ export default {
       // if (!data) data = null
       // this.publicFunc.mx("#playback_buffer_ret").innerHTML = data
       if (this.clientFlag) { // 是否含有进度条
-        console.log(progress, this.percent, '进度条')
+        // console.log(progress, this.percent, '进度条')
       }
     },
     // 点击事件
@@ -286,11 +286,11 @@ export default {
         })
       } else { // 当前为暂停状态(切换为播放)
         this.is_playing = 1
-        console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
+        // console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
         if (JSON.parse(sessionStorage.getItem('pause_start_time')) && JSON.parse(sessionStorage.getItem('pause_start_time')) !== this.b_start_time) { // 如果存在暂停时间且时间不等于原始开始时间
           this.start_time = Number(sessionStorage.getItem('pause_start_time'))
           this.start_time_show = new Date(this.start_time).format("hh:mm:ss")
-          console.log(this.start_time_show, '展示的开始时间')
+          // console.log(this.start_time_show, '展示的开始时间')
           sessionStorage.setItem('bo_type', true)
           this.bo_type = true
           this.percent = (this.start_time - this.b_start_time) / (this.end_time - this.b_start_time) // 计算暂停的时间所占的百分比
@@ -298,7 +298,7 @@ export default {
           this.$store.dispatch('setPlayBackSavePercent', this.percent) // 中断续播存储至vuex中
           let new_token = parseInt(this.createPlaybackObj.data.length * this.percent) // 计算回放token
           this.play_back_token = this.createPlaybackObj.data[new_token].token // 计算回放token
-          console.log(this.percent, '中断续播')
+          // console.log(this.percent, '中断续播')
           this.$api.playback.play({ // 调用播放接口(从中间暂停点播放)
             agent: this.createPlaybackObj.agent,
             dom: $("#playback_screen"),
@@ -329,9 +329,9 @@ export default {
         pic_token.push(this.createPlaybackObj.data[i].pic_token)
       }
       this.is_playing = 1 // 是否播放标识
-      console.log(this.percent, 'set_percent')
+      // console.log(this.percent, 'set_percent')
       sessionStorage.setItem('playBackPercent', this.percent)
-      console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
+      // console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
       if (JSON.parse(sessionStorage.getItem('pause_start_time')) && JSON.parse(sessionStorage.getItem('pause_start_time')) !== this.b_start_time) { // 如果存在暂停时间且时间不等于原始开始时间
         this.start_time = Number(sessionStorage.getItem('pause_start_time'))
         this.start_time_show = new Date(this.start_time).format("hh:mm:ss")
@@ -342,7 +342,7 @@ export default {
         this.$store.dispatch('setPlayBackSavePercent', this.percent) // 中断续播存储至vuex中
         let new_token = parseInt(this.createPlaybackObj.data.length * this.percent) // 计算回放token
         this.play_back_token = this.createPlaybackObj.data[new_token].token // 计算回放token
-        console.log(this.percent, '中断续播')
+        // console.log(this.percent, '中断续播')
         this.$api.playback.play({ // 调用播放接口(从中间暂停点播放)
           agent: this.createPlaybackObj.agent,
           dom: $("#playback_screen"),
@@ -353,7 +353,7 @@ export default {
           box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
         })
       } else {
-        console.log('从头开始')
+        // console.log('从头开始')
         this.$api.playback.play({ // 调用播放接口(从开始播放)
           agent: this.createPlaybackObj.agent,
           dom: $("#playback_screen"),
@@ -367,7 +367,7 @@ export default {
       $("#video_play").attr("class", "video_play_start")
     },
     clickBack () { // 点击返回
-      console.log(this.createPlaybackObj, 'createPlaybackObj')
+      // console.log(this.createPlaybackObj, 'createPlaybackObj')
       this.$store.dispatch('setPlayBackSavePercent', 0) // 返回时偏移百分比重置为0
       if (this.createPlaybackObj.box_ipc == 1) { //如果从云盒子实时播放进来回放播放
         let jumpData = { parent: this.createPlaybackObj.parent, dev_sn: this.createPlaybackObj.dev_sn, back_page: this.createPlaybackObj.back_page, agent: this.createPlaybackObj.agent, addr: this.createPlaybackObj.addr, a_start: this.createPlaybackObj.a_start, b_end: this.createPlaybackObj.b_end, box_ipc: 1, ipc_sn: this.createPlaybackObj.ipc_sn, box_sn: this.createPlaybackObj.box_sn, box_live: 1, backplay_flag: 4, ipc_stat: this.createPlaybackObj.ipc_stat };
@@ -405,7 +405,7 @@ export default {
             box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
           // .then(res => {
-          //   console.log(res, 'playBack_playSpeed1')
+          //   // console.log(res, 'playBack_playSpeed1')
           //   if (res && res.length > 2) {
           //     this.playback_speed(res[0], res[1], res[2])
           //   } else {
@@ -482,7 +482,7 @@ export default {
     // 点击事件 结束
     // 进度条相关
     setProgress (percent) { // 设置进度
-      // console.log(percent, 'setProgressPercent')
+      // // console.log(percent, 'setProgressPercent')
       if (percent > 1 || percent < 0) {
         return
       }
@@ -491,7 +491,7 @@ export default {
       // 计算当前播放时间
       let nowTimeStamp = this.b_start_time + (this.videoSize * percent)
       this.start_time_show = new Date(nowTimeStamp).format('hh:mm:ss')
-      console.log(this.start_time_show, '拖动后改变时间')
+      // console.log(this.start_time_show, '拖动后改变时间')
       // 计算当前播放时间 结束
       this.clickProgress() // 调用点击进度条事件
       // 根据子组件传过来的百分比设置播放进度
@@ -504,7 +504,7 @@ export default {
     // percent() { // 计算百分比
     //   // return Math.min(1, this.currentTime / this.currentSong.duration)
     //   let returnPercent = Math.min(Number(1), Number(0.5))
-    //   console.log('returnPercent', returnPercent)
+    //   // console.log('returnPercent', returnPercent)
     //   return returnPercent
     // }
     // 进度条 结束
@@ -524,7 +524,7 @@ export default {
     "$store.state.jumpPageData.clientP2Ping" (val) {
       if (val) {
         this.clientP2PingValue = val
-        // console.log(val, 'p2pingvalue')
+        // // console.log(val, 'p2pingvalue')
       }
     }
   },
@@ -537,7 +537,7 @@ export default {
     } else {
       pageData = { parent: $("#" + this.$route.name) }
     }
-    // console.log(pageData,"pageData")
+    // // console.log(pageData,"pageData")
     this.publicFunc.projectReload.call(this);
     await this.create_playback_page(pageData) // 进入页面后加载
     await this.publicFunc.importCss('Public.scss') // 动态引入css样式 页面加载完成后加载样式(如果加载过早则会无法改变jq填充的dom)

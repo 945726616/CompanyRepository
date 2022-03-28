@@ -142,10 +142,24 @@
             _this.history_info = _this.$route.params;
             _this.history_info.box_sn = _this.$store.state.jumpPageData.selectDeviceIpc;
             _this.history_info.flag = 2;
-            _this.history_info.start_time = 0;
-            _this.history_info.end_time = 0;
             _this.history_info.search_type = 0;
-            _this.history_info.max_counts = _this.max_counts
+            if (_this.$store.state.jumpPageData.historyFilterData && _this.$store.state.jumpPageData.historyFilterData.filter_type) { //若已有筛选条件，保存该条件后，返回后调用该条件
+                let historyFilterData = _this.$store.state.jumpPageData.historyFilterData;
+                _this.history_info.start_time = historyFilterData.data_start_time;
+                _this.history_info.end_time = historyFilterData.data_end_time;
+                _this.history_info.format = historyFilterData.filter_type.format_options;
+                _this.history_info.category = historyFilterData.filter_type.category;
+                _this.history_info.time_length = historyFilterData.filter_type.time_length;
+                _this.filter_type = {
+                    format_options: historyFilterData.filter_type.format_options,
+                    category: historyFilterData.filter_type.category,
+                    time_length: historyFilterData.filter_type.time_length
+                }
+            } else { //第一次进入历史
+                _this.history_info.max_counts = _this.max_counts
+                _this.history_info.start_time = 0;
+                _this.history_info.end_time = 0;
+            }
             _this.show_data = new Date().format("MM/dd/yyyy");
             _this.menu_right_style.width = document.getElementById('history').offsetWidth - 20 - 260;
             _this.menu_right_style.height = document.documentElement.clientHeight - 54;
@@ -234,7 +248,7 @@
                 // console.log(data, 'create_history_list_data')
                 let _this = this;
                 _this.history_info_data = data;
-                _this.publicFunc.closeBufferPage(); 
+                _this.publicFunc.closeBufferPage();
                 _this.history_data = [];
                 _this.start_time = [];
                 _this.token = [];
@@ -272,6 +286,10 @@
                             token: _this.token,
                             dom: _this.publicFunc.mx(".video_list_picture"),
                         })
+                        if (_this.$store.state.jumpPageData.historyFilterData && _this.$store.state.jumpPageData.historyFilterData.filter_type) {
+                            _this.now_page = _this.$store.state.jumpPageData.historyFilterData.now_page;
+                            _this.$store.dispatch('setHistoryFilterData', {});
+                        }
                     })
                 }
             },
@@ -313,7 +331,7 @@
                     }
                     this.$refs.page_jump_num.value = '';
                     this.history_info_data.noreverse = 1;
-                    this.create_history_list(this.history_info_data);
+                    // this.create_history_list(this.history_info_data);
                 }
             }
         },

@@ -290,7 +290,7 @@ const play = {
           obj.panel.innerHTML = "<div id='plugin_install_box' style='" + (data.ipc_stat === 0 ? 'display:none' : '') + "'>" +
             "<div id='plugin_install_tips'>" + mcs_download_client + "</div>" +
             "<div id='plugin_install_download'><div id='plugin_install_download_name'>" + play_oem + " " + mcs_client_new + "</div><div id='plugin_install_download_btn'></div></div>" +
-            "<div style='margin-top: 85px;'><a name='flash' href='javascript:;'><div id='use_ordinary_video'>" + mcs_temporarily_installed_use_ordinary_video + "</div></a></div>" +
+            "<a name='flash' href='javascript:;' style='display:inline-block; width:210px'><div id='use_ordinary_video'>" + mcs_temporarily_installed_use_ordinary_video + "</div></a>" +
             "</div>"
           
           $("#plugin_install_download").on('click',()=>{
@@ -303,13 +303,6 @@ const play = {
             }else{
               window.open("http://www.vimtag.com/download")
             }
-          })
-          
-          let plugin_install_page_width = $("#plugin_install_page").outerWidth() / 2;
-          let plugin_install_download_width = $("#plugin_install_download").outerWidth() / 2;
-          // jQuery("#use_ordinary_video").css({"margin-left":(plugin_install_page_width-use_ordinary_video_width)+"px"});
-          $("#plugin_install_download").css({
-            "margin-left": (plugin_install_page_width - plugin_install_download_width) + "px"
           })
           break;
         }

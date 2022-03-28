@@ -533,8 +533,9 @@
         }
         #add_device_forget_pass{
           text-align: center;
-          margin-top:20px;
+          margin:20px auto;
           cursor:pointer;
+          width: 240px;
         }
       }
       #set_device_wifi{ // 设备设置wifi

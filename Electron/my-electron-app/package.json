@@ -1,0 +1,21 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "description": "Nothing to description",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u0016https://github.com/945726616/windowsClient.git"
+  },
+  "keywords": [
+    "client"
+  ],
+  "author": "JasonClarft\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D Clarft",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^17.2.0"
+  }
+}

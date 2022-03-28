@@ -1108,7 +1108,6 @@ input[type="number"]{
 
 #create_setting_page_left{
 	min-width: 234px;
-	float: left;
 	background: #e6e9f0;
   margin-left: 8px;
 }
@@ -2322,11 +2321,15 @@ div.ibutton-label-on {
 }
 #plugin_install_box{ 
 /*居中显示*/
-  height: 142px;
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  margin-top: -71px;
+	height: 142px;
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	margin-top: -71px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-around;
+	align-items: center;
 }
 #plugin_install_title{
 	font-size: 30px;

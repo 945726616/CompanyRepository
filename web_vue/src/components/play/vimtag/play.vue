@@ -1053,10 +1053,10 @@ export default {
     },
     clickEnterHistory () { // 跳转至历史页面
       if (this.vimtagPlayObj.box_ipc == 1) { //云盒子设备实时播放时点击回放
-        let jumpData = { parent: $("#dev_main_page"), dev_sn: this.vimtagPlayObj.ipc_sn, back_page: "playpage", box_ipc: this.vimtagPlayObj.box_ipc, ipc_sn: this.vimtagPlayObj.ipc_sn, box_live: 1 };
+        let jumpData = { parent: $("#dev_main_page"), dev_sn: this.vimtagPlayObj.ipc_sn, back_page: "play", box_ipc: this.vimtagPlayObj.box_ipc, ipc_sn: this.vimtagPlayObj.ipc_sn, box_live: 1 };
         this.$router.push({ name: 'history', params: jumpData })
       } else {
-        let jumpData = { parent: $("#dev_main_page"), dev_sn: this.$store.state.jumpPageData.selectDeviceIpc, back_page: "playpage" }
+        let jumpData = { parent: $("#dev_main_page"), dev_sn: this.$store.state.jumpPageData.selectDeviceIpc, back_page: "play" }
         this.$router.push({ name: 'history', params: jumpData })
       }
     },
@@ -1288,22 +1288,22 @@ export default {
   },
   watch: {
     sharpness_value (val) {
-      if (val) {
+      if (val || val == 0) {
         this.$refs.sharpness.style.backgroundSize = val + '% 100%';
       }
     },
     contrast_value (val) {
-      if (val) {
+      if (val || val == 0) {
         this.$refs.contrast.style.backgroundSize = val + '% 100%';
       }
     },
     color_saturation_value (val) {
-      if (val) {
+      if (val || val == 0) {
         this.$refs.color_saturation.style.backgroundSize = val + '% 100%';
       }
     },
     brightness_value (val) {
-      if (val) {
+      if (val || val == 0) {
         this.$refs.brightness.style.backgroundSize = val + '% 100%';
       }
     },

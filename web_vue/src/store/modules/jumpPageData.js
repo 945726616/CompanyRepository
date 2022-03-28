@@ -32,6 +32,7 @@ const jumpPageData = {
     playBackObj: null, // 回放页面obj内容
     playBackSavePercent: 0, // 回放点击进度条时存储百分比
     clientP2Ping: 0, // 客户端播放时展示的KB数值
+    historyFilterData: {} //历史数据的筛选条件和筛选日期
   },
   mutations: {
     SET_PAGE_DOM: (state, pageDom) => {
@@ -121,6 +122,9 @@ const jumpPageData = {
     },
     SET_CLIENT_P2PING: (state, clientP2Ping) => {
       state.clientP2Ping = clientP2Ping
+    },
+    SET_HISTORY_FILTER_DATA: (state, historyFilterData) => {
+      state.historyFilterData = historyFilterData
     }
   },
   actions: {
@@ -157,6 +161,7 @@ const jumpPageData = {
     setPlayBackObj: ({ commit }, playBackObj) => commit('SET_PLAYBACK_OBJ', playBackObj),
     setPlayBackSavePercent: ({ commit }, playBackSavePercent) => commit('SET_PLAYBACK_SAVE_PERCENT', playBackSavePercent),
     setClientP2Ping: ({ commit }, clientP2Ping) => commit('SET_CLIENT_P2PING', clientP2Ping),
+    setHistoryFilterData: ({ commit }, historyFilterData) => commit('SET_HISTORY_FILTER_DATA', historyFilterData),
   }
 }
 

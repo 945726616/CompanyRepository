@@ -1081,7 +1081,6 @@ input[type="number"]{
 }
 #create_setting_page_left{
 	min-width: 234px;
-	float: left;
 	border-right:1px solid #d6d6dc;
 	background: #f5f5f5;
   margin-left: 8px;
@@ -2432,6 +2431,10 @@ input[type="number"]{
     width: 100%;
     top: 50%;
     margin-top: -71px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-around;
+	align-items: center;
 }
 
 #plugin_install_tips{
