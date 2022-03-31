@@ -2,11 +2,21 @@
 // 导入BrowserWindow模块(创建和管理应用程序窗口)
 const { app, BrowserWindow } = require('electron')
 
+// 引入Node.js中的path模块
+const path = require('path')
+
 // 添加createWindow方法将本地index.html加载进BrowserWindow实例
 function createWindow () {
   const win = new BrowserWindow({
     width: 1000,
-    height: 700
+    height: 700,
+
+    // 用于访问Node.js中的process.versions对象
+    // __dirname 字符串指向当前正在执行的脚本的路径
+    // path.join API 将多个路径段连接在一起，创建一个适用于所有平台的组合路径字符串。
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
   })
 
   win.loadFile('index.html')
