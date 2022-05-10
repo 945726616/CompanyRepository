@@ -1,0 +1,5 @@
+2022/05/07 10:14:04 [error] 154520#154612: *1 CreateFile() "E:\Git\companyrepository\Electron\Nginx\nginx-1.20.2/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2022/05/07 15:12:56 [emerg] 23356#27360: unknown directive "rtmp" in E:\Git\companyrepository\Electron\Nginx\nginx-1.20.2/conf/nginx.conf:119
+2022/05/07 15:13:07 [emerg] 30188#31824: unknown directive "rtmp" in E:\Git\companyrepository\Electron\Nginx\nginx-1.20.2/conf/nginx.conf:119
+2022/05/07 16:00:07 [emerg] 79316#82668: unknown directive "rtmp" in E:\Git\companyrepository\Electron\Nginx\nginx-1.20.2/conf/nginx.conf:119
+2022/05/09 15:02:11 [error] 154520#154612: *4 CreateFile() "E:\Git\companyrepository\Electron\Nginx\nginx-1.20.2/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1", referrer: "http://127.0.0.1/"

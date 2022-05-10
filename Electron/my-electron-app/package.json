@@ -24,10 +24,19 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^17.2.0",
-    "electron-builder": "^22.14.13"
+    "electron-devtools-installer": "^3.2.0",
+    "electron-rebuild": "^3.2.7"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^1.4.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "ffi-napi": "^4.0.3",
+    "fluent-ffmpeg": "^2.1.2",
+    "node-gyp": "^9.0.0",
+    "ref-array-napi": "^1.2.2",
+    "ref-napi": "^3.0.3",
+    "ref-struct-di": "^1.1.1"
   },
   "config": {
     "forge": {

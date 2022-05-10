@@ -4,19 +4,46 @@
 <head>
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
   <title>Hello World!</title>
+  <!-- flv.js -->
+  <script src="./flv.min.js"></script>
 </head>
 
 <body>
   <h1>Hello World!</h1>
-  We are using Node.js <span id="node-version"></span>,
-  Chromium <span id="chrome-version"></span>,
-  and Electron <span id="electron-version"></span>.
+  <form>
+    <input style="width: 60%;" id="input" type="text" placeholder="请输入id">
+  </form>
+  <button onclick="btn()">确认</button>
+  <h1>传递信息</h1>
+  <video width="800" height="600" id="player" controls>
+    <source src="./test.mp4" type="video/mp4">
+  </video>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <video id="videoPlayer" width="800" height="600" controls></video>
+  <button id="play">playBtn</button>
 
   <!-- 额外的页面脚本功能, 可以使用常用的JS管理工具进行管理 -->
-  <script src="./renderer.js"></script>
+  <script src="./preload.js"></script>
+  <!-- 信息交互方法 -->
+  <script src="./ipcRenderer.js"></script>
+  <script src="./test.js"></script>
+  <!-- <script src="renderer.js"></script> -->
+  <!-- <script src="./video_ffmpeg.js"></script> -->
+  <!-- <script>
+    function btn() {
+      var x = document.getElementById('input')
+      ipcRenderer.send('AsynMsg', x.value)
+    }
+  </script> -->
 </body>
 
 </html>

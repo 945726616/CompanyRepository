@@ -1,0 +1,91 @@
+2022/05/07 16:04:54 [error] 91264#92128: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx 1.7.11.3 Gryphon/conf" failed (1: Incorrect function)
+2022/05/07 16:07:57 [error] 101588#96732: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx 1.7.11.3 Gryphon/conf" failed (1: Incorrect function)
+2022/05/07 16:09:23 [error] 102732#102556: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx 1.7.11.3 Gryphon/conf" failed (1: Incorrect function)
+2022/05/07 16:14:08 [error] 115012#114516: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx 1.7.11.3 Gryphon/conf" failed (1: Incorrect function)
+2022/05/09 11:18:52 [error] 56432#134724: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx 1.7.11.3 Gryphon/conf" failed (1: Incorrect function)
+2022/05/09 11:19:39 [error] 101280#100792: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx 1.7.11.3 Gryphon/conf" failed (1: Incorrect function)
+2022/05/09 15:01:35 [notice] 109696#107668: sockinit() attempting to access sockapi
+2022/05/09 15:01:35 [notice] 109696#107668: Access to sockapi succeded!
+2022/05/09 15:01:35 [notice] 109696#107668: using sockapi from "4;144;"
+2022/05/09 15:01:36 [notice] 119620#115304: sockinit() attempting to access sockapi
+2022/05/09 15:01:36 [notice] 119620#115304: Access to sockapi succeded!
+2022/05/09 15:01:36 [notice] 119620#115304: using sockapi from "4;8;"
+2022/05/09 17:05:20 [emerg] 41084#140100: CreateFile() "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/conf/nginx.conf" failed (2: The system cannot find the file specified)
+2022/05/09 17:05:51 [emerg] 140072#142084: CreateFile() "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/conf/nginx.conf" failed (2: The system cannot find the file specified)
+2022/05/09 17:06:30 [emerg] 138072#145136: CreateFile() "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/conf/nginx.conf" failed (2: The system cannot find the file specified)
+2022/05/09 17:06:44 [notice] 156248#149688: Fatal: wait for sockapi failed
+2022/05/09 17:16:00 [emerg] 39084#94156: CreateFile() "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/conf/nginx.conf" failed (2: The system cannot find the file specified)
+2022/05/09 17:17:56 [emerg] 47320#38356: CreateFile() "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/conf/nginx.conf" failed (2: The system cannot find the file specified)
+2022/05/09 17:22:17 [notice] 63088#58804: sockinit() attempting to access sockapi
+2022/05/09 17:22:17 [notice] 63088#58804: Access to sockapi succeded!
+2022/05/09 17:22:17 [notice] 63088#58804: using sockapi from "4;148;"
+2022/05/09 17:22:17 [notice] 52364#29764: sockinit() attempting to access sockapi
+2022/05/09 17:22:17 [notice] 52364#29764: Access to sockapi succeded!
+2022/05/09 17:22:17 [notice] 52364#29764: using sockapi from "4;8;"
+2022/05/09 17:28:20 [notice] 150720#62692: sockinit() attempting to access sockapi
+2022/05/09 17:28:20 [notice] 150720#62692: Access to sockapi succeded!
+2022/05/09 17:28:20 [notice] 150720#62692: using sockapi from "4;8;"
+2022/05/09 17:28:30 [notice] 60324#65680: sockinit() attempting to access sockapi
+2022/05/09 17:28:30 [notice] 60324#65680: Access to sockapi succeded!
+2022/05/09 17:28:30 [notice] 60324#65680: using sockapi from "4;8;"
+2022/05/09 17:30:24 [notice] 65492#53468: sockinit() attempting to access sockapi
+2022/05/09 17:30:24 [notice] 65492#53468: Access to sockapi succeded!
+2022/05/09 17:30:24 [notice] 65492#53468: using sockapi from "4;8;"
+2022/05/09 17:30:26 [notice] 135380#56968: sockinit() attempting to access sockapi
+2022/05/09 17:30:26 [notice] 135380#56968: Access to sockapi succeded!
+2022/05/09 17:30:26 [notice] 135380#56968: using sockapi from "4;8;"
+2022/05/09 17:31:44 [error] 65564#72180: ReadFile() "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/conf" failed (1: Incorrect function)
+2022/05/09 17:31:57 [notice] 70028#67000: sockinit() attempting to access sockapi
+2022/05/09 17:31:57 [notice] 70028#67000: Access to sockapi succeded!
+2022/05/09 17:31:57 [notice] 70028#67000: using sockapi from "4;148;"
+2022/05/09 17:31:57 [notice] 71972#59540: sockinit() attempting to access sockapi
+2022/05/09 17:31:57 [notice] 71972#59540: Access to sockapi succeded!
+2022/05/09 17:31:57 [notice] 71972#59540: using sockapi from "4;8;"
+2022/05/09 17:49:32 [notice] 99644#111056: signal process started (reload)
+2022/05/09 17:49:32 [notice] 95172#113608: sockinit() attempting to access sockapi
+2022/05/09 17:49:32 [notice] 95172#113608: Access to sockapi succeded!
+2022/05/09 17:49:32 [notice] 95172#113608: using sockapi from "4;8;"
+2022/05/09 17:49:32 [notice] 48956#112796: sockinit() attempting to access sockapi
+2022/05/09 17:49:32 [notice] 48956#112796: Access to sockapi succeded!
+2022/05/09 17:49:32 [notice] 48956#112796: using sockapi from "4;8;"
+2022/05/09 17:49:44 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:49:46 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:49:46 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:49:46 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:10 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:10 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:10 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:10 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:10 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:11 [error] 95172#115400: *6 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:11 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:11 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:11 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:11 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:11 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:12 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:12 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:12 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:12 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:12 [error] 95172#115400: *8 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:32 [error] 95172#115400: *10 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:32 [error] 95172#115400: *10 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:32 [error] 95172#115400: *10 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:33 [error] 95172#115400: *10 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:33 [error] 95172#115400: *10 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:50:37 [notice] 58564#120016: signal process started (reload)
+2022/05/09 17:50:44 [notice] 120516#114300: signal process started (stop)
+2022/05/09 17:50:44 [error] 120516#114300: OpenEvent("Global\ngx_stop_65256") failed (2: The system cannot find the file specified)
+2022/05/09 17:55:31 [notice] 16944#138164: signal process started (stop)
+2022/05/09 17:55:31 [error] 16944#138164: OpenEvent("Global\ngx_stop_65256") failed (2: The system cannot find the file specified)
+2022/05/09 17:55:46 [error] 95172#115400: *12 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:55:49 [error] 95172#115400: *12 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:55:50 [error] 95172#115400: *12 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:55:50 [error] 95172#115400: *12 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:55:50 [error] 95172#115400: *12 "E:\Git\companyrepository\Electron\NginxTest\nginx-1.7.11.3-Gryphon/html/nginx-rtmp-module/test/www/index.html" is not found (3: The system cannot find the path specified), client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", host: "127.0.0.1"
+2022/05/09 17:56:25 [notice] 30484#30440: sockinit() attempting to access sockapi
+2022/05/09 17:56:25 [notice] 30484#30440: Access to sockapi succeded!
+2022/05/09 17:56:25 [notice] 30484#30440: using sockapi from "4;144;"
+2022/05/09 17:56:25 [notice] 153152#153160: sockinit() attempting to access sockapi
+2022/05/09 17:56:25 [notice] 153152#153160: Access to sockapi succeded!
+2022/05/09 17:56:25 [notice] 153152#153160: using sockapi from "4;8;"
