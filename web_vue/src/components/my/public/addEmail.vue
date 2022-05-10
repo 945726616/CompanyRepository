@@ -34,14 +34,16 @@ export default {
       bind_email_sign: false, //是否绑定邮箱
       email_invalid_sign: false, //邮箱是否无效
       email_verification: { success: false, exist: false, busy: false }, //邮箱验证
+      appid:'', //项目名.com
     }
   },
   mounted () {
+    let project_name = this.$store.state.jumpPageData.projectName;
+    this.appid = project_name + '.com';
     this.binding_accounts_info();
   },
   methods: {
     binding_accounts_info () { //点击绑定邮箱功能
-      let appid = "vimtag.com";
       let user_info = eval("(" + localStorage.getItem("remember_msg_info") + ")")
       // this.$api.login.binding_email_get({
       //     username: user_info.user,
@@ -61,7 +63,7 @@ export default {
       // })
       this.$api.my.get_user_email({
         username: user_info.user,
-        appid: appid
+        appid: this.appid
       }).then(res => {
         if (res && res.data.email !== "") {
           if (res.data.active_email) {
@@ -86,13 +88,12 @@ export default {
         }, 3000)
         return;
       }
-      let appid = "vimtag.com";
       let user_info = eval("(" + localStorage.getItem("remember_msg_info") + ")")
       _this.$api.my.binding_email({
         email: _this.email_addr,
         user: user_info.user,
         pass: user_info.password,
-        appid: appid,
+        appid: this.appid,
         lang: _this.$store.state.user.userLanguage
       }).then(res => {
         if (res && res.result == '') {

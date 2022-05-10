@@ -52,7 +52,7 @@
                     this.publicFunc.msg_tips({ msg: mcs_two_password_input_inconsistent + ".", type: "error", timeout: 3000 });
                     return;
                 } else {
-                    let reg = /^\S{6,20}$/;
+                    let reg = /^[0-9A-Za-z]{6,20}$/;
                     if (!reg.exec(this.new_admin_pwd_value)) {
                         this.publicFunc.msg_tips({ msg: mcs_password_demand + ".", type: "error", timeout: 3000 });
                         return;

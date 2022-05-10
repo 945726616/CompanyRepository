@@ -19,9 +19,22 @@
             <div ref="play_view" id='play_view'>
                 <div id='play_buffer_ret'></div>
                 <!-- 视频播放区域 -->
-                <div id='play_screen' :style="playScreenHeight">
-                    <div id='play_view_box' @click="clickPlayView">
-                        <div id='play_pause_pic'></div>
+                <div style="position: relative;">
+                    <!-- 设备时区与设置时区不同提示 -->
+                    <div id='timezone_err_tip' v-show='timezone_err_sign'>
+                        {{mcs_set_timezone_prompt_start}}{{current_time_zone}},{{mcs_set_timezone_prompt_end}}
+                        <span class='err_tip_close' @click='timezone_err_sign = false'></span>
+                    </div>
+                    <!-- 报警倒计时 -->
+                    <div id='alarm_countdown' v-show='alarm_sign'>
+                        <div class='audio_alarm'></div>
+                        <div>{{mrs_audio_alarm}}</div>
+                        <div>{{alarm_countdown_code}}</div>
+                    </div>
+                    <div id='play_screen' :style="playScreenHeight">
+                        <div id='play_view_box' @click="clickPlayView">
+                            <div id='play_pause_pic'></div>
+                        </div>
                     </div>
                 </div>
                 <!-- 视频播放区域 结束 -->
@@ -35,6 +48,7 @@
                         <div id='camera_off_pic' class='camera_off_picture' @click="clickScreenShot"></div>
                         <div id='talkback_off_pic' class='talkback_off_picture' v-show="talkbackFlag" @click="clickTalkback($event)"></div>
                         <div id='adjust_off_pic' :class='adjustSettingFlag?"adjust_on_picture":"adjust_off_picture"' @click="clickAdjust($event)"></div>
+                        <div id='alarm_pic' :class='alarm_sign?"alarm_on_picture":"alarm_off_picture"' @click="clickAlarm" v-show='audio_alarm_manually'></div>
                     </div>
                     <!-- 菜单栏左侧控制按钮 结束 -->
                     <!-- 隐藏的控制按钮 -->
@@ -165,6 +179,9 @@
                 mcs_light_white: mcs_light_white,
                 mcs_reset: mcs_reset,
                 mcs_high_clear: mcs_high_clear,
+                mcs_set_timezone_prompt_start: mcs_set_timezone_prompt_start,
+                mcs_set_timezone_prompt_end: mcs_set_timezone_prompt_end,
+                mrs_audio_alarm: mrs_audio_alarm,
                 // 多国语言结束
                 whiteLight: null, // 设备白光信息存储
                 playFlag: 0, // 播放状态标识
@@ -197,6 +214,11 @@
                 brightness_value: '', //亮度
                 cam_conf: '', //保存设备模式亮度等数据
                 highDefinitionClear: '', // 接口获取的该设备可播放的最高清晰度
+                timezone_err_sign: false, //设置的时区与本地时区是否一致标识
+                current_time_zone: null, //当前时区
+                alarm_sign: false, //是否手动报警
+                audio_alarm_manually: '', //设备是否能手动报警
+                alarm_countdown_code: 60, //报警60s倒计时
             }
         },
         methods: {
@@ -206,6 +228,7 @@
                     sn: this.$store.state.jumpPageData.selectDeviceIpc
                 }).then(res => {
                     this.whiteLight = res.white_light // 获取返回的白光信息
+                    this.audio_alarm_manually = res.audio_alarm_manually //判断设备是否能手动报警
                     // this.play_menu_control() // 播放控制按钮渲染
                     this.get_definition() // 获取窗口大小并绘制播放内容
                 })
@@ -216,6 +239,7 @@
                     this.$api.play.play_preview_img({ dom: $("#play_screen"), sn: this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
                 }
                 // 创建暂停画面以及暂停图标 结束
+                this.time_zone_alert();
             },
             get_definition() { // 获取窗口大小并绘制播放内容
                 this.playScreenHeight = { height: ((document.body.clientWidth - document.getElementById('dev_main_left').offsetWidth - 60) * 0.563) + 'px' }
@@ -313,7 +337,7 @@
                 this.definitionListFlag = false
                 sessionStorage.setItem("PlayProfile", "p0")
                 if (this.$store.state.jumpPageData.projectName === "vsmahome") {
-                    this.definitionSelect = this.mcs_new_hd
+                    this.definitionSelect = mcs_new_hd
                 } else {
                     this.definitionSelect = this.support_1080p
                 }
@@ -458,14 +482,14 @@
             adjust_show() { //显示亮度等参数
                 if (this.cam_conf.day) {
                     //night,white;night,auto,1;auto,2,white;auto,2,auto,1
-                    if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1)) {
+                    if (this.cam_conf.white_light && ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1))) {
                         this.sharpness_value = parseInt(this.cam_conf.white_light.sharpness)
                         this.contrast_value = parseInt(this.cam_conf.white_light.contrast)
                         this.color_saturation_value = parseInt(this.cam_conf.white_light.color_saturation)
                         this.brightness_value = parseInt(this.cam_conf.white_light.brightness)
                     }
                     //night,red;night,auto,0;auto,2,red;auto,2,auto,0
-                    else if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0)) {
+                    else if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "night" && (this.cam_conf.light_mode == "auto" || this.cam_conf.light_mode == "white") && this.cam_conf.red_or_white == 1)) {
                         this.sharpness_value = parseInt(this.cam_conf.night.sharpness)
                         this.contrast_value = parseInt(this.cam_conf.night.contrast)
                         this.color_saturation_value = parseInt(this.cam_conf.night.color_saturation)
@@ -486,9 +510,6 @@
                 }
 
                 this.mode = this.cam_conf.day_night;
-                if (this.whiteLight) {
-                    this.light_mode = this.cam_conf.light_mode;
-                }
             },
             clickAdjust(event) { // 点击设备调整按钮
                 if (event.target.className === "adjust_off_picture") {
@@ -497,6 +518,9 @@
                         this.cam_conf = res;
                         this.cam_conf.sn = this.$store.state.jumpPageData.selectDeviceIpc;
                         this.adjust_show();
+                        if (this.whiteLight) {
+                            this.light_mode = this.cam_conf.light_mode;
+                        }
                     })
                     this.adjustSettingFlag = true
                 } else if (event.target.className === "adjust_on_picture") {
@@ -536,7 +560,7 @@
             adjust_set() { //调整亮度等参数
                 if (this.cam_conf.day) {
                     //night,white;night,auto,1;auto,2,white;auto,2,auto,1
-                    if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1)) {
+                    if (this.cam_conf.white_light && ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1))) {
                         this.cam_conf.is_white_light = this.whiteLight;
                         this.cam_conf.white_light.sharpness = this.sharpness_value;
                         this.cam_conf.white_light.contrast = this.contrast_value;
@@ -544,7 +568,7 @@
                         this.cam_conf.white_light.brightness = this.brightness_value;
                     }
                     //night,red;night,auto,0;auto,2,red;auto,2,auto,0 
-                    else if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0)) {
+                    else if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "night" && (this.cam_conf.light_mode == "auto" || this.cam_conf.light_mode == "white") && this.cam_conf.red_or_white == 1)) {
                         this.cam_conf.night.sharpness = this.sharpness_value;
                         this.cam_conf.night.contrast = this.contrast_value;
                         this.cam_conf.night.color_saturation = this.color_saturation_value;
@@ -595,6 +619,50 @@
                     this.cam_conf.contrast = this.contrast_value;
                     this.cam_conf.color_saturation = this.color_saturation_value;
                     this.cam_conf.brightness = this.brightness_value;
+                }
+            },
+            time_zone_alert() { //当设备时区与设置时区不一致时弹出提示
+                let nowDate = new Date()
+                this.$api.devlist.time_get({ // 获取选中时区的时间
+                    sn: this.$store.state.jumpPageData.selectDeviceIpc
+                }).then(res => {
+                    this.current_time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    if(res.day && res.hour){
+                        if (res.day === nowDate.getDate() && res.hour === nowDate.getHours()) {
+                            this.timezone_err_sign = false;
+                        } else {
+                            this.timezone_err_sign = true;
+                        }
+                    }
+                })
+            },
+            clickAlarm() { //点击报警
+                if (this.alarm_sign) {
+                    this.$api.play.alarm({ // 手动关闭报警
+                        sn: this.$store.state.jumpPageData.selectDeviceIpc,
+                        cmd: 'stop'
+                    })
+                    this.alarm_sign = false;
+                } else {
+                    this.publicFunc.delete_tips({
+                        content: mrs_alarm_tip_msg,
+                        title: mrs_manual_alarm,
+                        func: () => {
+                            this.$api.play.alarm({ // 手动开启报警
+                                sn: this.$store.state.jumpPageData.selectDeviceIpc,
+                                cmd: 'play'
+                            })
+                            this.alarm_sign = true;
+                            setTimeout(() => { //60s后自动关闭报警
+                                this.$api.play.alarm({
+                                    sn: this.$store.state.jumpPageData.selectDeviceIpc,
+                                    cmd: 'stop'
+                                }).then(res => {
+                                    this.alarm_sign = false;
+                                })
+                            }, 60000)
+                        }
+                    })
                 }
             }
         },
@@ -670,6 +738,18 @@
                 this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px";
                 this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
                 this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
+            },
+            alarm_sign(val) {
+                let timer = null;
+                if (val) {
+                    this.alarm_countdown_code = 60;
+                    timer = setInterval(() => {
+                        this.alarm_countdown_code--;
+                        if (this.alarm_countdown_code <= 0 || this.alarm_sign === false) {
+                            clearInterval(timer)
+                        }
+                    }, 1000)
+                }
             }
         }
     }

@@ -1414,6 +1414,20 @@ const play = {
         token: data.profile_token
       }
     })
+  },
+  /*
+   ** 点击开始/停止报警
+   */ 
+  async alarm (params){
+    return await axios.get('/ccm/ccm_audio_ctrl', {
+      params: {
+        sess: {
+          nid: login.create_nid(),
+          sn: params.sn,
+        },
+        cmd: params.cmd
+      }
+    })
   }
 }
 

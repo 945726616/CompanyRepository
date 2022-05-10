@@ -39,6 +39,7 @@ const set = {
     let new_ealf = ""
     let wwan_exist = ""
     let fisheye = ""
+    let audio_alarm_manually = ""
     let result
     let returnItem
     await axios.get('/ccm/ccm_dev_info_get', {
@@ -118,9 +119,14 @@ const set = {
             //4G
             if (msg.p[i].n == "wwan_exist" && msg.p[i].v == "existence") {
               wwan_exist = msg.p[i].v;
-            }//鱼眼
+            }
+            //鱼眼
             if (msg.p[i].n == "s.eye") {
               fisheye = msg.p[i].v;
+            }
+            //手动报警
+            if (msg.p[i].n == "s.audio_alarm_manually") {
+              audio_alarm_manually = msg.p[i].v;
             }
           }
         }
@@ -152,7 +158,8 @@ const set = {
         new_ealf: new_ealf,
         human_detect: human_detect,
         wwan_exist: wwan_exist,
-        fisheye: fisheye
+        fisheye: fisheye,
+        audio_alarm_manually: audio_alarm_manually
       }
     })
     return returnItem

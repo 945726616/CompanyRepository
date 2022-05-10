@@ -862,8 +862,8 @@ div.ibutton-label-on {
 .adjust_on_picture {
 	background: url("../assets/device/vimtag_img.png") no-repeat -71px -6px;
 	width: 61px;
-  height: 58px;
-  float: left;
+  	height: 58px;
+  	float: left;
 	margin-left: 44px;
 }
 #ptz_control_down{
@@ -4822,11 +4822,6 @@ input[type='radio']{
  line-height:40px;
  border-radius: 5px;
 }
-.record_back{
-	float:left;
-	padding-left:4px;
-	cursor: pointer;
-}
 .set_starttime_list{
 overflow:hidden;
 border-top:1px solid #e1e1e1;
@@ -4880,12 +4875,6 @@ line-height: 30px;
     height: 21px;
     line-height: 21px;
 }*/
-.record_edit_time{
-	float:left;
-	letter-spacing: 1px;
-	width: 528.42px;
-    text-align: center;
-}
 #select_network_password{
 	width:200px;
 	color:#000;

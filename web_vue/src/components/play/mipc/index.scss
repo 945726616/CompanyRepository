@@ -53,6 +53,27 @@
 #play_view {
     width: 100%;
     float: left;
+
+    #timezone_err_tip {
+        position: absolute;
+        background-color: red;
+        z-index: 999;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        cursor: default;
+
+        .err_tip_close{
+            width: 15px;
+            height: 15px;
+            background: url(~@/assets/device/n-close.png) no-repeat;
+            background-size: 100%;
+            float: right;
+            margin-top: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    }
 }
 
 #play_buffer_ret {
@@ -157,6 +178,40 @@
     margin-left: 15px;
     margin-top: 10px;
     cursor: pointer;
+}
+
+.alarm_off_picture, .alarm_on_picture {
+	width: 22px;
+    height: 20px;
+    float: left;
+    margin-left: 15px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#alarm_countdown {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px;
+    height:20px;
+    width: 120px;
+    line-height: 20px;
+    border:1px solid #fff;
+    position: absolute;
+    top:5%;
+    left:50%;
+    transform: translate(-50%, 0);
+    z-index: 9999;
+    color:#fff;
+    padding:10px 5px;
+
+    .audio_alarm {
+        background: url(~@/assets/mipc/alarm_countdown.png) no-repeat;
+        background-size: 100%;
+        width: 30px;
+        height: 25px;
+    }
 }
 
 .enter_nav {

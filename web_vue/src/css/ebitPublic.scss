@@ -3429,11 +3429,6 @@ div.ibutton-label-on{
  line-height:40px;
  border-radius: 5px;
 }
-.record_back{
-	float:left;
-	padding-left:6px;
-	cursor: pointer;
-}
 .set_starttime_list{
 overflow:hidden;
 border-top:1px solid #e1e1e1;
@@ -3465,12 +3460,6 @@ line-height: 30px;
 }
 .set_time_list_right{
 	float:right;
-}
-.record_edit_time{
-	float:left;
-	letter-spacing: 2px;
-	width: 528.42px;
-    text-align: center;
 }
 .sd_mode_text{
 	float: left;
@@ -3983,6 +3972,18 @@ line-height: 30px;
 	background-image: url(../assets/mipc/ebit_img.png);
 	background-repeat: no-repeat;
   background-position: -627px -3px;
+}
+.alarm_off_picture {
+    background-image: url(~@/assets/ebitcam/alarm.png);
+	background-repeat: no-repeat;
+	background-size: 30px 20px;
+	background-position: -5px 0;
+}
+.alarm_on_picture {
+    background-image: url(~@/assets/ebitcam/in_alarm.png);
+	background-repeat: no-repeat;
+	background-size: 30px 20px;
+	background-position: -5px 0;
 }
 #resolute_choice:hover{
 	color:$projectColor;

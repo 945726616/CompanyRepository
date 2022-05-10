@@ -19,6 +19,27 @@
 #play_view {
     float: left;
     // position: relative;
+
+    #timezone_err_tip {
+        position: absolute;
+        background-color: red;
+        z-index: 9999;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        cursor: default;
+
+        .err_tip_close{
+            width: 15px;
+            height: 15px;
+            background: url(~@/assets/device/n-close.png) no-repeat;
+            background-size: 100%;
+            float: right;
+            margin-top: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    }
 }
 
 #topClientP2Ping {
@@ -276,8 +297,9 @@
     width: 420px;
     height: 59px;
     position: absolute;
-    left: 40%;
+    left: 50%;
     top: 60%;
+    transform: translate(-50%, -50%);
 }
 
 .right_key {
@@ -339,6 +361,49 @@
     height: 58px;
     float: left;
     margin-left: 44px;
+}
+
+.alarm_off_picture {
+	background: url(~@/assets/device/alarm.png) no-repeat;
+    background-size: 60px 60px;
+	width: 61px;
+  	height: 61px;
+  	float: left;
+	margin-left: 44px;
+}
+
+.alarm_on_picture {
+	background: url(~@/assets/device/in_alarm.png) no-repeat;
+    background-size: 60px 60px;
+	width: 61px;
+  	height: 61px;
+  	float: left;
+	margin-left: 44px;
+}
+
+#alarm_countdown {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px;
+    height:20px;
+    width: 120px;
+    line-height: 20px;
+    border:1px solid #fff;
+    position: absolute;
+    top:5%;
+    left:50%;
+    transform: translate(-50%, 0);
+    z-index: 9999;
+    color:#fff;
+    padding:10px 5px;
+
+    .audio_alarm {
+        background: url(~@/assets/device/alarm_countdown.png) no-repeat;
+        background-size: 100%;
+        width: 30px;
+        height: 30px;
+    }
 }
 
 #snapshot_preview_div {

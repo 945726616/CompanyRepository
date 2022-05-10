@@ -4,33 +4,39 @@
             <div class='attribute_key_text'> {{mcs_display_text}} </div>
             <switch-button v-model='display_name_sign' @data_updata_event='display_name_updata'></switch-button>
         </div>
-        <div id='input_display_name_content' class='list_right_item'>
-            <div class='attribute_key_text'> {{mcs_name}} </div>
-            <!-- <div class='options_float_right' style='margin-top:0px;'><input type='text' id='input_display_name' onkeyup=\value=value.replace(/[^\a-\z\A-\Z]/g,'')\onpaste=\value=value.replace(/[^\a-\z\A-\Z]/g,'')\ oncontextmenu=\value=value.replace(/[^\a-\z\A-\Z]/g,'')\ maxlength='16' class='normal_input_right'></input></div> -->
-            <div class='options_float_right' style='margin-top:0px;'>
-                <input type='text' id='input_display_name' maxlength='16' class='normal_input_right' v-model='input_display_name' />
+        <transition name='fade'>
+            <div id='input_display_name_content' class='list_right_item' v-show='display_name_sign'>
+                <div class='attribute_key_text'> {{mcs_name}} </div>
+                <!-- <div class='options_float_right' style='margin-top:0px;'><input type='text' id='input_display_name' onkeyup=\value=value.replace(/[^\a-\z\A-\Z]/g,'')\onpaste=\value=value.replace(/[^\a-\z\A-\Z]/g,'')\ oncontextmenu=\value=value.replace(/[^\a-\z\A-\Z]/g,'')\ maxlength='16' class='normal_input_right'></input></div> -->
+                <div class='options_float_right' style='margin-top:0px;'>
+                    <input type='text' id='input_display_name' maxlength='16' class='normal_input_right' v-model='input_display_name' />
+                </div>
             </div>
-        </div>
-        <div class='list_right_item_ex'>
+        </transition>
+        <!-- <div class='list_right_item_ex'>
             <div class='attribute_key_text'> {{mcs_display_date}} </div>
             <switch-button v-model='display_date_sign' @data_updata_event='display_date_updata'></switch-button>
-        </div>
-        <div id='display_date_content' class='list_right_item'>
-            <div class='attribute_key_text'> {{mcs_date_format}} </div>
-            <div class='options_float_right' style='margin-top:0px;'>
-                <dropdown-menu :menuData="date_format_array" :showData='date_format' @data_updata_event='data_format_updata'></dropdown-menu>
-            </div>
-        </div>
+        </div> -->
         <div class='list_right_item_ex'>
             <div class='attribute_key_text'> {{mcs_display_time}} </div>
             <switch-button v-model='display_time_sign' @data_updata_event='display_time_updata'></switch-button>
         </div>
-        <div id='time_format_content' class='list_right_item'>
-            <div class='attribute_key_text'> {{mcs_time_format}} </div>
-            <div class='options_float_right' style='margin-top:0px;'>
-                <dropdown-menu :menuData="time_format_array" :showData='time_format' @data_updata_event='time_format_updata'></dropdown-menu>
+        <transition name='fade'>
+            <div v-show='display_time_sign'>
+                <div id='display_date_content' class='list_right_item'>
+                    <div class='attribute_key_text'> {{mcs_date_format}} </div>
+                    <div class='options_float_right' style='margin-top:0px;'>
+                        <dropdown-menu :menuData="date_format_array" :showData='date_format' @data_updata_event='data_format_updata'></dropdown-menu>
+                    </div>
+                </div>
+                <div id='time_format_content' class='list_right_item'>
+                    <div class='attribute_key_text'> {{mcs_time_format}} </div>
+                    <div class='options_float_right' style='margin-top:0px;'>
+                        <dropdown-menu :menuData="time_format_array" :showData='time_format' @data_updata_event='time_format_updata'></dropdown-menu>
+                    </div>
+                </div>
             </div>
-        </div>
+        </transition>
         <div class='list_right_item_ex'>
             <div class='attribute_key_text'> {{mcs_display_weeks}} </div>
             <switch-button v-model='display_week_sign' @data_updata_event='display_week_updata'></switch-button>
@@ -103,7 +109,7 @@
                     text_enable: Number(this.display_name_sign),
                     week_enable: Number(this.display_week_sign),
                     date_format: this.date_format,
-                    date_enable: Number(this.display_date_sign),
+                    date_enable: Number(this.display_time_sign),
                     time_12h: this.time_format === mcs_12_hour ? 1 : 0,
                     time_enable: Number(this.display_time_sign)
                 }).then(res => {
@@ -130,30 +136,9 @@
             }
         },
         watch: {
-            display_name_sign(val) {
-                if (val) {
-                    $("#input_display_name_content").fadeIn();
-                } else {
-                    $("#input_display_name_content").fadeOut();
-                }
-            },
-            display_date_sign(val) {
-                if (val) {
-                    $("#display_date_content").fadeIn();
-                } else {
-                    $("#display_date_content").fadeOut();
-                }
-            },
-            display_time_sign(val) {
-                if (val) {
-                    $("#time_format_content").fadeIn();
-                } else {
-                    $("#time_format_content").fadeOut();
-                }
-            },
             input_display_name(val) { //osd名称不允许输入汉字
-                if(val) {
-                    this.input_display_name=val.replace(/[\u4e00-\u9fa5]/ig,"");
+                if (val) {
+                    this.input_display_name = val.replace(/[\u4e00-\u9fa5]/ig, "");
                 }
             }
         },
@@ -168,5 +153,15 @@
     .list_right_box {
         width: 520px;
         margin: 0 auto;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .5s;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        opacity: 0;
     }
 </style>

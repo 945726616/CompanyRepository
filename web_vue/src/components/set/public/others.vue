@@ -55,8 +55,8 @@ export default {
       mcs_apply: mcs_apply, //应用
 
       ipc_turnover_true: 0,
-      input_speaker: 0, //扬声器
-      input_microphone: 0, //麦克风
+      input_speaker: '', //扬声器
+      input_microphone: '', //麦克风
       cam_info: '', //其他信息
       ratio: 0,
       power_array: ['50hz', '60hz'], //频率数组
@@ -75,7 +75,7 @@ export default {
     this.$api.play.adjust_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
       this.cam_info = res;
       this.cam_info.sn = this.$store.state.jumpPageData.selectDeviceIpc;
-      res.flicker_freq ? this.power = '60hz' : this.power = '50hz';
+      res.flicker_freq ? this.power = '50hz' : this.power = '60hz'; // 0/1 0:60hz, 1:50hz 
 
       let param = Array();
       param = this.$api.devlist.ldev_get(this.$store.state.jumpPageData.selectDeviceIpc).p;
@@ -100,7 +100,7 @@ export default {
       this.$api.set.cam_set({
         sn: this.$store.state.jumpPageData.selectDeviceIpc,
         flip: Number(this.equipment_flip_sign),
-        flicker_freq: this.power === '60hz' ? 1 : 0
+        flicker_freq: this.power === '60hz' ? 0 : 1
       }).then(res => {
         if (res.result !== "") {
           if (res.result === "permission.denied") {
@@ -124,7 +124,7 @@ export default {
     },
     screen_change () {
       this.cam_info.flip = Number(this.equipment_flip_sign);
-      this.cam_info.flicker_freq = this.power === '60hz' ? 1 : 0;
+      this.cam_info.flicker_freq = this.power === '60hz' ? 0 : 1;
       this.cam_info.resolute = this.screen;
       this.$api.play.adjust_set({
         sn: this.$store.state.jumpPageData.selectDeviceIpc,

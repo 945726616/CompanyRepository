@@ -3,7 +3,7 @@
         <div class='clickMenu' @click.stop='show_sign = !show_sign'>{{showData}}</div>
         <transition name='menu-slide'>
             <div class='selectBox' v-show='show_sign' @click.stop=''>
-                <div v-for='(item,index) in menuData' :key='index' @click="changeData" :value='item'>
+                <div v-for='(item,index) in menuData' :key='index' @click="changeData" :value='item' :title='item'>
                     <div class='selectItem extraItem' v-if='extraData && extraData.wifi_signal_png'>
                         <img class='front_img' v-if='extraData.wifi_signal_png[index] && extraData.wifi_signal_png[index].front_img' :src='extraData.wifi_signal_png[index].front_img' />
                         <span v-else> </span>
@@ -69,11 +69,11 @@
 
         .clickMenu {
             position: relative;
-            width: 200px;
+            min-width: 200px;
             height: 34px;
             line-height: 34px;
             text-align: center;
-            padding-right: 3px;
+            padding:0 10px;
             background-color: #ffffff;
             background-image: none;
             background-repeat: no-repeat;

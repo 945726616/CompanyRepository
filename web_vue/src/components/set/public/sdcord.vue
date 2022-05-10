@@ -4,66 +4,68 @@
             <span class='attribute_key_text'> {{mcs_enabled}} </span>
             <switch-button v-model='switch_flag' @data_updata_event='switch_flag_updata'></switch-button>
         </div>
-        <div id='open_switch'>
-            <div class='list_right_item'>
-                <span class='attribute_key_text'> {{mcs_status}} </span>
-                <div class='options_float_right'><input type='text' id='input_status' class='input_read_only' disabled v-model='input_status' /></div>
-            </div>
-            <div class='list_right_item_ex' id='input_capacity_content' v-if='input_capacity_content_sign'>
-                <span class='attribute_key_text'> {{mcs_capacity}} </span>
-                <div class='options_float_right'><input type='text' id='input_capacity' class='input_read_only' disabled v-model='input_capacity' /></div>
-            </div>
-            <!-- <div class='list_right_item_ex' id='input_usage_content'>
-                 <span class='attribute_key_text'>mcs_usage</span>
-                 <div class='options_float_right'><input type='text' id='input_usage' class='input_read_only' disabled /></div>
-             </div> -->
-            <div class='list_right_item' id='input_available_content' v-if="input_available_content_sign">
-                <span class='attribute_key_text'> {{mcs_valid}} </span>
-                <div class='options_float_right'><input type='text' id='input_available' class='input_read_only' disabled v-model='input_available' /></div>
-            </div>
+        <transition name='fade'>
+            <div id='open_switch' v-show='switch_flag'>
+                <div class='list_right_item'>
+                    <span class='attribute_key_text'> {{mcs_status}} </span>
+                    <div class='options_float_right'><input type='text' id='input_status' class='input_read_only' disabled v-model='input_status' /></div>
+                </div>
+                <div class='list_right_item_ex' id='input_capacity_content' v-if='input_capacity_content_sign'>
+                    <span class='attribute_key_text'> {{mcs_capacity}} </span>
+                    <div class='options_float_right'><input type='text' id='input_capacity' class='input_read_only' disabled v-model='input_capacity' /></div>
+                </div>
+                <!-- <div class='list_right_item_ex' id='input_usage_content'>
+                    <span class='attribute_key_text'>mcs_usage</span>
+                    <div class='options_float_right'><input type='text' id='input_usage' class='input_read_only' disabled /></div>
+                </div> -->
+                <div class='list_right_item' id='input_available_content' v-if="input_available_content_sign">
+                    <span class='attribute_key_text'> {{mcs_valid}} </span>
+                    <div class='options_float_right'><input type='text' id='input_available' class='input_read_only' disabled v-model='input_available' /></div>
+                </div>
 
-            <!-- sd卡描述 -->
-            <div id='sd_describe' v-if="sd_describe_sign">
-                <div> {{mcs_sd_first}} </div>
-                <div> {{mcs_sd_nospace}} </div>
-            </div>
-            <!-- 如何导出sd卡 -->
-            <div id='sd_export_link' @click='sd_export_link_content_sign = true' v-if='sd_export_link_sign'> {{mcs_how_to_export_sd}} </div>
-            <div id='sd_export_link_content' v-if='sd_export_link_content_sign'> {{mrs_login_please}} www.{{project_name}}.com, {{mrs_sd_export_tips}} </div>
-            <!-- 硬盘描述 -->
-            <div id='disk_describe' v-if="disk_describe_sign"> {{mcs_hard_disk_title_1}} </div>
+                <!-- sd卡描述 -->
+                <div id='sd_describe' v-if="sd_describe_sign">
+                    <div> {{mcs_sd_first}} </div>
+                    <div> {{mcs_sd_nospace}} </div>
+                </div>
+                <!-- 如何导出sd卡 -->
+                <div id='sd_export_link' @click='sd_export_link_content_sign = true' v-if='sd_export_link_sign'> {{mcs_how_to_export_sd}} </div>
+                <div id='sd_export_link_content' v-if='sd_export_link_content_sign'> {{mrs_login_please}} www.{{project_name}}.com, {{mrs_sd_export_tips}} </div>
+                <!-- 硬盘描述 -->
+                <div id='disk_describe' v-if="disk_describe_sign"> {{mcs_hard_disk_title_1}} </div>
 
-            <!-- <div id='sd_mode'>
-                <div class='sd_display'>
-                    <div class='menu_list_box_title2 menu_list_mode sd_mode_text'>mcs_mode</div>
-                    <div class='menu_list_box'>
-                        <div class='menu_list menu_list_children_mode' style=''>
-                            <div class='list_name sd_mode_text'>mcs_normal_mode</div>
-                            <div class='list_info'>
-                                <div type='0' class='list_info_select list_info_select_img'></div>
+                <!-- <div id='sd_mode'>
+                    <div class='sd_display'>
+                        <div class='menu_list_box_title2 menu_list_mode sd_mode_text'>mcs_mode</div>
+                        <div class='menu_list_box'>
+                            <div class='menu_list menu_list_children_mode' style=''>
+                                <div class='list_name sd_mode_text'>mcs_normal_mode</div>
+                                <div class='list_info'>
+                                    <div type='0' class='list_info_select list_info_select_img'></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class='menu_list menu_list_children_mode' style=''>
-                            <div class='list_name sd_mode_text'>mcs_long_video_mode</div>
-                            <div class='list_info'>
-                                <div type='50' class='list_info_select list_info_select_img'></div>
+                            <div class='menu_list menu_list_children_mode' style=''>
+                                <div class='list_name sd_mode_text'>mcs_long_video_mode</div>
+                                <div class='list_info'>
+                                    <div type='50' class='list_info_select list_info_select_img'></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class='menu_list menu_list_children_mode' style=''>
-                            <div class='list_name sd_mode_text'>mcs_super_long_video_mode</div>
-                            <div class='list_info'>
-                                <div type='100' class='list_info_select list_info_select_img'></div>
+                            <div class='menu_list menu_list_children_mode' style=''>
+                                <div class='list_name sd_mode_text'>mcs_super_long_video_mode</div>
+                                <div class='list_info'>
+                                    <div type='100' class='list_info_select list_info_select_img'></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div> -->
+                </div> -->
 
-            <div class='list_right_item_ex' id='format_content' v-if='format_content_sign'>
-                <span class='attribute_key_text'>- {{mcs_format}} </span>
-                <button id='format_btn' class='list_right_button_ex options_float_right_button' @click='format_btn'>{{mcs_format}}</button>
+                <div class='list_right_item_ex' id='format_content' v-if='format_content_sign'>
+                    <span class='attribute_key_text'>- {{mcs_format}} </span>
+                    <button id='format_btn' class='list_right_button_ex options_float_right_button' @click='format_btn'>{{mcs_format}}</button>
+                </div>
             </div>
-        </div>
+        </transition>
         <button id='sd_apply' class='list_right_button' @click='sd_apply_btn'>{{mcs_action_apply}}</button>
     </div>
 </template>
@@ -99,10 +101,6 @@
                 sd_describe_sign: false, //是否显示sd卡描述
                 sd_export_link_sign: false, //是否显示如何导出sd卡数据
                 disk_describe_sign: false, // 是否显示硬件描述
-
-                l_dom_label_text_right_sd: '',
-                l_dom_label_img_sd: '',
-                l_dom_open_switch: '',
             }
         },
         props: {
@@ -112,9 +110,6 @@
             }
         },
         mounted() {
-            this.l_dom_label_text_right_sd = this.publicFunc.mx("#label_text_right_sd");
-            this.l_dom_label_img_sd = this.publicFunc.mx("#label_img_sd");
-            this.l_dom_open_switch = this.publicFunc.mx("#open_switch");
             this.project_name = this.$store.state.jumpPageData.projectName;
             this.$api.set.sd_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
                 if (res) {
@@ -188,23 +183,6 @@
                 this.switch_flag = data;
             }
         },
-        watch: {
-            switch_flag(val) { //启用状态
-                if (val) {
-                    $(this.l_dom_label_text_right_sd).fadeOut("fast");
-                    $(this.l_dom_label_img_sd).animate({ marginRight: "0px" });
-                    $(this.l_dom_open_switch).fadeIn("slow");
-                    // $(l_dom_labels).css({ "background": "#00a6ba" }); //修改了这里 
-                    // $(l_dom_label_text_left_sd).fadeIn("fast");
-                } else {
-                    $(this.l_dom_label_text_right_sd).fadeIn("fast");
-                    $(this.l_dom_label_img_sd).animate({ marginRight: "40px" });
-                    $(this.l_dom_open_switch).fadeOut("slow");
-                    // $(l_dom_labels).css({ "background": "#dedede" }); //修改了这里
-                    // $(l_dom_label_text_left_sd).fadeOut("fast");
-                }
-            }
-        },
         components: {
             SwitchButton
         }
@@ -253,5 +231,15 @@
         font-size: 14px;
         color: #666;
         margin-top: 15px;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .5s;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        opacity: 0;
     }
 </style>

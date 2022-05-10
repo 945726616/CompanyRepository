@@ -23,7 +23,6 @@
                     <nickname v-if="right_show_sign.nickname"></nickname> <!-- 设备昵称 -->
                     <admin-password v-if="right_show_sign.admin_password"></admin-password> <!-- 管理密码 -->
                     <osd v-if="right_show_sign.osd"></osd> <!-- OSD -->
-                    <record v-if="right_show_sign.record"></record> <!-- 录像 -->
                     <accessory v-if="right_show_sign.accessory"></accessory> <!-- 外设 -->
                     <alarm v-if="right_show_sign.alarm_device_tips"></alarm> <!-- 报警 -->
                     <date-time v-if="right_show_sign.date_time"></date-time> <!-- 日期时间 -->
@@ -35,6 +34,7 @@
                 </keep-alive>
                 <network v-if="right_show_sign.network"></network> <!-- 网络 -->
                 <sdcord v-if="right_show_sign.sdcord" :info='info_data'></sdcord> <!-- SD卡 -->
+                <record v-if="right_show_sign.record"></record> <!-- 录像 -->
                 <storage-device v-if="right_show_sign.storage_device"></storage-device> <!-- 存储设备 -->
             </div>
         </div>

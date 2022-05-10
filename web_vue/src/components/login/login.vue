@@ -44,7 +44,7 @@
           <button :class="name == 'vimtag'?'vimtag_btn':'mipc_btn'" id='sign_in' v-if="!register_sign" @click="sign_in">{{mcs_sign_in}}</button><!-- 登录页面中登录按钮 -->
           <button :class="name == 'vimtag'?'vimtag_btn':'mipc_btn'" id='register_btn' @click="sign_up" v-if="register_sign">{{mcs_sign_up}}</button><!-- 注册页面中注册按钮 -->
           <div>
-            <span id='register_account' @click="register_sign = true" v-if="!register_sign">{{mcs_sign_up}}</span>
+            <span id='register_account' @click="register_button" v-if="!register_sign">{{mcs_sign_up}}</span>
             <!-- 登录页面中注册文字按钮 -->
             <span id='forget_pass' @click="forget_pw_sign = true" v-if="!register_sign">{{mcs_forgot_your_password}}?</span>
             <!-- 登录页面中忘记密码文字按钮 -->
@@ -723,9 +723,15 @@ export default {
       })
     },
     choose_language_btn (lang_val) { //选择语言
-                this.$chooseLanguage.lang(lang_val)
+      this.$chooseLanguage.lang(lang_val)
       location.reload() // 刷新页面进行语言文件重载
     },
+    register_button () { //登录界面点击注册
+      this.register_sign = true;
+      this.register_name_val = '';
+      this.register_pw_val = '';
+      this.register_pw_again_val = '';
+    }
 
   },
   watch: {

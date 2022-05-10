@@ -150,7 +150,7 @@
                 if (this.ealf === 0) {
                     this.get_dev_info()
                 } else {
-                    console.log('关闭弹窗再次调用')
+                    // console.log('关闭弹窗再次调用')
                     this.new_process()
                 }
             },
@@ -273,7 +273,7 @@
                     this.face_detect = res.face_detect;
                     this.sound_detect = res.sound_detect;
                     this.human_detect = res.human_detect;
-                    //console.log(res, 'res_profile_get')
+                    //// console.log(res, 'res_profile_get')
                     this.$api.set.profile_get({
                         sn: this.$store.state.jumpPageData.selectDeviceIpc
                     }).then(res_profile_get => {
@@ -282,7 +282,7 @@
                 })
             },
             async new_record_get_ack(msg) { // ccm_dev_profile_get获取附件接口回调函数
-                console.log(msg, "进入获取附件接口函数")
+                // console.log(msg, "进入获取附件接口函数")
                 // 关闭弹窗
                 // _this.publicFunc.closeBufferPage()
                 if (msg && msg.result == "") {
@@ -347,10 +347,10 @@
                                         item.alarm_status = "off"
                                         item.plan = []
                                     }
-                                    // console.log(item, "进入alarm_sche_get后得到的item")
+                                    // // console.log(item, "进入alarm_sche_get后得到的item")
                                     this.new_record_final_all_dev.push(item)
                                 }
-                                console.log(this.new_record_final_all_dev, "new_record_final_all_dev", this.record_all_dev)
+                                // console.log(this.new_record_final_all_dev, "new_record_final_all_dev", this.record_all_dev)
                                 if (this.new_record_final_all_dev.length === this.record_all_dev.length) {
                                     this.new_record_final_all_dev = this.new_record_final_all_dev.sort(this.dev_type_sort)
                                     this.new_record_creat_div(item, i) //开始动态打印div
@@ -372,7 +372,7 @@
             },
             new_record_creat_div() { // 绘制设置右侧详情dom
                 this.publicFunc.closeBufferPage()
-                console.log('执行关闭弹窗')
+                // console.log('执行关闭弹窗')
                 let showArr = []
                 for (let i = 0; i < this.new_record_final_all_dev.length; i++) {
                     let dev_item = this.new_record_final_all_dev[i]
@@ -396,7 +396,7 @@
                     }
                 }
                 this.$set(this.scene_data_out, 'dev', showArr) // 将渲染的内容赋值到scene_data_out.dev中
-                console.log(this.scene_data_out.dev, 'this.scene_data_out.dev')
+                // console.log(this.scene_data_out.dev, 'this.scene_data_out.dev')
 
                 this.$api.set.plan_record_get({
                     sn: this.$store.state.jumpPageData.selectDeviceIpc
@@ -406,7 +406,7 @@
             },
             plan_record_get_ack(msg) {
                 let _this = this
-                // console.log(msg, "plan_record_get_ack_msg")
+                // // console.log(msg, "plan_record_get_ack_msg")
                 if (msg.result == "") {
                     this.record_plan_continue.id = "c_record"
                     this.record_plan_continue.nick = "c_record"
@@ -442,7 +442,7 @@
                     this.publicFunc.closeBufferPage()
                     return;
                 }
-                console.log(this.record_plan_continue, "获取持续计划表后record_plan_continue内容")
+                // console.log(this.record_plan_continue, "获取持续计划表后record_plan_continue内容")
                 this.$api.set.dev_action_get({
                     sn: this.$store.state.jumpPageData.selectDeviceIpc,
                     action_name: "oflag"
@@ -454,21 +454,23 @@
                 // console.log("enter c_record_switch_get")
                 if (msg && msg.result == "") {
                     // console.log(msg, "ccm_dev_action_get_ack接口返回参数")
-                    if (msg.data.info.enable == 0) {
-                        $("#is_show").text(mcs_turn_off)
-                        this.record_plan_continue.alarm_status = "off"
-                    } else {
-                        console.log(this.record_plan_continue.alarm_status, "查看record_plan_continue参数内容")
-                        //这种情况是当持续录像的总开关是开但计划表为空，开关状态照样为关
-                        if (this.record_plan_continue.alarm_status == "off") {
-                            $("#is_show").text(mcs_turn_off)
-                        } else {
-                            $("#is_show").text(mcs_turn_on)
-                            this.record_plan_continue.alarm_status = "on"
-                        }
-                    }
                     this.$api.set.sd_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
                         this.record_sd_get_ack(res)
+                        if (this.sd_sign) {
+                            if (msg.data.info.enable == 0) {
+                                $("#is_show").text(mcs_turn_off)
+                                this.record_plan_continue.alarm_status = "off"
+                            } else {
+                                // console.log(this.record_plan_continue.alarm_status, "查看record_plan_continue参数内容")
+                                //这种情况是当持续录像的总开关是开但计划表为空，开关状态照样为关
+                                if (this.record_plan_continue.alarm_status == "off") {
+                                    $("#is_show").text(mcs_turn_off)
+                                } else {
+                                    $("#is_show").text(mcs_turn_on)
+                                    this.record_plan_continue.alarm_status = "on"
+                                }
+                            }
+                        }
                     })
                 } else {
                     this.publicFunc.msg_tips({ msg: msg.result, type: 'error', timeout: 3000 });
@@ -476,8 +478,8 @@
                 }
             },
             record_sd_get_ack(msg) {
-                console.log(msg, "enter sd_get_ack")
-                // console.log("查看record_plan_continue", record_plan_continue)
+                // console.log(msg, "enter sd_get_ack")
+                // // console.log("查看record_plan_continue", record_plan_continue)
                 let length = this.publicFunc.mx(".list_info_select").length;
                 let record_mode
                 if (msg && msg.result == "" && msg.status == "mount") {
@@ -538,12 +540,14 @@
                     // 关闭遮罩层以及录像模式选择
                     this.publicFunc.closeBufferPage()
                     // $(".sd_mode").hide();
-					this.sd_sign = false
-					if(msg.no_sdcard){
-						this.publicFunc.msg_tips({ msg: msg.no_sdcard, type: 'error', timeout: 3000 });
-					}else{
-						this.publicFunc.msg_tips({ msg: msg.result, type: 'error', timeout: 3000 });
-					}
+                    this.sd_sign = false
+                    if (msg.no_sdcard) { //没有SD卡
+                        this.publicFunc.msg_tips({ msg: msg.no_sdcard, type: 'error', timeout: 3000 });
+                    } else if (msg.status === 'umount') { //SD卡已卸载
+                        this.publicFunc.msg_tips({ msg: 'SD'+ mcs_unmounted, type: 'error', timeout: 3000 });
+                    } else {
+                        this.publicFunc.msg_tips({ msg: msg.result, type: 'error', timeout: 3000 });
+                    }
                 }
                 // 移植部分 可能没有作用暂做保留
                 let new_record_open_dev = this.new_record_final_all_dev.filter(function(item) {
@@ -581,7 +585,7 @@
                 return final_arr;
             },
             time_deal(arr) {
-                // console.log(arr)
+                // // console.log(arr)
                 let week_standard = [
                     mcs_Sunday_and,
                     mcs_Monday_and,
@@ -624,7 +628,7 @@
                     }
                 })
 
-                // console.log(alarm_arr)
+                // // console.log(alarm_arr)
                 for (let i = 0; i < alarm_arr.length; i++) {
                     if (i != alarm_arr.length - 1) {
                         let temp = alarm_arr[i]
@@ -637,7 +641,7 @@
 
                     }
                 }
-                // console.log(alarm_arr)
+                // // console.log(alarm_arr)
                 // 若出现同样的开始和结束时间则将对应的日期连接在原有的日期时间上， 否则直接push
                 for (let i = 0; i < alarm_arr.length; i++) {
                     let tmp = alarm_arr[i]
@@ -663,7 +667,7 @@
                     }
                     alarm_plan.push(alarm_plan_temp)
                 }
-                // console.log(alarm_plan)
+                // // console.log(alarm_plan)
                 return alarm_plan;
 
             },
@@ -671,7 +675,7 @@
                 return a.type - b.type;
             },
             sche_format(sche) { // 生成7*24小时计划表
-                console.log(sche, 'sche_format')
+                // console.log(sche, 'sche_format')
                 let start_h = ''
                 let end_h = ''
                 let start_day = ''
@@ -684,7 +688,7 @@
                 for (let i = 0; i < 7; i++) {
                     day_h.push(arr_h.join(''))
                 }
-                //  //console.log(day_h)
+                //  //// console.log(day_h)
                 if (sche.length > 0) {
                     sche.forEach(function(item, index) {
                         start_h = parseInt(item.start / 3600 % 24)
@@ -752,7 +756,7 @@
                 day_h.forEach(function(item, index) {
                     final_form.push(item.split('').map(Number))
                 })
-                console.log(final_form, 'final_form')
+                // console.log(final_form, 'final_form')
                 return final_form;
             },
         },
@@ -809,15 +813,16 @@
         color: #000;
         margin-top: 20px;
     }
+
     #record {
-      input[type='radio'] {
-        appearance: none;
-        -webkit-appearance: none;
-        outline: none;
-        margin: 0;
-        vertical-align: text-bottom;
-        margin-right: 0.1rem;
-      }
+        input[type='radio'] {
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            margin: 0;
+            vertical-align: text-bottom;
+            margin-right: 0.1rem;
+        }
     }
 
     .record_sd_calculate {

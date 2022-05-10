@@ -153,13 +153,13 @@ export default {
       mcs_cancel: mcs_cancel, //取消
 
       deviceID: '', //设备号
-      input_threshold: 0, //移动侦测白天灵敏度
-      input_thresholdLevelNight: 0, //移动侦测夜间灵敏度
+      input_threshold: '', //移动侦测白天灵敏度
+      input_thresholdLevelNight: '', //移动侦测夜间灵敏度
       motion_track_switch: '', //是否移动追踪
       conf: {}, //外设数据
       face_detect_switch: '', //是否人脸检测
       dev_type: '', //外设类型
-      input_sound_threshold: 0, //声音灵敏度
+      input_sound_threshold: '', //声音灵敏度
       video_time_input: '',
       del_sign: false, //是否显示删除
       mobile_tracking_sign: '', //控制是否移动追踪
@@ -292,17 +292,17 @@ export default {
   },
   watch: {
     input_threshold (val) {
-      if (val && this.$refs.threshold) {
+      if (this.$refs.threshold && (val || val == 0)) {
         this.$refs.threshold.style.backgroundSize = val + '% 100%';
       }
     },
     input_thresholdLevelNight (val) {
-      if (val && this.$refs.thresholdLevelNight) {
+      if (this.$refs.thresholdLevelNight && (val || val == 0)) {
         this.$refs.thresholdLevelNight.style.backgroundSize = val + '% 100%';
       }
     },
     input_sound_threshold (val) {
-      if (val && this.$refs.sound_threshold) {
+      if (this.$refs.sound_threshold && (val || val == 0)) {
         this.$refs.sound_threshold.style.backgroundSize = val + '% 100%';
       }
     },

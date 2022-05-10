@@ -267,6 +267,13 @@
       border-radius:2px;
     }
   }
+  .device_IPC_nick {
+    display: inline-block;
+    width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 #empty_div_img{ // 设备列表无设备时展示图片
   background-image:url(~@/assets/device/dev_no.png);

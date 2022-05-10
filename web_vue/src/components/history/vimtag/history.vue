@@ -292,9 +292,11 @@
                 let loopTime = 0
                 getPic(_this.history_data);
 
-                if (_this.$store.state.jumpPageData.historyFilterData && _this.$store.state.jumpPageData.historyFilterData.filter_type) {
-                    _this.$store.dispatch('setHistoryFilterData', {});
-                }
+				_this.$nextTick(()=>{
+					if (_this.$store.state.jumpPageData.historyFilterData && _this.$store.state.jumpPageData.historyFilterData.filter_type) {
+						_this.$store.dispatch('setHistoryFilterData', {});
+					}
+				})
 
                 function getPic(data) { // 获取图片方法
                     _this.$nextTick(function() {

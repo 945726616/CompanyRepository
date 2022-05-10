@@ -64,7 +64,7 @@
                 <input class='device_list_sort_num' :value='IPCCamera.sort || ""'>
                 <div class='device_list_sort_btn' @click="setDeviceNickName(IPCCamera)">{{mcs_edit}}</div>
               </div>
-              <span>{{IPCCamera.nick}}</span>
+              <span class='device_IPC_nick'>{{IPCCamera.nick}}</span>
             </div>
           </div>
         </div>

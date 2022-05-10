@@ -89,7 +89,7 @@
             <div :id='project_name+"_add_device_success_ico"'></div>
             <div id='add_device_success_txt'>{{mcs_device_id + ":" + add_device_input_id_model.toUpperCase() + " " + mcs_add_successfully + "!"}}</div>
           </div>
-          <div id='add_device_edit_pass_tips'>{{mcs_device_password_too_simple}}</div> <!-- 密码8到32位 -->
+          <div id='add_device_edit_pass_tips'>{{mcs_password_demand}}</div> <!-- 密码6-20位 -->
           <div class='add_device_input_id_box'>
             <div class='add_device_input_pass_box_ico'></div>
             <input id='add_device_edit_pass' class='add_device_input_id_box_input' type='password' v-model="edit_password_1st" :placeholder='mcs_input_password'>
@@ -116,7 +116,7 @@
               <div id='add_device_set_wifi_input' class='add_device_set_wifi_input' v-text="addDeviceModelObj.wifiName ? addDeviceModelObj.wifiName : (mcs_select_wifi_wizard.length < 14) ? mcs_select_wifi_wizard : (mcs_select_wifi_wizard.substr(0, 14) + '...' )"></div>
             </div>
             <div id='add_device_set_wifi_list_box' v-if="wifiListFlag">
-              <div class='add_device_set_wifi_list' v-for="wifiNameItem in addDeviceModelObj.wifiListArr" :key="wifiNameItem.ssid" @click="chooseWifi(wifiNameItem.ssid)">{{wifiNameItem.ssid}}</div> <!-- 循环渲染wifi设备列表 -->
+              <div class='add_device_set_wifi_list' v-for="wifiNameItem in addDeviceModelObj.wifiListArr" :key="wifiNameItem.bss" @click="chooseWifi(wifiNameItem.ssid)">{{wifiNameItem.ssid}}</div> <!-- 循环渲染wifi设备列表 -->
             </div>
           </div>
           <div class='add_device_input_id_box'>
@@ -141,9 +141,11 @@
         <!-- 设置设备时区 -->
         <div v-if="addDeviceModelObj.addDeviceBodyFlag === 'setDeviceZone'" id="set_device_zone">
           <div id='add_device_set_zone_box'>
-            <div class='add_device_set_zone_box_ico'></div>
-            <div id='add_device_set_wifi_btn' :class="[addDeviceModelObj.timeZoneListFlag ? 'add_device_set_wifi_down' :'add_device_set_wifi_up']"></div>
-            <div id='add_device_set_zone_input' @click="$set(addDeviceModelObj, 'timeZoneListFlag', true)" class='add_device_set_wifi_input'>{{addDeviceModelObj.timeZoneName}}</div>
+            <div @click="$set(addDeviceModelObj, 'timeZoneListFlag', !addDeviceModelObj.timeZoneListFlag)" style='user-select:none;'>
+              <div class='add_device_set_zone_box_ico'></div>
+              <div id='add_device_set_wifi_btn' :class="[addDeviceModelObj.timeZoneListFlag ? 'add_device_set_wifi_down' :'add_device_set_wifi_up']"></div>
+              <div id='add_device_set_zone_input' class='add_device_set_wifi_input'>{{addDeviceModelObj.timeZoneName}}</div>
+            </div>
             <div id='add_device_set_wifi_list_box' v-if="addDeviceModelObj.timeZoneListFlag">
               <div class='add_device_set_wifi_list' v-for="timeItem in addDeviceModelObj.timeZoneArr" :key="timeItem.zone_name" @click="chooseTimeZone(timeItem)" :utc='timeItem.utc' :city='timeItem.city' :name='timeItem.file'>{{timeItem.zone_name}}</div>
             </div>
@@ -257,7 +259,6 @@ export default {
       mcs_add_successfully: mcs_add_successfully,
       mcs_input_confirm_password: mcs_input_confirm_password,
       mcs_change: mcs_change,
-      mcs_device_password_too_simple: mcs_device_password_too_simple,
       mcs_prompt_config_wifi: mcs_prompt_config_wifi,
       mcs_select_wifi_wizard: mcs_select_wifi_wizard,
       mcs_action_skip: mcs_action_skip,
@@ -273,7 +274,8 @@ export default {
       mcs_device_offline_fourth_reson: mcs_device_offline_fourth_reson,
       mcs_search_help: mcs_search_help,
       mcs_device_offline: mcs_device_offline,
-      mcs_nickname: mcs_nickname
+      mcs_nickname: mcs_nickname,
+      mcs_password_demand:mcs_password_demand,
     }
   },
   methods: {
@@ -491,11 +493,11 @@ export default {
     editDevicePasswordNext () { // 修改设备密码点击下一步
       let password = this.edit_password_1st
       let re_password = this.edit_password_2nd
-      let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,32}$/
+      let reg = /^[0-9A-Za-z]{6,20}$/
       if (!password || !re_password) {
         this.publicFunc.msg_tips({ msg: mcs_the_password_is_empty, type: "error", timeout: 3000 })
-      } else if (!reg.exec(password)) { //密码为8到32位的数字和字母
-        this.publicFunc.msg_tips({ msg: mcs_password_range_hint, type: "error", timeout: 3000 })
+      } else if (!reg.exec(password)) { //密码为6到20位的数字或字母
+        this.publicFunc.msg_tips({ msg: mcs_input_6_to_20_litters, type: "error", timeout: 3000 })
       } else if (password != re_password) { //密码不一致
         this.publicFunc.msg_tips({ msg: mcs_two_password_input_inconsistent, type: "error", timeout: 3000 })
       } else {

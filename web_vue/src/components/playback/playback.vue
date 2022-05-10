@@ -413,6 +413,7 @@ export default {
           //   }
           // })
         })
+        $("#video_play").attr("class", "video_play_start")
       }
     },
     clickDownloadSubmit () { // 点击下载弹窗中确定事件
