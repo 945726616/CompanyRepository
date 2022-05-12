@@ -1,5 +1,5 @@
-<!-- version v9.5.1.2205101032 -->
-<!-- 版本号 v9.5.1.2205101032 -->
+<!-- version v9.5.1.2205121108 -->
+<!-- 版本号 v9.5.1.2205121108 -->
 <html>
 
 <head>
@@ -51,8 +51,8 @@
           m_hostname += '/device'
         }
         // 客户端vimtag/ebitcam特殊判断
-        if ((host_choose_item === 'www.vimtag.com' || host_choose_item === 'www.ebitcam.com') && window.fujikam === 'fujikam') {
-          host_choose_item += '/device'
+        if ((m_hostname === 'www.vimtag.com' || m_hostname === 'www.ebitcam.com') && window.fujikam === 'fujikam') {
+          m_hostname += '/device'
         }
         console.log(m_hostname, 'm_hostname')
         // 从Json文件中对比已经注册了的域名并获取展示在标签页上的title名
