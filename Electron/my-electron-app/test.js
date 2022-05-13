@@ -7,7 +7,7 @@ if (flvjs.isSupported()) {
     type: 'flv',
     isLive: true,
     // hasAudio: false,
-    url: 'rtmp://127.0.0.1:1935/live/test',
+    url: 'http://localhost:8000/live/STREAM_NAME.flv',
   }, {
     enableStashBuffer: true,
   })
