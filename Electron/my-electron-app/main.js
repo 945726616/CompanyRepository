@@ -68,42 +68,60 @@ function createWindow () {
     // path.join API 将多个路径段连接在一起，创建一个适用于所有平台的组合路径字符串。
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: true,
-      contextIsolation: false
+      // nodeIntegration: true,
+      // contextIsolation: false
     }
   })
 
   // 子窗口创建
-  // child = new BrowserWindow({ parent: win, frame: false, x:win.getBounds().x, y: win.getBounds().y + 100, width: 500, height: 400, minWidth:300 })
-  // child.movable = true
+  child = new BrowserWindow({ // transparent: true
+    parent: win,
+    frame: false,
+  })
+  // child.loadURL('http://www.vimtag.com/device')
+  child.loadFile('index.html')
+  // child.loadFile('yuvIndex.html')
+  // child.setBackgroundColor(rgba(255, 255, 255, 0))
+  child.hide()
 
-  // child.loadURL('https://electronjs.org')
 
-
-  win.loadFile('index.html')
-  // require('./ipcMain.js')
+  win.loadURL('http://localhost:8080/vimtag/')//loadFile('index.html')
+  // win.loadFile('yuvIndex.html')
   win.on('resize', () => {
     console.log(win.getSize(), Math.ceil(win.getSize()[0]/2))
-    //  child.setSize(Math.ceil(win.getSize()[0]/2), Math.ceil(win.getSize()[1]/2))
-    // win.reload()
+     child.setSize(Math.ceil(win.getSize()[0]/2), Math.ceil(win.getSize()[1]/2))
   })
   win.on('move', () => {
-    console.log(win.getBounds(), 'move_getBounds')
-    // child.setBounds({ x: win.getBounds().x, y: win.getBounds().y })
+    // console.log(win.getContentBounds(), 'move_getBounds')
+    console.log('move window event')
+    // child.setBounds({ x: win.getContentBounds().x + playerOrigin.x, y: win.getContentBounds().y + playerOrigin.y })
+    win.webContents.send('ping', 'whoooooooh!')
   })
 
   // ipcMain通信方法
+  // 接收从页面中传递的播放器初始位置信息(全局存储)
+  ipcMain.on('send-player-origin', (event, arg) => {
+    child.show()// 展示child窗口
+    console.log('originPlay', arg)
+    let playerOrigin = JSON.parse(arg)
+    let x1 = win.getContentBounds().x + playerOrigin.x
+    let y1 = win.getContentBounds().y + playerOrigin.y
+    console.log('x, y', x1, y1)
+    child.setBounds({x: x1, y: y1})
+    child.setSize(playerOrigin.width, playerOrigin.height)
+  })
+
   ipcMain.on('send-message', (event, arg) => {
     console.log('get ipcRenderer message', arg) // prints "ping"
-    console.log('win.getBounds', win.getBounds())
+    console.log('win.getBounds', win.getContentBounds())
     let argObj = JSON.parse(arg)
     // 子窗口x轴偏移量为主窗口位置+播放器的offsetLeft
     // 子窗口y轴偏移量为主窗口位置+播放器的offsetTop-纵向滚动条的scrollTop
-    // let childScrollX = win.getBounds().x + argObj.offsetLeft + 8
-    // let childScrollY = win.getBounds().y + (argObj.offsetTop > argObj.scrollTop ? argObj.offsetTop - argObj.scrollTop + 70 : 0) + 50
-    // child.setBounds({ x: childScrollX, y: childScrollY })
-    // console.log('changChild', child.getBounds())
-    // event.reply('asynchronous-reply', 'pong')
+    let childScrollX = win.getContentBounds().x + argObj.offsetLeft
+    let childScrollY = win.getContentBounds().y + (argObj.offsetTop > argObj.scrollTop ? argObj.offsetTop - argObj.scrollTop : 0)
+    child.setBounds({ x: childScrollX, y: childScrollY })
+    console.log('changChild', child.getContentBounds())
+    event.reply('asynchronous-reply', 'pong')
   })
 
   // ffmpeg

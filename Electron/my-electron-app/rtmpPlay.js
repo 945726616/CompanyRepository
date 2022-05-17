@@ -1,3 +1,4 @@
+// rtmp播放器, js方法
 if (flvjs.isSupported()) {
   const videoElement = document.getElementById('videoPlayer')
   console.log(videoElement, 'videoElement')

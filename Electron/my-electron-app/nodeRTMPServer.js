@@ -1,3 +1,4 @@
+// rtmp推流服务器文件
 const NodeMediaServer = require('node-media-server');
 const config = {
   rtmp: {
