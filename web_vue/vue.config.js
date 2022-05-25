@@ -8,7 +8,7 @@ const FileManagerPlugin = require('filemanager-webpack-plugin')
 // let month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
 // let day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
 // const time = String(date.getFullYear()) + String(month) + String(day) //版本号后拼接的日期参数
-
+// console.log(process.env, 'process.env.npm_config_argv')
 const argv = JSON.parse(process.env.npm_config_argv)
 const config = {}
 // 获取自定义参数

@@ -55,6 +55,9 @@
       "no-inner-declarations": 0
     }
   },
+  "engines": {
+    "npm": "~6.14.0"
+  },
   "browserslist": [
     "Chrome > 38"
   ]

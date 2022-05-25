@@ -3,7 +3,7 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-d
 // 导入app模块(控制应用程序的事件生命周期)
 // 导入BrowserWindow模块(创建和管理应用程序窗口)
 // 导入ipcMain模块用于与渲染模块通信
-const { app, BrowserWindow, BrowserView, ipcMain } = require('electron')
+const { app, BrowserWindow, BrowserView, ipcMain, screen } = require('electron')
 
 // 引入Node.js中的path模块
 const path = require('path')
@@ -26,7 +26,7 @@ const myAddDll = new ffi.Library('Dll1', {
 const result = myAddDll.funAdd(5,8)
 console.log(result)// 13
 
-
+let screenSizeHeight, screenSizeWidth
 // function showText(text) {
 //   return new Buffer(text, 'ucs2').toString('binary')
 // }
@@ -62,7 +62,6 @@ function createWindow () {
     width: 1000,
     height: 800,
     minWidth: 600,
-
     // 用于访问Node.js中的process.versions对象
     // __dirname 字符串指向当前正在执行的脚本的路径
     // path.join API 将多个路径段连接在一起，创建一个适用于所有平台的组合路径字符串。
@@ -77,29 +76,146 @@ function createWindow () {
   child = new BrowserWindow({ // transparent: true
     parent: win,
     frame: false,
+    shadow: false, // 关闭阴影
   })
   // child.loadURL('http://www.vimtag.com/device')
-  child.loadFile('index.html')
-  // child.loadFile('yuvIndex.html')
+  // child.loadFile('index.html')
+  child.loadFile('yuvIndex.html')
   // child.setBackgroundColor(rgba(255, 255, 255, 0))
   child.hide()
 
 
   win.loadURL('http://localhost:8080/vimtag/')//loadFile('index.html')
   // win.loadFile('yuvIndex.html')
+  // win.setBackgroundColor(rgba(255, 255, 255, 0))
+  // 点击最大化按钮事件
+  win.on('maximize', () => {
+    win.webContents.send('request-player-position', 0)
+    // 监听子进程返回接口
+    ipcMain.once('window-maximize', (event, value) => {
+      console.log(value, 'maximize callback') // 将打印到 Node 控制台
+      let getMaxValue = JSON.parse(value)
+      // 纠正回传值不超过屏幕最大展示范围
+      getMaxValue.width = getMaxValue.width > screenSizeWidth ? screenSizeWidth : getMaxValue.width
+      getMaxValue.height = getMaxValue.height > screenSizeHeight ? screenSizeHeight : getMaxValue.height
+      child.setBounds({
+        x: win.getContentBounds().x + (getMaxValue.x > 0 ? getMaxValue.x : 0),
+        y: win.getContentBounds().y + (getMaxValue.y > 0 ? getMaxValue.y : 0)
+      })
+      child.setSize(Math.floor(getMaxValue.width), Math.floor(getMaxValue.height))
+      // 根据子窗口设置主窗口的最小值
+      win.setMinimumSize(Math.floor((getMaxValue.x > 0 ? getMaxValue.x : 0) + getMaxValue.width) + 100,
+        Math.floor((getMaxValue.y > 0 ? getMaxValue.y : 0) + getMaxValue.height) + 200)
+    })
+  })
+  // 取消最大化事件
+  win.on('unmaximize', () => {
+    win.webContents.send('request-player-position', 1)
+    // 监听子进程返回接口
+    ipcMain.once('window-unmaximize', (event, value) => {
+      console.log(value, 'unmaximize callback') // 将打印到 Node 控制台
+      let getUnMaxValue = JSON.parse(value)
+      // 纠正回传值不超过屏幕最大展示范围
+      getUnMaxValue.width = getUnMaxValue.width > screenSizeWidth ? screenSizeWidth : getUnMaxValue.width
+      getUnMaxValue.height = getUnMaxValue.height > screenSizeHeight ? screenSizeHeight : getUnMaxValue.height
+      child.setBounds({
+        x: win.getContentBounds().x + (getUnMaxValue.x > 0 ? getUnMaxValue.x : 0),
+        y: win.getContentBounds().y + (getUnMaxValue.y > 0 ? getUnMaxValue.y : 0)
+      })
+      let childWidth = Math.floor(getUnMaxValue.width)
+      let childHeight = Math.floor(getUnMaxValue.height)
+      child.setSize(childWidth, childHeight)
+      // 需要先设置一次主窗口大小后再设置最小值
+      let parentWidth = Math.floor((getUnMaxValue.x > 0 ? getUnMaxValue.x : 0) + getUnMaxValue.width) + 100
+      let parentHeight = Math.floor((getUnMaxValue.y > 0 ? getUnMaxValue.y : 0) + getUnMaxValue.height) + 200
+      win.setSize(parentWidth > screenSizeWidth ? screenSizeWidth : parentWidth,
+        parentHeight > screenSizeHeight ? screenSizeHeight : parentHeight)
+      // 设置窗口居中
+      win.center()
+      // 根据子窗口设置主窗口的最小值
+      win.setMinimumSize(parentWidth > screenSizeWidth ? screenSizeWidth : parentWidth,
+        parentHeight > screenSizeHeight ? screenSizeHeight : parentHeight)
+    })
+  })
+  // 拖动窗口改变大小事件
   win.on('resize', () => {
     console.log(win.getSize(), Math.ceil(win.getSize()[0]/2))
-     child.setSize(Math.ceil(win.getSize()[0]/2), Math.ceil(win.getSize()[1]/2))
+    // child.setSize(Math.ceil(win.getSize()[0]/2), Math.ceil(win.getSize()[1]/2))
+    // 向渲染进程发送消息要求返回播放器位置信息
+    win.webContents.send('request-player-position', 2)
+    // 监听子进程返回接口
+    ipcMain.on('window-resize', (event, value) => {
+      console.log(value, 'resize callback') // 将打印到 Node 控制台
+      let getResizeValue = JSON.parse(value)
+      // 纠正回传值不超过屏幕最大展示范围
+      getResizeValue.width = getResizeValue.width > screenSizeWidth ? screenSizeWidth : getResizeValue.width
+      getResizeValue.height = getResizeValue.height > screenSizeHeight ? screenSizeHeight : getResizeValue.height
+      child.setBounds({
+        x: win.getContentBounds().x + (getResizeValue.x > 0 ? getResizeValue.x : 0),
+        y: win.getContentBounds().y + (getResizeValue.y > 0 ? getResizeValue.y : 0)
+      })
+      if (child.getSize()[0] !== Math.floor(getResizeValue.width) && child.getSize()[1] !== Math.floor(getResizeValue.height)) {
+        child.setSize(Math.floor(getResizeValue.width), Math.floor(getResizeValue.height))
+      }
+      // 根据子窗口设置主窗口的最小值
+      win.setMinimumSize(Math.floor((getResizeValue.x > 0 ? getResizeValue.x : 0) + getResizeValue.width) + 100,
+        Math.floor((getResizeValue.y > 0 ? getResizeValue.y : 0) + getResizeValue.height) + 200)
+    })
   })
+  // 拖动窗口事件
   win.on('move', () => {
     // console.log(win.getContentBounds(), 'move_getBounds')
-    console.log('move window event')
-    // child.setBounds({ x: win.getContentBounds().x + playerOrigin.x, y: win.getContentBounds().y + playerOrigin.y })
-    win.webContents.send('ping', 'whoooooooh!')
+    // console.log('move window event', win.getBounds(), newBounds)
+    // 向渲染进程发送消息要求返回播放器位置信息
+    win.webContents.send('request-player-position', 3)
+    // 监听返回事件
+    ipcMain.once('window-move', (event, value) => {
+      console.log(value, 'move callback') // 将打印到 Node 控制台
+      let getMoveValue = JSON.parse(value)
+      // 纠正回传值不超过屏幕最大展示范围
+      getMoveValue.width = getMoveValue.width > screenSizeWidth ? screenSizeWidth : getMoveValue.width
+      getMoveValue.height = getMoveValue.height > screenSizeHeight ? screenSizeHeight : getMoveValue.height
+      child.setBounds({
+        x: win.getContentBounds().x + (getMoveValue.x > 0 ? getMoveValue.x : 0),
+        y: win.getContentBounds().y + (getMoveValue.y > 0 ? getMoveValue.y : 0)
+      })
+      console.log(child.getSize(), 'child getSize')
+      console.log(Math.floor(getMoveValue.width), Math.floor(getMoveValue.height), 'Math.floor(getMoveValue.width), Math.floor(getMoveValue.height)')
+      // 子窗口长宽未改变时不重复赋值, 减少拖拽频闪问题
+      if (child.getSize()[0] !== Math.floor(getMoveValue.width) && child.getSize()[1] !== Math.floor(getMoveValue.height)) {
+        console.log('enter change width height')
+        child.setSize(Math.floor(getMoveValue.width), Math.floor(getMoveValue.height))
+      }
+    })
+  })
+  // 最小化事件
+  win.on('restore', () => {
+    console.log('enter restore')
+    child.show()
+    // 使用move事件相同的方法请求child窗口参数即可
+    win.webContents.send('request-player-position', 3)
+    // 监听返回事件
+    ipcMain.once('window-move', (event, value) => {
+      console.log(value, 'move callback') // 将打印到 Node 控制台
+      let getMoveValue = JSON.parse(value)
+      // 纠正回传值不超过屏幕最大展示范围
+      getMoveValue.width = getMoveValue.width > screenSizeWidth ? screenSizeWidth : getMoveValue.width
+      getMoveValue.height = getMoveValue.height > screenSizeHeight ? screenSizeHeight : getMoveValue.height
+      child.setBounds({
+        x: win.getContentBounds().x + (getMoveValue.x > 0 ? getMoveValue.x : 0),
+        y: win.getContentBounds().y + (getMoveValue.y > 0 ? getMoveValue.y : 0)
+      })
+      console.log(child.getSize(), 'child getSize')
+      console.log(Math.floor(getMoveValue.width), Math.floor(getMoveValue.height), 'Math.floor(getMoveValue.width), Math.floor(getMoveValue.height)')
+      // 子窗口长宽未改变时不重复赋值, 减少拖拽频闪问题
+      if (child.getSize()[0] !== Math.floor(getMoveValue.width) && child.getSize()[1] !== Math.floor(getMoveValue.height)) {
+        console.log('enter change width height')
+        child.setSize(Math.floor(getMoveValue.width), Math.floor(getMoveValue.height))
+      }
+    })
   })
 
-  // ipcMain通信方法
-  // 接收从页面中传递的播放器初始位置信息(全局存储)
+  // 接收从页面中传递的播放器初始位置信息
   ipcMain.on('send-player-origin', (event, arg) => {
     child.show()// 展示child窗口
     console.log('originPlay', arg)
@@ -111,6 +227,7 @@ function createWindow () {
     child.setSize(playerOrigin.width, playerOrigin.height)
   })
 
+  // 页面滚动时获取播放器位置相关数据
   ipcMain.on('send-message', (event, arg) => {
     console.log('get ipcRenderer message', arg) // prints "ping"
     console.log('win.getBounds', win.getContentBounds())
@@ -121,7 +238,13 @@ function createWindow () {
     let childScrollY = win.getContentBounds().y + (argObj.offsetTop > argObj.scrollTop ? argObj.offsetTop - argObj.scrollTop : 0)
     child.setBounds({ x: childScrollX, y: childScrollY })
     console.log('changChild', child.getContentBounds())
-    event.reply('asynchronous-reply', 'pong')
+    // event.reply('asynchronous-reply', 'pong')
+  })
+
+  // 离开播放页面关闭播放窗口
+  ipcMain.on('hide-player', (event, arg) => {
+    console.log('hidePlayer', arg)
+    child.hide()
   })
 
   // ffmpeg
@@ -162,6 +285,13 @@ function createWindow () {
 
 // app模块中的ready事件被激发后才能创建浏览器窗口, 使用app.whenReady()监听
 app.whenReady().then(() => {
+  // 获取显示器工作区域大小
+  const screenSize = screen.getPrimaryDisplay().workAreaSize
+  screenSizeWidth = screenSize.width
+  screenSizeHeight = screenSize.height
+  console.log(screenSize, 'screenSize')
+  console.log(screenSizeWidth, 'screenSizeWidth')
+  console.log(screenSizeHeight, 'screenSizeHeight')
   createWindow()
   // 引入devtools
   installExtension(REACT_DEVELOPER_TOOLS)

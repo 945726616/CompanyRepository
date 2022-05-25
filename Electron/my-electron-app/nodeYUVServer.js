@@ -19,7 +19,7 @@ class Server {
     console.log(`${prefix}attach new Session: ${id}`);
   }
 
-  dettachSource(source) {
+  detachSource(source) {
     const id = source.id;
     if (id in this.sessions && this.sessions[id].has(source)) {
       this.sessions[id].delete(source);
@@ -153,7 +153,7 @@ class Server {
 
       client.on('close', () => {
         console.log(`${prefix} player dettached: ${id}`);
-        this.dettachSource(source);
+        this.detachSource(source);
       });
     });
   }
