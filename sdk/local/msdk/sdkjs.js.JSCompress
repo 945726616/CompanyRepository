@@ -1,0 +1,30 @@
+﻿<jscompress public="http://www.jscompress.cn/" command="import-combineset">
+<combinefile path="sdkjs.js">
+    <auto value="0" />
+    <sourcefile path="..\config\config.js" />
+    <sourcefile path="..\config\global.variable.js" />
+    <sourcefile path="..\function\boxlist.func.js" />
+    <sourcefile path="..\function\devInfo.func.js" />
+    <sourcefile path="..\function\login.func.js" />
+    <sourcefile path="..\function\play.func.js" />
+    <sourcefile path="..\function\public.func.js" />
+    <sourcefile path="..\function\sdkInfo.func.js" />
+    <sourcefile path="..\interface\route.js" />
+    <sourcefile path="..\lib\cryptojs_tripledes.js" />
+    <sourcefile path="..\lib\cryptojs_pad-nopadding-min.js" />
+    <sourcefile path="..\lib\mlib.cloud.account.js" />
+    <sourcefile path="..\lib\mlib.cloud.agent.js" />
+    <sourcefile path="..\lib\mlib.cloud.entry.js" />
+    <sourcefile path="..\lib\mlib.core.base.js" />
+    <sourcefile path="..\lib\mlib.core.codec.js" />
+    <sourcefile path="..\lib\mlib.core.evt.js" />
+    <sourcefile path="..\lib\mlib.core.hack.js" />
+    <sourcefile path="..\lib\mlib.core.json.js" />
+    <sourcefile path="..\lib\mlib.core.mme.hls.js" />
+    <sourcefile path="..\lib\mlib.core.rpc.js" />
+    <sourcefile path="..\lib\mlib.crypt.dh.js" />
+    <sourcefile path="..\lib\mlib.crypt.md5.js" />
+    <sourcefile path="..\lib\video.js" />
+    <sourcefile path="..\lib\videojs-hlsjs-plugin.js" />
+</combinefile>
+</jscompress>
