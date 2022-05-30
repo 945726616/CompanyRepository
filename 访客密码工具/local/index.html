@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!-- <script src='https://www.mipcm.com/msdk_plug.index.htm.js'></script> -->
+  <!-- <script src="../compression/msdk_plug.index.htm.js"></script>
+	<script src="./msdk/sdkjs.min.js" type="text/javascript"></script> -->
+  <link href="lib/video-js.css" rel="stylesheet">
+  <script src="lib/video.js"></script>
+  <script src="lib/videojs-hlsjs-plugin.js"></script>
+  <script src='config/global.variable.js'></script>
+  <script src='config/config.js'></script>
+  <script src="lib/jquery-1.8.3.js"></script>
+  <script src="lib/mlib.cloud.entry.js"></script>
+  <script src="lib/mlib.crypt.md5.js"></script>
+  <script src="lib/mlib.crypt.dh.js"></script>
+  <script src="lib/mlib.core.evt.js"></script>
+  <script src="lib/mlib.core.json.js"></script>
+  <script src="lib/mlib.core.codec.js"></script>
+  <script src="lib/mlib.core.rpc.js"></script>
+  <script src="lib/cryptojs_tripledes.js"></script>
+  <script src="lib/cryptojs_pad-nopadding-min.js"></script>
+  <script src="lib/mlib.cloud.account.js"></script>
+  <script src="lib/mlib.cloud.agent.js"></script>
+  <script src='lib/mlib.core.base.js'></script>
+  <script src='lib/mlib.core.hack.js'></script>
+  <script src="lib/mlib.core.mme.hls.js"></script>
+  <script src='interface/route.js'></script>
+  <script src='function/login.func.js'></script>
+  <script src='function/play.func.js'></script>
+  <script src='function/sdkInfo.func.js'></script>
+  <script src='function/devInfo.func.js'></script>
+  <script src='function/boxlist.func.js'></script>
+  <script src="function/public.func.js"></script>
+
+  <script src='msdk/msdk_plug.js'></script>
+  <script>
+    var msdk = new MSdk()
+
+    function printLog (data, ref) { // 打印信息
+      document.getElementById("ref").innerHTML = JSON.stringify(ref);
+      document.getElementById("log").innerHTML = JSON.stringify(data);
+    }
+
+    function onCreateClick () { // 初始化
+      var param = new Object();
+      param.data = { token: "create" };
+      param.ref = { ref: "create_ack" };
+      param.callback = function (data, ref) {
+        printLog(data, ref);
+      }
+      msdk.create(param)
+    }
+
+    function getInfo () { // sdk信息
+      var param = new Object();
+      param.cmd = "get_info";
+      param.data = {};
+      param.ref = { ref: "get_info_ack" };
+      param.obj = null;
+      param.callback = function (data, ref) {
+        printLog(data, ref);
+      }
+      msdk.ctrl(param)
+    }
+
+    function login () { // 登录
+      var userName = document.getElementById("userName").value;
+      var userPass = document.getElementById("userPass").value;
+      if (userName && userPass) {
+        var param = new Object();
+        param.cmd = "login";
+        param.data = { user: userName, pass: userPass };
+        param.ref = { ref: "login_ack" };
+        param.obj = null;
+        param.callback = function (data, ref) {
+          printLog(data, ref);
+        }
+        msdk.ctrl(param)
+      }
+    }
+
+    function getDeviceList () { // 设备列表获取
+      var param = new Object();
+      param.cmd = "get_dev_info";
+      param.data = {};
+      param.ref = { ref: "get_dev_info_ack" };
+      param.obj = null;
+      param.callback = function (data, ref) {
+        printLog(data, ref);
+        var devListHTML = ''
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].result === '') {
+            devListHTML += '<tr><td>设备ID:'+ data[i].sn + '</td><td>设备状态:' + data[i].dev_stat + '</td></tr>'
+          }
+        }
+        document.getElementById("devList").innerHTML = devListHTML;
+      }
+      msdk.ctrl(param)
+    }
+
+    function setGuestPassword () { // 设置访客密码
+      var dev_sn = document.getElementById('devId').value
+      var admin_pwd_value = document.getElementById('adminPassword').value
+      var guest_pwd_value = document.getElementById('guestPassword').value
+      var confirm_guest_pwd_value = document.getElementById('confirmPassword').value
+      if (admin_pwd_value === "amdin") { // 管理密码为默认admin
+        admin_pwd_value = "admin"
+      }
+      if (dev_sn === '') { // 未输入设备ID
+        printLog({'error': 'please input device ID'}, {'error': 'please input device ID'})
+        return
+      }
+      if (admin_pwd_value === '') { // 未输入管理密码
+        printLog({'error': 'please input manage passwords'}, {'error': 'please input manage passwords'})
+        return
+      }
+      if (guest_pwd_value === '') { // 未输入访客密码
+        printLog({'error': 'please input guest passwords'}, {'error': 'please input guest passwords'})
+        return
+      }
+      if (confirm_guest_pwd_value === '') { // 未输入确认密码
+        printLog({'error': 'please input confirm passwords'}, {'error': 'please input confirm passwords'})
+        return
+      }
+      if (guest_pwd_value === admin_pwd_value) { // 管理密码与访客密码相同
+        printLog({'error': 'The guest password you entered is the same as the admin password'}, {'error': 'The guest password you entered is the same as the admin password'})
+        return
+      }
+      if (guest_pwd_value !== confirm_guest_pwd_value) { // 两次输入的访客密码不一致
+        printLog({'error': 'The guest password you entered twice does not match'}, {'error': 'The guest password you entered twice does not match'})
+        return
+      } else { // 两次密码一致后校验是否符合密码规则
+        var reg = /^\S{6,20}$/;
+        if (!reg.exec(guest_pwd_value)) {
+          printLog({'error': '6-20 bits letters or numbers'}, {'error': '6-20 bits letters or numbers'})
+          return
+        }
+      }
+      // 调用修改访客密码接口
+      var param = new Object();
+      param.cmd = "set_dev_guest_password";
+      param.data = {
+        sn: dev_sn,
+        old_pass: admin_pwd_value,
+        new_pass: guest_pwd_value,
+        is_guest: 1
+      };
+      param.ref = { ref: "set_dev_guest_password_ack" };
+      param.obj = null;
+      param.callback = function (data, ref) {
+        printLog(data, ref);
+      }
+      msdk.ctrl(param)
+    }
+
+    function setUserGuestPassword () { // 设置帐号访客密码
+      var userPassword = document.getElementById('userPassword').value
+      var guestUserPassword = document.getElementById('guestUserPassword').value
+      var confirmUserPassword = document.getElementById('confirmUserPassword').value
+      if (userPassword === '') { // 未输入登录密码
+        printLog({'error': 'please input user password'}, {'error': 'please input user password'})
+        return
+      }
+      if (guestUserPassword === '') { // 未输入访客密码
+        printLog({'error': 'please input guest passwords'}, {'error': 'please input guest passwords'})
+        return
+      }
+      if (confirmUserPassword === '') { // 未输入确认密码
+        printLog({'error': 'please input confirm passwords'}, {'error': 'please input confirm passwords'})
+        return
+      }
+      if (userPassword === guestUserPassword) { // 登录密码与访客密码相同
+        printLog({'error': 'The guest password you entered is the same as the user password'}, {'error': 'The guest password you entered is the same as the user password'})
+        return
+      }
+      if (guestUserPassword !== confirmUserPassword) { // 两次输入的访客密码不一致
+        printLog({'error': 'The guest password you entered twice does not match'}, {'error': 'The guest password you entered twice does not match'})
+        return
+      } else { // 两次密码一致后校验是否符合密码规则
+        var reg = /^\S{6,20}$/;
+        if (!reg.exec(guestUserPassword)) {
+          printLog({'error': '6-20 bits letters or numbers'}, {'error': '6-20 bits letters or numbers'})
+          return
+        }
+      }
+      // 调用修改访客密码接口
+      var param = new Object();
+      param.cmd = "set_guest_password";
+      param.data = {
+        old_pass: userPassword,
+        new_pass: guestUserPassword,
+        is_guest: 1
+      };
+      param.ref = { ref: "set_guest_password_ack" };
+      param.obj = null;
+      param.callback = function (data, ref) {
+        printLog(data, ref);
+      }
+      msdk.ctrl(param)
+    }
+
+  </script>
+
+</head>
+
+<body>
+  <div id="web">
+    <div id="create">
+      <button id='id_create' onclick="onCreateClick()">初始化</button>
+      <button id='id_get_sdk_version' onclick="getInfo()">获取sdk信息</button>
+    </div>
+    <br />
+    <div id="login">
+      <b>用户名：</b> <input id='userName' type='text' value="wenjie963"></input><br />
+      <b>密 码：</b> <input id='userPass' type='text' value="wenjie963"></input><br />
+      <button id='id_login' onclick="login()">登陆</button>
+    </div>
+    <br />
+    <div>
+      <b>帐号密码：</b> <input id='userPassword' type='text' value="aa123456"></input><br />
+      <b>帐号访客密码：</b> <input id='guestUserPassword' type='text' value="123456aa"></input><br />
+      <b>确认访客密码：</b> <input id='confirmUserPassword' type='text' value="123456aa"></input><br />
+      <button onclick="setUserGuestPassword()">设置帐号访客密码</button>
+    </div>
+    <br />
+    <div>
+      <b>用户设备列表</b><button onclick="getDeviceList()">获取设备列表</button>
+      <table id="devList"></table>
+    </div>
+    <br />
+    <div>
+      <b>设备ID：</b> <input id='devId' type='text' value="1jfiegbru6qxq"></input><br />
+      <b>管理密码：</b> <input id='adminPassword' type='text' value="aa123456"></input><br />
+      <b>访客密码：</b> <input id='guestPassword' type='text' value="123456aa"></input><br />
+      <b>确认访客密码：</b> <input id='confirmPassword' type='text' value="123456aa"></input><br />
+      <button  onclick="setGuestPassword()">设置访客密码</button>
+    </div>
+    <br />
+    <br />
+    <b>ref:</b>
+    <p1 id="ref"></p1><br />
+    <b>data:</b>
+    <p1 id="log"></p1>
+  </div>
+</body>
+
+</html>
