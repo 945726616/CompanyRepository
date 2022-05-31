@@ -22,3 +22,11 @@ int funAdd(int a, int b)
 {
     return (a + b);
 }
+
+int funAdd1(int a, int b) {
+    return a + b;
+}
+
+int funAdd3(int a, int b) {
+    return a + b;
+}
