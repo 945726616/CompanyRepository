@@ -172,8 +172,7 @@ const set = {
     if (params.flag == 1) {
       menu_data = [
         { name: mcs_about, type: "about" },
-        { name: mcs_nickname, type: "nickname" },
-        { name: mcs_admin_password, type: "admin_password" },
+        { name: mcs_device_password, type: "admin_password" },
         { name: mcs_network, type: "network" },
         { name: mcs_osd, type: "osd" },
         { name: mcs_sdcord, type: "sdcord" },
@@ -192,8 +191,7 @@ const set = {
     } else if (params.flag == 2) { //云盒子
       menu_data = [
         { name: mcs_about, type: "about" },
-        { name: mcs_nickname, type: "nickname" },
-        { name: mcs_admin_password, type: "admin_password" },
+        { name: mcs_device_password, type: "admin_password" },
         { name: mcs_network, type: "network" },
         { name: mcs_hard_disk, type: "sdcord" },
         { name: mcs_date_time, type: "date_time" },
@@ -204,8 +202,7 @@ const set = {
     } else if (params.flag == 3) {
       menu_data = [
         { name: mcs_about, type: "about" },
-        { name: mcs_nickname, type: "nickname" },
-        { name: mcs_admin_password, type: "admin_password" },
+        { name: mcs_device_password, type: "admin_password" },
         { name: mcs_network, type: "network" },
         { name: mcs_osd, type: "osd" },
         { name: mcs_sdcord, type: "sdcord" },
@@ -227,8 +224,7 @@ const set = {
     } else if (params.flag == 5) { //鱼眼
       menu_data = [
         { name: mcs_about, type: "about" },
-        { name: mcs_nickname, type: "nickname" },
-        { name: mcs_admin_password, type: "admin_password" },
+        { name: mcs_device_password, type: "admin_password" },
         { name: mcs_network, type: "network" },
         { name: mcs_sdcord, type: "sdcord" },
         { name: mcs_storage_device, type: "storage_device" },
@@ -1863,6 +1859,26 @@ const set = {
       returnItem = {
         result: login.get_ret(res),
         data: { info: res.data.info }
+      }
+    })
+    return returnItem
+  },
+  /*
+  ** 联动框架->设置附件配置表
+  */
+  async profile_set (params) {
+    let returnItem
+    await axios.get('/ccm/ccm_dev_profile_set', {
+      params: {
+        sess: {
+          nid: login.create_nid(),
+          sn: params.sn,
+        },
+        info: params.info
+      }
+    }).then(res => {
+      returnItem = {
+        result: login.get_ret(res),
       }
     })
     return returnItem

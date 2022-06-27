@@ -6,28 +6,30 @@
                 <switch-button v-model='storage_device_sign' @data_updata_event='storage_device_updata'></switch-button>
             </div>
         </div>
-        <div id="storage_device_content">
-            <div class="list_right_item_ex">
-                <div class="options_float_left">{{ mcs_device_id }}</div>
-                <div class="options_float_right">
-                    <input type="text" id="input_device_id" class="list_right_input" v-model='input_device_id' />
+        <transition name='fade'>
+            <div id="storage_device_content" v-show='storage_device_sign'>
+                <div class="list_right_item_ex">
+                    <div class="options_float_left">{{ mcs_device_id }}</div>
+                    <div class="options_float_right">
+                        <input type="text" id="input_device_id" class="list_right_input" v-model='input_device_id' />
+                    </div>
+                </div>
+                <div class="list_right_item_ex">
+                    <div class="options_float_left">
+                        <label for="input_password"> {{ mcs_password }} </label>
+                    </div>
+                    <div class="options_float_right">
+                        <input type="password" name="input_password" id="input_password" class="list_right_input" v-model='input_password' />
+                    </div>
+                </div>
+                <div class="list_right_item_ex">
+                    <div class="options_float_left">{{ mcs_network_status }}</div>
+                    <div class="options_float_right">
+                        <input type="text" id="input_status" :value="input_status" class="input_read_only" disabled />
+                    </div>
                 </div>
             </div>
-            <div class="list_right_item_ex">
-                <div class="options_float_left">
-                    <label for="input_password"> {{ mcs_password }} </label>
-                </div>
-                <div class="options_float_right">
-                    <input type="password" name="input_password" id="input_password" class="list_right_input" v-model='input_password' />
-                </div>
-            </div>
-            <div class="list_right_item_ex">
-                <div class="options_float_left">{{ mcs_network_status }}</div>
-                <div class="options_float_right">
-                    <input type="text" id="input_status" :value="input_status" class="input_read_only" disabled />
-                </div>
-            </div>
-        </div>
+        </transition>
         <button id="storage_device_button_setup" class="list_right_button" @click='storage_device_button_setup_btn'>
             {{ mcs_apply }}
         </button>
@@ -94,15 +96,6 @@
             },
             storage_device_updata(data) { //更新存储设备按钮
                 this.storage_device_sign = data;
-            }
-        },
-        watch: {
-            storage_device_sign(val) {
-                if (val) {
-                    document.getElementById("storage_device_content").style.display = "inline";
-                } else {
-                    $("#storage_device_content").fadeOut();
-                }
             }
         },
         components: {

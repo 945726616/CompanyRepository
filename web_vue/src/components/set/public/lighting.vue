@@ -1,7 +1,7 @@
 <template>
     <div id='lighting_page' class='list_right_box'>
         <div class='menu_list_box'>
-            <div class='menu_list_last'>
+            <div class='lighting_menu_list'>
                 <div class='list_name'> {{mcs_IR_mode}} </div>
                 <div class='list_info'>
                     <input type="radio" value='red' v-model='light_mode' :class='light_mode == "red"?project_name+"_list_info_clickselect_img":"list_info_select_img"' />
@@ -10,7 +10,7 @@
         </div>
         <div class='menu_list_box_title2'> {{mcs_IR_mode_detail}} </div>
         <div class='menu_list_box'>
-            <div class='menu_list_last'>
+            <div class='lighting_menu_list'>
                 <div class='list_name'> {{mcs_white_light_mode}} </div>
                 <div class='list_info'>
                     <input type="radio" value='white' v-model='light_mode' :class='light_mode == "white"?project_name+"_list_info_clickselect_img":"list_info_select_img"' />
@@ -19,7 +19,7 @@
         </div>
         <div class='menu_list_box_title2'> {{mcs_white_light_mode_detail}} </div>
         <div class='menu_list_box'>
-            <div class='menu_list_last'>
+            <div class='lighting_menu_list'>
                 <div class='list_name'> {{mcs_smart_mode}} </div>
                 <div class='list_info'>
                     <input type="radio" value='auto' v-model='light_mode' :class='light_mode == "auto"?project_name+"_list_info_clickselect_img":"list_info_select_img"' />
@@ -95,14 +95,21 @@
         width: 520px;
         margin: 0 auto;
     }
+
     #lighting_page {
-      input[type='radio'] {
-        appearance: none;
-        -webkit-appearance: none;
-        outline: none;
-        margin: 0;
-        vertical-align: text-bottom;
-        margin-right: 0.1rem;
-      }
+        input[type='radio'] {
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            margin: 0;
+            vertical-align: text-bottom;
+            margin-right: 0.1rem;
+        }
+
+        .lighting_menu_list {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgb(204, 204, 204);
+        }
     }
 </style>

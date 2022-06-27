@@ -64,13 +64,12 @@
                     <div id='set_my_other_page' class='set_page' v-if='my_enter_list.my_other'>
                         <div id='devilist_num_set'>
                             <div class='menu_list_box'>
-                                <div class='menu_list_last'>
-                                    <div class='list_name'> {{mcs_setting_device_list}} </div>
+                                <div class='my_menu_list'>
+                                    <div class='list_name'> {{mcs_setting_device_list}}(1-4) </div>
                                     <div class='options_float_right'><input id='dev_set_input' type='text' class='normal_input_right' v-model="dev_set_input_num"></div>
                                 </div>
                             </div>
-                            <div class='options_float_right' style='clear:both'><button id='button_setup' class='list_right_button' @click='dev_set_btn'> {{mcs_apply}} </button>
-                            </div>
+                            <button id='button_setup' class='list_right_button' @click='dev_set_btn'> {{mcs_apply}} </button>
                         </div>
                     </div>
                     <div id='set_about_page' class='set_page' v-if='my_enter_list.about'>

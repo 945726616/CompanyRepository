@@ -737,7 +737,7 @@
                 this.playScreenHeight = { height: ((val - document.getElementById('dev_main_left').offsetWidth - 60) * 0.563) + 'px' }
                 this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px";
                 this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
-                this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
+                this.publicFunc.mx("#dev_list_nav").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
             },
             alarm_sign(val) {
                 let timer = null;

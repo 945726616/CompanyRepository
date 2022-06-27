@@ -3,7 +3,7 @@
 #dev_main_page{ // mipc系列devlist主架构
   width:100%;
   #dev_main_left{ // 左侧设备列表样式
-    width:234px;
+    width:240px;
     float:left;
     background: #f5f5f5;
     border-right:1px solid #d6d6dc;
@@ -12,10 +12,11 @@
       height: 42px;
       border-bottom: 1px solid #c0c3cc;
       background: #fff;
+      display: flex;
+      justify-content: space-around;
       .dev_main_list{
         height: 28px;
         width: 28px;
-        float: left;
         margin-top: 7px;
         padding-left: 25px;
         padding-right: 24px;
@@ -51,7 +52,6 @@
       .menu_nav{
         width:1px;
         height:20px;
-        float:left;
         margin-top:10px;
         background: #c0c3cc;
       }
@@ -67,7 +67,7 @@
   clear: both;
   visibility: hidden;
 }
-#dev_list{ // 设备列表详细div样式
+#dev_list_nav{ // 设备列表详细div样式
 	width:100%;
   overflow-y: scroll;
   overflow-x: hidden;

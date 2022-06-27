@@ -21,7 +21,7 @@
         </div>
         <!-- 设备列表菜单 结束 -->
         <!-- 设备列表详细 -->
-        <div id='dev_list'>
+        <div id='dev_list_nav'>
           <!-- 设备列表渲染内容 -->
           <div id='dev_list_box'>
             <!-- 设备循环渲染单元 -->
@@ -93,7 +93,7 @@ export default {
       this.publicFunc.mx("#dev_main_right").style.width = document.body.clientWidth - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px"
       this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 62) + "px"
       this.publicFunc.mx("#dev_main_right").style.minHeight = (document.documentElement.clientHeight - 17) + "px"
-      this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
+      this.publicFunc.mx("#dev_list_nav").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
       this.get_dev_list() // 获取设备列表
     },
     get_dev_list (type) { // 获取设备列表
@@ -273,7 +273,7 @@ export default {
     screenWidth (val){
       this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px";
       this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
-      this.publicFunc.mx("#dev_list").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
+      this.publicFunc.mx("#dev_list_nav").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
     }
   }
 }

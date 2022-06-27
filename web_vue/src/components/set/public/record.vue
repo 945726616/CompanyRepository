@@ -32,27 +32,28 @@
             <div class='sd_display'>
                 <div class='menu_list_box_title2 menu_list_mode'> {{mcs_mode}} </div>
                 <div class='menu_list_box'>
-                    <div class='menu_list menu_list_children_mode' style=''>
+                    <!-- <div class='menu_list menu_list_children_mode' style=''>
                         <div class='sd_mode_text'> {{mcs_normal_mode}} </div>
                         <div class='list_info'>
                             <input type="radio" value='0' v-model='record_mode' :class='record_mode == "0"?project_name+"_list_info_clickselect_img":"list_info_select_img"' />
                         </div>
-                    </div>
-                    <div id='no' class='record_sd_calculate'>{{normal_hint}}</div>
+                    </div> -->
+                    <!-- <div id='no' class='record_sd_calculate'>{{normal_hint}}</div> -->
                     <div class='menu_list menu_list_children_mode' style=''>
-                        <div class='sd_mode_text'> {{mcs_long_video_mode}} </div>
+                        <div class='sd_mode_text'> {{mcs_normal_mode}} </div>
                         <div class='list_info'>
                             <input type="radio" value='50' v-model='record_mode' :class='record_mode == "50"?project_name+"_list_info_clickselect_img":"list_info_select_img"' />
                         </div>
                     </div>
-                    <div id='lo' class='record_sd_calculate'>{{long_video_hint}}</div>
+                    <!-- <div id='lo' class='record_sd_calculate'>{{long_video_hint}}</div> -->
                     <div class='menu_list menu_list_children_mode' style=''>
-                        <div class='sd_mode_text'> {{mcs_super_long_video_mode}} </div>
+                        <div class='sd_mode_text'> {{mcs_long_video_mode}} </div>
                         <div class='list_info'>
                             <input type="radio" value='100' v-model='record_mode' :class='record_mode == "100"?project_name+"_list_info_clickselect_img":"list_info_select_img"' />
                         </div>
                     </div>
-                    <div id='su' class='record_sd_calculate'>{{super_video_hint}}</div>
+                    <div class='long_mode_tip'>{{mrs_long_record_mode_tips}}</div>
+                    <!-- <div id='su' class='record_sd_calculate'>{{super_video_hint}}</div> -->
                 </div>
                 <div id='sd_mode_btn' class='list_right_button' @click='sd_mode_btn'> {{mcs_apply}} </div>
             </div>
@@ -75,6 +76,7 @@
                 mcs_super_long_video_mode: mcs_super_long_video_mode, //超长录像模式
                 mcs_apply: mcs_apply, //应用
                 mcs_turn_off: mcs_turn_off, //关
+                mrs_long_record_mode_tips: mrs_long_record_mode_tips, //长录像模式下相同内存卡容量可以录像更长时间，画面流畅度有所降低
 
                 face_detect: '',
                 sound_detect: '',
@@ -544,7 +546,7 @@
                     if (msg.no_sdcard) { //没有SD卡
                         this.publicFunc.msg_tips({ msg: msg.no_sdcard, type: 'error', timeout: 3000 });
                     } else if (msg.status === 'umount') { //SD卡已卸载
-                        this.publicFunc.msg_tips({ msg: 'SD'+ mcs_unmounted, type: 'error', timeout: 3000 });
+                        this.publicFunc.msg_tips({ msg: 'SD' + mcs_unmounted, type: 'error', timeout: 3000 });
                     } else {
                         this.publicFunc.msg_tips({ msg: msg.result, type: 'error', timeout: 3000 });
                     }
@@ -830,5 +832,11 @@
         font-size: 14px;
         line-height: 35px;
         color: $projectColor;
+    }
+
+    .long_mode_tip {
+        color: $projectColor;
+        font-size: 14px;
+        margin-top: 5px;
     }
 </style>

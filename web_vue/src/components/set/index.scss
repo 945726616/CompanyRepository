@@ -280,6 +280,13 @@
     // cursor: pointer;
 }
 
+.menu_list_mode{
+	border-bottom:1px solid #ccc;
+	padding:10px 0;
+	color:#000 !important;
+	margin-top:20px;
+}
+
 .menu_list_box_title2 {
     margin-top: -3px;
     padding: 8px 10px;
@@ -347,4 +354,14 @@
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }

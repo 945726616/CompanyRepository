@@ -132,12 +132,12 @@
 #filter_menu_box {
     height: 110px;
     /*border:1px solid #d9d9d9; 6.1.2*/
-    display: none;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
 }
 
 .filter_list {
-    float: left;
-    clear: both;
     margin-top: 8px;
     margin-left: 10px;
 }
@@ -438,4 +438,21 @@ input[type='radio'] {
     height: 25px;
     right: 12px;
     bottom: 10px;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: max-height .5s, opacity .5s;
+}
+
+.slide-enter,
+.slide-leave-to {
+    max-height: 0;
+    opacity: 0;
+}
+
+.slide-enter-to,
+.slide-leave {
+    max-height: 110px;
+    opacity: 1;
 }

@@ -347,10 +347,13 @@
     overflow: hidden;
 }
 
-.menu_list_last {
+.my_menu_list {
     border-bottom: 1px solid rgb(204, 204, 204);
     height: 50px;
     line-height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .options_float_right {

@@ -71,11 +71,14 @@
         // iframe地址协议判断
         // 如果用户访问的是http协议
         if (browserHref.indexOf('http://') !== -1) {
-          // if (iframeData.signalServer[2]) { // 返回的信令服务器地址数组中是否包含https协议的信令服务器地址
-          //   iframeSrcHeader = splitHttpIframe()
-          // } else { // 返回的数组中不包含https的信令服务器地址
+          if (iframeData.signalServer[2]) { // 返回的信令服务器地址数组中是否包含https协议的信令服务器地址
+            console.log('enter change https')
+            postFatherMessageInfo.sendEvalFunc = 'window.location.href = "' + browserHref.replace('http', 'https') + '"'
+            postFatherMessage(postFatherMessageInfo)
+            return
+          } else { // 返回的数组中不包含https的信令服务器地址
             iframeSrcHeader = iframeData.signalServer[0]
-          // }
+          }
         } else { // https协议
           iframeSrcHeader = iframeData.signalServer[2]
         }

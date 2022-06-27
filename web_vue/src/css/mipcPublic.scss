@@ -270,15 +270,6 @@ $projectColor: #2988cc !global;
 	margin-top: 4px;
 	background: url(../assets/mipc/mipc_new_img.png) no-repeat -246px -3px;
 }
-.dev_main_list{
-	height: 28px;
-	width: 28px;
-	float: left;
-	margin-top: 7px;
-	padding-left: 25px;
-	padding-right: 24px;
-	cursor: pointer;
-}
 #menu_edit_dev_btn{
 	width: 20px;
 	height: 20px;
@@ -292,19 +283,6 @@ $projectColor: #2988cc !global;
 	margin: 0 auto;
 	margin-top: 4px;
 	background: url(../assets/mipc/mipc_new_img.png) no-repeat -327px -3px;
-}
-.menu_nav{
-	width:1px;
-	height:20px;
-	float:left;
-	margin-top:10px;
-	background: #c0c3cc;
-}
-.dev_list{
-	width:208px;
-	margin-top:10px;
-	margin-left:2px;
-	float:left;
 }
 .device_sidebar_nick{
 	float:left;
@@ -2422,21 +2400,6 @@ div.ibutton-label-on {
     cursor: pointer;
     border-radius: 4px;
 }
-.system_new_version{
-	float: right;
-    margin-top: 13px;
-    margin-right: 10px;
-    font-size: 10px;
-    height: 15px;
-    width: 30px;
-    border: 2px;
-    line-height: 15px;
-    background-color: red;
-    text-align: center;
-    border-radius: 10px;
-    display: none;
-    color: #fff;
-}
 #plugin_install_tips{
 	text-align: center;
 	font-size: 16px;
@@ -2866,9 +2829,6 @@ div.ibutton-label-on{
 }
 .menu_list_box :first-child {
   margin-top: 0;
-}
-.menu_list_children_mode{
-	margin-top: 10px;
 }
 .menu_list{
 	overflow: hidden;
@@ -3452,6 +3412,7 @@ line-height: 30px;
 }
 .sd_display{
 	font-size:15px;
+	margin-top: 20px;
 }
 .record_sd_calculate{
 	color: $projectColor;
@@ -3857,8 +3818,8 @@ line-height: 30px;
 }
 
 // 样式颜色
-#active_dev_li{
-  border-color: $projectColor;
+.active_dev_li{
+  border-color: $projectColor !important;
 }
 .dev_list_active .device_sidebar_point{
 	background-color: $projectColor;
@@ -4077,5 +4038,11 @@ input[type='range'] {
 }
 #back_to_dev_list {
 	background-color: $projectColor;
+}
+.active_title{
+	color: $projectColor !important;
+}
+.long_mode_tip {
+	color: $projectColor;
 }
 // 样式颜色 结束

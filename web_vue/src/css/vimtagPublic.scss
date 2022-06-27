@@ -4217,21 +4217,6 @@ input[type='radio']{
 .page_num_btn_yes{
 	background-color: $projectColor;
 }
-// .system_new_version{
-// 	float: right;
-//     margin-top: 13px;
-//     margin-right: 10px;
-//     font-size: 10px;
-//     height: 15px;
-//     width: 30px;
-//     border: 2px;
-//     line-height: 15px;
-//     background-color: red;
-//     text-align: center;
-//     border-radius: 10px;
-//     display: none;
-//     color: #fff;
-// }
 #version_updata_tips_page{
     width:100%;
     height:100%;
@@ -4488,9 +4473,6 @@ input[type='radio']{
 	padding:10px 0;
 	color:#000;
 	margin-top:20px;
-}
-.menu_list_children_mode{
-	margin-top:10px;
 }
 #format_content{
 	margin-top:10px;
@@ -5295,6 +5277,7 @@ line-height: 30px;
 }
 .sd_display{
 	font-size:15px;
+	margin-top: 20px;
 }
 .record_sd_calculate{
 	color: $projectColor;
@@ -5672,5 +5655,8 @@ input[type='range'] {
 }
 #back_to_dev_list {
 	background-color: $projectColor;
+}
+.long_mode_tip {
+	color: $projectColor;
 }
 // 样式颜色 结束

@@ -20,7 +20,6 @@
             <div id='create_setting_page_right' :style='project_flag?"margin-top:40px":""'>
                 <keep-alive>
                     <about-info v-if="right_show_sign.about" @system_new_event='system_new_sign_event'></about-info> <!-- 关于 -->
-                    <nickname v-if="right_show_sign.nickname"></nickname> <!-- 设备昵称 -->
                     <admin-password v-if="right_show_sign.admin_password"></admin-password> <!-- 管理密码 -->
                     <osd v-if="right_show_sign.osd"></osd> <!-- OSD -->
                     <accessory v-if="right_show_sign.accessory"></accessory> <!-- 外设 -->
@@ -47,7 +46,6 @@
     import mcodec from '../../util/mcodec.js'
 
     import aboutInfo from './public/aboutInfo.vue'
-    import nickname from './public/nickname.vue'
     import adminPassword from './public/adminPassword.vue'
     import network from './public/network.vue'
     import osd from './public/osd.vue'
@@ -77,7 +75,6 @@
                 menu_data: [], //设置左侧功能列表
                 right_show_sign: {
                     about: true,
-                    nickname: false,
                     admin_password: false,
                     network: false,
                     osd: false,
@@ -155,8 +152,7 @@
                     case 1:
                         this.menu_data = [
                             { name: mcs_about, type: "about" },
-                            { name: mcs_nickname, type: "nickname" },
-                            { name: mcs_admin_password, type: "admin_password" },
+                            { name: mcs_device_password, type: "admin_password" },
                             { name: mcs_network, type: "network" },
                             { name: mcs_osd, type: "osd" },
                             { name: mcs_sdcord, type: "sdcord" },
@@ -177,8 +173,7 @@
                     case 2: //云盒子
                         this.menu_data = [
                             { name: mcs_about, type: "about" },
-                            { name: mcs_nickname, type: "nickname" },
-                            { name: mcs_admin_password, type: "admin_password" },
+                            { name: mcs_device_password, type: "admin_password" },
                             { name: mcs_network, type: "network" },
                             { name: mcs_hard_disk, type: "sdcord" },
                             { name: mcs_date_time, type: "date_time" },
@@ -191,8 +186,7 @@
                     case 3:
                         this.menu_data = [
                             { name: mcs_about, type: "about" },
-                            { name: mcs_nickname, type: "nickname" },
-                            { name: mcs_admin_password, type: "admin_password" },
+                            { name: mcs_device_password, type: "admin_password" },
                             { name: mcs_network, type: "network" },
                             { name: mcs_osd, type: "osd" },
                             { name: mcs_sdcord, type: "sdcord" },
@@ -244,7 +238,6 @@
         },
         components: {
             aboutInfo,
-            nickname,
             adminPassword,
             network,
             osd,
