@@ -444,7 +444,7 @@ export default {
           $("#input_password_box_close").click(function () { //点击关闭
             $("#add_device_group_box").hide()
             get_dev_list()
-            // $("#device_list_tree_all").click(); 新加了点击全选清除sessionst
+            // $("#device_list_tree_all").click(); 新加了点击全选清除sessions
           })
         }
         create_devices_group_event();

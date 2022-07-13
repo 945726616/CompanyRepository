@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+  <title>Hello World!</title>
+  <!-- flv.js -->
+  <script src="./flv.min.js"></script>
+</head>
+
+<body>
+  <h1>Hello World!</h1>
+  <form>
+    <input style="width: 60%;" id="input" type="text" placeholder="请输入id">
+  </form>
+  <button onclick="btn()">确认</button>
+  <h1>传递信息</h1>
+  <video width="800" height="600" id="player" controls>
+    <source src="./test.mp4" type="video/mp4">
+  </video>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <div id="testPython">test get</div>
+  <!-- <video id="videoPlayer" width="800" height="600" controls></video>
+  <button id="play">playBtn</button> -->
+  <script>
+    function test (str1, str2) {
+      console.log(str1 + " : " + str2)
+      console.log(str1)
+      console.log(typeof(str2))
+      // alert(test.test + ":" + test.object)
+    }
+    window.addEventListener('pywebviewready', function() {
+        // alert('pywebview is ready');
+        // if (!window.pywebview.state) {
+        //     window.pywebview.state = {}
+        //  }
+      // Expose setTicker in order to call it from Python
+      window.test = test
+        // alert(JSON.stringify(document.getElementById('testPython').innerHTML))
+    })
+  </script>
+  <style>
+    body {
+      background-color: transparent;
+    }
+  </style>
+</body>
+
+</html>
