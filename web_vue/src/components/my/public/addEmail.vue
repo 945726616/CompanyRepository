@@ -1,18 +1,21 @@
 <template>
   <div>
     <div id='ae_lable'>
-      <div class='ae_tips'> {{mcs_binding_email_prompt}} </div>
-      <div class='ae_list'>
+      <div class='ae_list ae_top'>
         <div class='ae_title'> {{mcs_email_address}} </div>
-        <div class='ae_input'><input id='email_addr' type='text' :placeholder='mcs_email_address' v-model="email_addr" :disabled="bind_email_sign"></div>
+        <div class='ae_input'><input id='email_addr' type='text' :placeholder='mcs_hint_input_email_addr' v-model="email_addr" :disabled="bind_email_sign"></div>
       </div>
-      <div id='ae_btn' v-if="!bind_email_sign" @click='bind_email_btn'> {{mcs_apply}} </div>
+      <div class="ae_tips">
+        <div>{{mcs_email_explan_one}}</div>
+        <div>{{mcs_email_explan_two}}</div>
+      </div>
+      <div id='ae_btn' v-if="!bind_email_sign" @click='bind_email_btn'> {{mcs_binding}} </div>
     </div>
     <div id='send_msg' v-if="email_verification.success"> {{mcs_binding_send_prompt}} </div>
     <div id='email_invalid' v-if='email_invalid_sign'> {{mcs_invalid_email_addr}} </div>
     <div id='ae_email_exist' v-if='email_verification.exist'> {{mcs_accounts_bind_email_exist}} </div>
     <div id='ae_email_busy' v-if='email_verification.busy'> {{mcs_accounts_bind_email_busy}} </div>
-    <div id='ae_email_inactive' class='ae_email' v-if="!bind_email_sign"> {{mcs_email_inactive}} </div>
+    <div id='ae_email_inactive' class='ae_email' v-if="!bind_email_sign && (email_addr !== '')"> {{mcs_email_inactive}} </div>
   </div>
 </template>
 
@@ -21,9 +24,11 @@ export default {
   data () {
     return {
       //多国语言
-      mcs_binding_email_prompt: mcs_binding_email_prompt,
+      mcs_email_explan_one: mcs_email_explan_one,
+      mcs_email_explan_two: mcs_email_explan_two,
       mcs_email_address: mcs_email_address,
-      mcs_apply: mcs_apply,
+      mcs_hint_input_email_addr: mcs_hint_input_email_addr,
+      mcs_binding: mcs_binding,
       mcs_binding_send_prompt: mcs_binding_send_prompt,
       mcs_invalid_email_addr: mcs_invalid_email_addr,
       mcs_accounts_bind_email_exist: mcs_accounts_bind_email_exist,
@@ -130,12 +135,17 @@ export default {
   // width:80%;
 }
 
-.ae_tips {
+.ae_top {
   margin-top: 100px;
+}
+
+.ae_tips {
+  margin-top: 20px;
   margin-left: 12px;
   float: left;
   font-size: 14px;
   color: #999;
+  line-height: 30px;
 }
 
 .ae_list {

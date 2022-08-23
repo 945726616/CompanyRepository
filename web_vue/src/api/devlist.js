@@ -233,16 +233,18 @@ const devlist = {
     let now_net_info = {}
     now_net_info["ifs"] = { token: "ra0", enabled: 1 }
     now_net_info.ifs["phy"] = { conf: { mode: "wificlient" } }
-    now_net_info.ifs["wifi_client"] = { conf: { enabled: 1, ssid: params.ssid, key: params.key } }
+    now_net_info.ifs["wifi_client"] = { conf: { enabled: 1, ssid: params.ssid, usr:params.ssid, key: params.key } }
     let returnItem
     await devlist.net_get(params).then(async res => { // 调用网络获取
       let result = login.get_ret(res)
       if (res && result === '') {
-        now_net_info.dns = res.dns
-        let info = { ifs: now_net_info.ifs, dns: now_net_info.dns }
+        now_net_info.dns = res.data.info.dns
+        // let info = { ifs: now_net_info.ifs, dns: now_net_info.dns }
         await devlist.net_set({
           ...params,
-          info: info
+          // info: info
+          networks: now_net_info.ifs, 
+          dns: now_net_info.dns
         }).then(async res => { // 调用设置wifi网络方法
           if (login.get_ret(res) === '') {
             await wifi_info_request(0)
@@ -250,7 +252,7 @@ const devlist = {
             returnItem = { msg: mcs_permission_denied, type: "error" }
           }
         })
-      } else if (msg.result === "permission.denied") {
+      } else if (res.result === "permission.denied") {
         returnItem = { msg: mcs_permission_denied, type: "error" }
       } else {
         returnItem = { msg: mcs_failed_to_set_the, type: "error" }
@@ -523,17 +525,15 @@ const devlist = {
           this.src = devlist.pic_url_get({ sn: params.sn, token: "p1" }) // 调用请求图片接口
           set(params.sn, this.src)
         }
-
       } else {
         images[params.num].src = devlist.pic_url_get({ sn: params.sn, token: "p1" }) // 调用请求图片接口
         set(params.sn, images[params.num].src) // 存储图片地址
         images[params.num].onload = function () {
           for (let j = 0; j < store.state.jumpPageData.deviceData.length; j++) {
-            if (!$(params.dom)[j]) return;
-            let dev_sn = $(params.dom).eq(j).attr("sn");
+            let dev_sn = $(params.dom).eq(j).attr('sn')
             if (this.src.indexOf(dev_sn) > -1) {
               $(params.dom)[j].childNodes[1].childNodes[0].childNodes[0].src = this.src
-              break;
+              break
             }
           }
         }
@@ -633,6 +633,14 @@ const devlist = {
         devlist.splice(i, 1)
         store.dispatch('setDeviceData', devlist)
       }
+    }
+  },
+  ldev_add_name (dev) {
+    let devlist = store.state.jumpPageData.deviceData
+    let temp_dev = this.ldev_get(dev.sn)
+    if (!temp_dev) {
+      devlist[devlist.length] = dev
+      store.dispatch('setDeviceData', devlist)
     }
   },
   ldev_add (dev) { // 增加

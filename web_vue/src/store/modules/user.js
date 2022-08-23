@@ -32,6 +32,13 @@ const user = {
     supportFilterFlag: userSession && userSession.setSupportFilterFlag ? userSession.setSupportFilterFlag : 0, // 是否支持筛选标识
     autoPlayFlag: 0, // 自动播放标识(存储在localStorage中)
     loginFlag: userSession && userSession.setLoginFlag ? userSession.setLoginFlag : 0, // 是否登录标识
+  
+    //本地登录信息
+    localTid: 0, // dh获取的相关加密验证id
+    localLid: 0,
+    localSid: 0,
+    localSeq: 0,
+    localShareKey: '',
   },
 
   mutations: {
@@ -126,6 +133,22 @@ const user = {
       userInfo.setLoginFlag = loginFlag
       sessionStorage.setItem('user_info',JSON.stringify(userInfo))
     },
+
+    SET_LOCAL_TID: (state, localTid) => {
+      state.localTid = localTid
+    },
+    SET_LOCAL_LID: (state, localLid) => {
+      state.localLid = localLid
+    },
+    SET_LOCAL_SID: (state, localSid) => {
+      state.localSid = localSid
+    },
+    SET_LOCAL_SEQ: (state, localSeq) => {
+      state.localSeq = localSeq
+    },
+    SET_LOCAL_SHARE_KEY: (state, localShareKey) => {
+      state.localShareKey = localShareKey
+    },
   },
 
   actions: {
@@ -147,6 +170,12 @@ const user = {
     setSupportFilterFlag: ({ commit }, supportFilterFlag) => commit('SET_SUPPORT_FILTER_FLAG', supportFilterFlag),
     setAutoPlayFlag: ({ commit }, autoPlayFlag) => commit('SET_AUTO_PLAY_FLAG', autoPlayFlag),
     setLoginFlag: ({ commit }, loginFlag) => commit('SET_LOGIN_FLAG', loginFlag),
+
+    setLocalTid: ({commit}, localTid) => commit('SET_LOCAL_TID', localTid),
+    setLocalLid: ({commit}, localLid) => commit('SET_LOCAL_LID', localLid),
+    setLocalSid: ({commit}, localSid) => commit('SET_LOCAL_SID', localSid),
+    setLocalSeq: ({commit}, localSeq) => commit('SET_LOCAL_SEQ', localSeq),
+    setLocalShareKey: ({commit}, localShareKey) => commit('SET_LOCAL_SHARE_KEY', localShareKey),
   }
 }
 

@@ -1,10 +1,10 @@
 <template>
   <!-- 进度条插件 -->
-  <div class="progress-bar" ref="progressBar" >
-    <div class="bar-inner" id="barProgress" @click.prevent="progressClick">
+  <div class="progress-bar" ref="progressBar" @click="adjustProgress($event)">
+    <div class="bar-inner" id="barProgress">
       <div class="progress" ref="progress" id="progress"></div>
       <div class="progress-btn-wrapper" ref="progressBtn">
-        <div class="progress-btn" ref='dragBtn' @click.prevent="offsetFlag = false"></div>
+        <div class="progress-btn" ref='dragBtn' @mousedown="handleSliderMouseDown"></div>
       </div>
     </div>
   </div>
@@ -28,68 +28,93 @@ export default {
   },
   mounted () {
     let _this = this
-    this.btnWidth = document.getElementsByClassName('progress-btn')[0].clientWidth // 获取按钮宽度大小
-    this.$refs.progressBtn.onmousedown = function (e) { // 按钮拖动事件(鼠标按下)
-      _this.$refs.progressBar.setAttribute('drag-flag', false) // 初始化拖动标识
-      let width = _this.$refs.progress.clientWidth // 记录进度条长度
-      let disX = e.clientX
-      document.onmousemove = function (e) { // 按钮拖动事件(鼠标按下并移动)
-        _this.$refs.progressBar.setAttribute('drag-flag', true) // 将拖动标识改为true
-        let newWidth = e.clientX - disX + width // 拖拽时获取新的进度条长度
-        let scale = newWidth / _this.$refs.progressBar.clientWidth // 获得拖拽时新的百分比
-        _this.$emit('percentChange', scale) // 发送给父组件(进度条移动的百分比)
-      }
-      document.onmouseup = function () { // 按钮拖动事件(鼠标抬起)
-        document.onmousemove = document.onmouseup = null // 清空事件防止抬起后按钮继续移动
-      }
-    }
+    this.btnWidth = this.$refs.dragBtn.clientWidth // 获取按钮宽度大小
   },
   methods: {
-    progressClick (e) { // 进度条点击事件
-      console.log(e, 'progressClick_e')
-      const isDrag = this.$refs.progressBar.getAttribute('drag-flag') // 获取点击/拖动标识 (true:拖动, false: 点击)
-      if (isDrag === 'true') {
-        this.$refs.progressBar.setAttribute('drag-flag', false) // 将标识初始化为点击事件
+    // 进度条点击事件
+    adjustProgress (e) {
+      e.preventDefault()
+      if (!this.offsetFlag) { // 点击节流 目前为1秒内允许点击一次
         return
       }
-      this._setOffset(e.offsetX) // 设置进度条及按钮偏移
-      this._triggerPercent() // 通知父组件播放进度变化
+      // 获取进度条相关的信息
+      // left: 进度条容器control到最左侧的距离，width：容器的宽度
+      const { left, width } = this.$refs.progressBar.getBoundingClientRect()
+      // e.clientX：鼠标点击的位置到最左侧的距离
+      const progressWidth = e.clientX - left
+      this.progressWidth = progressWidth + 'px'
+      this.updatePercent(progressWidth, width, 1) // 计算进度条百分比并传回父组件(仅负责动画效果)
+      this.$emit('videoPlaySignal', true) // 传递播放标识(仅通知父组件进行播放操作)
+      this.offsetFlag = false
+      setTimeout(() => { // 定时器设置复位点击节流标识
+        this.offsetFlag = true
+      }, 1000)
     },
-    _triggerPercent () { // 计算百分比并发送至父组件
+    // 更新进度条百分比并传递给父组件
+    updatePercent (progressWidth, width, code) {
+      console.log(progressWidth, width, 'progressWidth', code)
       const barWidth = this.$refs.progressBar.clientWidth - this.btnWidth
-      const percent = Math.min(1, this.$refs.progress.clientWidth / barWidth)
+      const percent = Math.min(1, progressWidth / barWidth)
       this.$emit('percentChange', percent) // 发送给父组件(进度条移动的百分比)
     },
-    _setOffset (offsetWidth) { // 设置偏移
-      if (offsetWidth < 0 || !this.offsetFlag) { // 去抖动防止鼠标点击过近导致的offsetX获取异常值
-        this.offsetFlag = true
-        return
+    // 拖动事件
+    handleSliderMouseDown (event) {
+      //如果不添加以下两处的阻止默认事件，会出现以下情况: 鼠标点击滑块向前拉动，移出进度条范围时，会自动选择文字等元素，
+      //出现禁用图标。松开鼠标，再次进入进度条，即使没有按住滑块，滑块也会跟随鼠标移动。这不是我们想要看到的效果。
+      event.preventDefault()
+      // 滑块点击坐标
+      const offsetX = event.offsetX
+      document.onmousemove = (e) => {
+        e.preventDefault()
+        // 滑动距离可视区域左侧的距离
+        const X = e.clientX
+        // 减去滑块偏移量
+        const cl = X - offsetX
+        const { left, width } = this.$refs.progressBar.getBoundingClientRect()
+        // 除去滑块按钮长度的进度条长度
+        const ml = cl - left
+        let progressWidth
+        if (ml <= 0) {
+          //进度条长度最小和最大值的界定
+          progressWidth = 0
+        } else if (ml >= width) {
+          progressWidth = width
+        } else {
+          progressWidth = ml
+        }
+        this.progressWidth = progressWidth + 'px'
+        // 更新当前时间
+        this.updatePercent(progressWidth, width, 2)
       }
+      //抬起鼠标，结束移动事件
+      document.onmouseup = () => {
+        document.onmousemove = null
+        document.onmouseup = null
+        this.$emit('videoPlaySignal', true) // 通知父组件进行播放操作
+        this.offsetFlag = false
+        setTimeout(() => { // 定时器设置复位点击节流标识
+          this.offsetFlag = true
+        }, 1000)
+      }
+    },
+    // 设置偏移
+    _setOffset (offsetWidth) {
       this.$refs.progress.style.width = `${offsetWidth}px` // 设置进度长度随着百分比变化
       this.$refs.progressBtn.style.transform = `translate3d(${offsetWidth}px, 0, 0)` // 设置按钮随着百分比偏移
     }
   },
   watch: {
+    // 父组件更新进度条百分比后 进度条更新具体效果
     percent (newPercent, oldPercent) { // 监听进度条百分比变化
       if (newPercent > 0) {
         console.log('enter watch', newPercent)
         // 进度条总长度
         const barWidth = this.$refs.progressBar.clientWidth - this.btnWidth
         const offsetWidth = barWidth * newPercent
+        console.log(barWidth, offsetWidth, 'barWidth, offsetWidth')
         this._setOffset(offsetWidth) // 设置进度条及按钮偏移
-        // this._triggerPercent() // 通知父组件播放进度变化
       }
     },
-    // '$store.state.jumpPageData.percent'(val) {
-    //   if (val > 0) {
-    //     console.log('enter watch vuex', val)
-    //     // 进度条总长度
-    //     const barWidth = this.$refs.progressBar.clientWidth - this.btnWidth
-    //     const offsetWidth = barWidth * val
-    //     this._setOffset(offsetWidth) // 设置进度条及按钮偏移
-    //     this._triggerPercent() // 通知父组件播放进度变化
-    //   }
-    // }
   }
 }
 </script>
@@ -97,11 +122,13 @@ export default {
 <style lang="scss">
 .progress-bar {
   height: 5px;
+
   .bar-inner {
     position: relative;
     height: 5px;
     background-color: rgba($color: #000, $alpha: 0.3);
-    pointer-events:auto;
+    pointer-events: auto;
+
     .progress {
       position: absolute;
       height: 100%;
@@ -109,6 +136,7 @@ export default {
       z-index: 10;
       // opacity: 0.8;
     }
+
     .progress-btn-wrapper {
       position: absolute;
       left: -2px;
@@ -116,6 +144,7 @@ export default {
       width: 10px;
       height: 10px;
       z-index: 10;
+
       .progress-btn {
         position: relative;
         top: 0.12rem;

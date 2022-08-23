@@ -342,11 +342,17 @@ const login = {
   },
   // 以下为自封装的工具函数 文件内可以采用this.函数名调用外部需要引入后使用login.函数名调用
   create_nid_ex (type) {
-    let seqIndex = ++store.state.user.seq
-    store.dispatch('setSeq', seqIndex)
-    // return mcodec.nid(4145, '0x1e331c', "156702581163029395913763866659100044", 0 , null, null, md5, "hex")
-    // return mcodec.nid(2, '0x201153', store.state.user.shareKey, type, null, null, md5, "hex")
-    return mcodec.nid(seqIndex, type ? store.state.user.lid : store.state.user.sid, store.state.user.shareKey, type, null, null, md5, "hex")
+    if(store.state.jumpPageData.localFlag){ //本地模式下用本地模式存储的登录数据lid等
+      let seqIndex = ++store.state.user.localSeq
+      store.dispatch('setLocalSeq', seqIndex)
+      return mcodec.nid(seqIndex, type ? store.state.user.localLid : store.state.user.localSid, store.state.user.localShareKey, type, null, null, md5, "hex")
+    } else {
+      let seqIndex = ++store.state.user.seq
+      store.dispatch('setSeq', seqIndex)
+      // return mcodec.nid(4145, '0x1e331c', "156702581163029395913763866659100044", 0 , null, null, md5, "hex")
+      // return mcodec.nid(2, '0x201153', store.state.user.shareKey, type, null, null, md5, "hex")
+      return mcodec.nid(seqIndex, type ? store.state.user.lid : store.state.user.sid, store.state.user.shareKey, type, null, null, md5, "hex")
+    }
   },
   create_nid () {
     return login.create_nid_ex(0);

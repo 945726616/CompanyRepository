@@ -229,6 +229,8 @@ export default {
           this.set_record_alarm_content = mcs_send_alarm_notification;
           break;
         case '8':
+          this.set_record_alarm_content = mrs_face_recognition_detail;
+          break;
         case '10':
           this.set_record_alarm_content = mcs_move_alarm_detail;
           break;
@@ -1204,7 +1206,7 @@ export default {
         mrs_sos_alarm_detail, //type=5
         mrs_send_alarm_notification, //type=6
         mcs_continuous_recording_hint, //type=7
-        mcs_move_alarm_detail, //type=8
+        mrs_face_recognition_detail, //type=8
         mrs_open_switch_check_abnormal_noise_alarm, //type=9
         mcs_move_alarm_detail //type=10  此部分表示报警描述
       ]

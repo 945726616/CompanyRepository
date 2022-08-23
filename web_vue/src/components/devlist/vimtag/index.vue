@@ -115,7 +115,7 @@
         </div>
         <div id='input_password_password'>
           <div id='input_password_password_ico'></div>
-          <input :type='eye_hide_sign?"password":"text"' id='input_password_password_input' v-model='input_local_password'> <!-- 密码框输入密码可视状态 -->
+          <input :type='eye_hide_sign?"password":"text"' id='input_password_password_input' v-model.trim='input_local_password'> <!-- 密码框输入密码可视状态 -->
           <div id='dev_pwd_eye' :class='eye_hide_sign?"dev_pwd_eye_hide":"dev_pwd_eye_show"' @click='eye_hide_sign = !eye_hide_sign'></div>
           <div id='input_password_password_div'></div>
         </div>
@@ -631,11 +631,10 @@ export default {
                   local_play_data.profile_token = "p3";
 
                   await _this.$api.local.local_sign_in({ data: local_play_data }).then(async res => {
-                    console.log('setLid', res.lid)
                     if (res.result === '') {
-                      _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
-                      _this.$store.dispatch('setSid', res.sid)
-                      _this.$store.dispatch('setSeq', res.seq)
+                      _this.$store.dispatch('setLocalLid', res.lid) //登录返回lid head中
+                      _this.$store.dispatch('setLocalSid', res.sid)
+                      _this.$store.dispatch('setLocalSeq', res.seq)
                       await _this.$api.local.local_play({ data: local_play_data })
                     }
                   })
@@ -648,11 +647,10 @@ export default {
                   local_play_data.profile_token = "p3";
 
                   await _this.$api.local.local_sign_in({ data: local_play_data }).then(async res => {
-                    console.log('setLid', res.lid)
                     if (res.result === '') {
-                      _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
-                      _this.$store.dispatch('setSid', res.sid)
-                      _this.$store.dispatch('setSeq', res.seq)
+                      _this.$store.dispatch('setLocalLid', res.lid) //登录返回lid head中
+                      _this.$store.dispatch('setLocalSid', res.sid)
+                      _this.$store.dispatch('setLocalSeq', res.seq)
                       await _this.$api.local.local_box({ data: local_play_data })
                     }
                   })
@@ -1156,13 +1154,12 @@ export default {
       this.$api.local.local_sign_in({
         data: local_play_data
       }).then(res => {
-        console.log('setLid', res.lid)
         if (res.result === "accounts.pass.invalid") {
           this.publicFunc.msg_tips({ msg: mcs_invalid_password, type: "error", timeout: 3000 })
         } else if (res.result === '') {
-          this.$store.dispatch('setLid', res.lid) //登录返回lid head中
-          this.$store.dispatch('setSid', res.sid)
-          this.$store.dispatch('setSeq', res.seq)
+          this.$store.dispatch('setLocalLid', res.lid) //登录返回lid head中
+          this.$store.dispatch('setLocalSid', res.sid)
+          this.$store.dispatch('setLocalSeq', res.seq)
           if (data.type == "IPC") {
             obj.addr = data.addr;
             this.$router.push({ name: 'play', params: obj })

@@ -456,11 +456,10 @@
                             _this.$api.local.local_sign_in({
                                 data: local_play_sign
                             }).then(res => {
-                                console.log('setLid', res.lid)
                                 if (res.result === '') {
-                                    _this.$store.dispatch('setLid', res.lid) //登录返回lid head中
-                                    _this.$store.dispatch('setSid', res.sid)
-                                    _this.$store.dispatch('setSeq', res.seq)
+                                    _this.$store.dispatch('setLocalLid', res.lid) //登录返回lid head中
+                                    _this.$store.dispatch('setLocalSid', res.sid)
+                                    _this.$store.dispatch('setLocalSeq', res.seq)
                                 }
                                 _this.local_play_data.agent = _this.$store.state.jumpPageData.localFlag_agent;
                                 _this.create_preview({ parent: $("#play_screen") });
@@ -1308,7 +1307,7 @@
                     sn: this.$store.state.jumpPageData.selectDeviceIpc
                 }).then(res => {
                     this.current_time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    if (res.day === nowDate.getDate() && res.hour === nowDate.getHours()) {
+                    if (res.day === nowDate.getDate() && res.hour === nowDate.getHours() || this.$store.state.jumpPageData.localFlag) { //本地模式下不显示提示
                         this.timezone_err_sign = false;
                     } else {
                         this.timezone_err_sign = true;

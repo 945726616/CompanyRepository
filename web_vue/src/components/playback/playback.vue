@@ -32,14 +32,14 @@
         <!-- 播放菜单控制 -->
         <div id="playback_menu_box">
           <div id="play_menu_left">
-            <div id="video_play" class="video_play_stop" @click="clickPlay"></div>
+            <div id="video_play" :class="{'video_play_stop':!playFlag, 'video_play_start': playFlag }" @click="clickPlay"></div>
             <div id="playback_start_time" v-if="clientFlag">
               {{ start_time_show }}
             </div>
           </div>
-          <!-- 进度条展示 -->
-          <div id="playback_progress_bar" v-if="clientFlag">
-            <progress-bar :percent="percent" @percentChange="setProgress"></progress-bar> <!-- 进度条组件(传递进度百分比) -->
+          <!-- 进度条展示 v-if="clientFlag"-->
+          <div id="playback_progress_bar" >
+            <progress-bar :percent="percent" @percentChange="setProgress" @videoPlaySignal="playVideo"></progress-bar> <!-- 进度条组件(传递进度百分比) -->
           </div>
           <!-- 进度条展示 结束 -->
           <div id="play_menu_right" v-if="clientFlag">
@@ -52,6 +52,7 @@
           </div>
         </div>
         <!-- 播放菜单控制 结束 -->
+        <!-- 下载提示弹窗 -->
         <div id="playback_download_path_box" v-show="downloadBoxFlag">
           <div id="playback_download_path_main">
             <span>{{ mcs_input_download_path }}</span>
@@ -60,6 +61,7 @@
           <div id="playback_download_path_cancel" @click="downloadBoxFlag = false">{{ mcs_cancel }}</div>
           <div id="playback_download_path_submit" @click="clickDownloadSubmit">{{ mcs_ok }}</div>
         </div>
+        <!-- 下载提示弹窗 结束 -->
       </div>
     </div>
   </div>
@@ -105,6 +107,7 @@ export default {
       downloadBoxFlag: false, // 下载提示框标识
       downloadShowWorld: null, // 下载中暂停/开始按钮文字
       clientP2PingValue: '0kB', // 客户端视频播放流数据值显示
+      playFlag: false, // 播放状态标识, 初始为false
     }
   },
   methods: {
@@ -278,7 +281,7 @@ export default {
       // }
       if (this.is_playing) { // 当前播放状态 1 为播放中 0 为未播放 (切换为暂停)
         this.is_playing = 0
-        $("#video_play").attr("class", "video_play_stop")
+        this.playFlag = false
         this.$api.playback.video_stop({
           dom: $("#playback_screen")
         }).then(res => {
@@ -320,7 +323,7 @@ export default {
             box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
         }
-        $("#video_play").attr("class", "video_play_start")
+        this.playFlag = true
       }
     },
     clickPlayViewBox () { // 点击播放视图
@@ -364,17 +367,40 @@ export default {
           box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
         })
       }
-      $("#video_play").attr("class", "video_play_start")
+      this.playFlag = true
     },
     clickBack () { // 点击返回
       // console.log(this.createPlaybackObj, 'createPlaybackObj')
       this.$store.dispatch('setPlayBackSavePercent', 0) // 返回时偏移百分比重置为0
       if (this.createPlaybackObj.box_ipc == 1) { //如果从云盒子实时播放进来回放播放
-        let jumpData = { parent: this.createPlaybackObj.parent, dev_sn: this.createPlaybackObj.dev_sn, back_page: this.createPlaybackObj.back_page, agent: this.createPlaybackObj.agent, addr: this.createPlaybackObj.addr, a_start: this.createPlaybackObj.a_start, b_end: this.createPlaybackObj.b_end, box_ipc: 1, ipc_sn: this.createPlaybackObj.ipc_sn, box_sn: this.createPlaybackObj.box_sn, box_live: 1, backplay_flag: 4, ipc_stat: this.createPlaybackObj.ipc_stat };
-        this.$router.push({ name: 'history', params: jumpData });
+        let jumpData = {
+          parent: this.createPlaybackObj.parent,
+          dev_sn: this.createPlaybackObj.dev_sn,
+          back_page: this.createPlaybackObj.back_page,
+          agent: this.createPlaybackObj.agent,
+          addr: this.createPlaybackObj.addr,
+          a_start: this.createPlaybackObj.a_start,
+          b_end: this.createPlaybackObj.b_end,
+          box_ipc: 1,
+          ipc_sn: this.createPlaybackObj.ipc_sn,
+          box_sn: this.createPlaybackObj.box_sn,
+          box_live: 1,
+          backplay_flag: 4,
+          ipc_stat: this.createPlaybackObj.ipc_stat
+        }
+        this.$router.push({ name: 'history', params: jumpData })
       } else {
-        let jumpData = { parent: this.createPlaybackObj.parent, dev_sn: this.createPlaybackObj.dev_sn, back_page: this.createPlaybackObj.back_page, agent: this.createPlaybackObj.agent, addr: this.createPlaybackObj.addr, a_start: this.createPlaybackObj.a_start, b_end: this.createPlaybackObj.b_end, backplay_flag: 4 };
-        this.$router.push({ name: 'history', params: jumpData });
+        let jumpData = {
+          parent: this.createPlaybackObj.parent,
+          dev_sn: this.createPlaybackObj.dev_sn,
+          back_page: this.createPlaybackObj.back_page,
+          agent: this.createPlaybackObj.agent,
+          addr: this.createPlaybackObj.addr,
+          a_start: this.createPlaybackObj.a_start,
+          b_end: this.createPlaybackObj.b_end,
+          backplay_flag: 4
+        }
+        this.$router.push({ name: 'history', params: jumpData })
       }
     },
     clickProgress () { // 点击进度条
@@ -391,32 +417,18 @@ export default {
       this.start_time_show = play_progress_time
       // $("#playback_start_time").html(play_progress_time)
       // moveProgressBar
-      if (this.is_playing) {
-        this.$api.playback.video_stop({
-          dom: $("#playback_screen")
-        }).then(() => { // 原函数中是存在返回值调用至函数的情况
-          this.$api.playback.play({ // 原playback接口
-            agent: this.createPlaybackObj.agent,
-            dom: $("#playback_screen"),
-            sn: this.$store.state.jumpPageData.selectDeviceIpc,
-            videoSize: this.videoSize,
-            token: this.play_back_token,
-            playback: 1, // 此处额外添加参数
-            box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
-          })
-          // .then(res => {
-          //   // console.log(res, 'playBack_playSpeed1')
-          //   if (res && res.length > 2) {
-          //     this.playback_speed(res[0], res[1], res[2])
-          //   } else {
-          //     this.playback_speed(res)
-          //   }
-          // })
-        })
-        $("#video_play").attr("class", "video_play_start")
-      }
     },
     clickDownloadSubmit () { // 点击下载弹窗中确定事件
+      // 添加点击下载后暂停后台视频播放
+      if (this.is_playing) { // 当前播放状态 1 为播放中 0 为未播放 (切换为暂停)
+        this.is_playing = 0
+        this.playFlag = false
+        this.$api.playback.video_stop({
+          dom: $("#playback_screen")
+        }).then(res => {
+          this.create_preview(res)
+        })
+      }
       this.downloadShowWorld = this.mcs_pause // 赋值暂停
       let download_path = this.publicFunc.mx("#playback_download_path_input").value //下载路径
       this.downloadBoxFlag = false
@@ -462,7 +474,7 @@ export default {
       }
     },
     clickDownloadStop () { // 点击下载终止
-      this.$refs.downloadBufferFlag.style.display = 'none' 
+      this.$refs.downloadBufferFlag.style.display = 'none'
       this.$api.playback.video_stop({
         dom: $("#playback_screen"),
         isDownload: 1 // 是否下载中特殊标记
@@ -502,12 +514,26 @@ export default {
       //   this.togglePlaying()
       // }
     },
-    // percent() { // 计算百分比
-    //   // return Math.min(1, this.currentTime / this.currentSong.duration)
-    //   let returnPercent = Math.min(Number(1), Number(0.5))
-    //   // console.log('returnPercent', returnPercent)
-    //   return returnPercent
-    // }
+    // 播放视频信号 返回值默认为true 播放视频信号 避免拖动导致频繁触发播放请求
+    playVideo (flag) {
+      console.log(flag, 'playVideoFlag')
+      if (this.is_playing && flag) { // 播放中的视频才会直接调用播放, 处于暂停状态下的视频不做处理
+        this.$api.playback.video_stop({
+          dom: $("#playback_screen")
+        }).then(() => { // 原函数中是存在返回值调用至函数的情况
+          this.$api.playback.play({ // 原playback接口
+            agent: this.createPlaybackObj.agent,
+            dom: $("#playback_screen"),
+            sn: this.$store.state.jumpPageData.selectDeviceIpc,
+            videoSize: this.videoSize,
+            token: this.play_back_token,
+            playback: 1, // 此处额外添加参数
+            box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
+          })
+        })
+        this.playFlag = true
+      }
+    }
     // 进度条 结束
   },
   watch: {

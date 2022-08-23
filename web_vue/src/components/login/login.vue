@@ -661,7 +661,7 @@ export default {
         })
         return
       } else {
-        reg = /^[0-9a-zA-Z]{8,32}$/
+        reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z]{8,32}$/ //同时包含数字和字母
         if (!reg.exec(password_value)) {
           _this.publicFunc.msg_tips({
             msg: mcs_password_range_hint,

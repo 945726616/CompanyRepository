@@ -77,7 +77,7 @@
           <div class='add_device_input_id_box'>
             <div class='add_device_input_pass_box_ico'></div>
             <div id='add_device_input_pass_box_del' class='add_device_input_id_box_del' @click="add_device_password = null"></div> <!-- 清空输入的设备密码 -->
-            <input id='add_device_input_pass' class='add_device_input_id_box_input' type='password' v-model="add_device_password" :placeholder='mcs_input_password'>
+            <input id='add_device_input_pass' class='add_device_input_id_box_input' type='password' v-model.trim="add_device_password" :placeholder='mcs_input_password'>
           </div>
           <div id='add_device_submit' @click="inputDevicePasswordNext">{{mcs_action_next}}</div>
           <div id='add_device_forget_pass' @click="forgetDevicePassword">{{mcs_forgot_your_password}}</div>

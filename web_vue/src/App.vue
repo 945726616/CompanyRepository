@@ -1,6 +1,6 @@
 <template>
   <!-- 入口文件 -->
-  <div id="app">
+  <div id="app" @contextmenu="handleMouse">
     <div id="project_color" :class="projectClass"></div>
     <div id="tip_div"></div>
     <div id="buffer_page">
@@ -30,7 +30,10 @@ export default {
     jumpToDevlist () { // 请求超时点击可跳转回设备列表页面
       this.publicFunc.closeBufferPage()
       this.$router.push('/devlist')
-    }
+    },
+    handleMouse(e) { // 禁用鼠标右键点击
+      e.preventDefault();
+    },
   },
   async mounted () {
     import(`@/lib/plugins/jquery.mousewheel.min.js`)

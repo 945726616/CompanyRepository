@@ -118,13 +118,13 @@
           <div id='history_no_list_content'>{{ mcs_no_history }}</div>
         </div>
       </div>
-      <div id='history_list_bottom' v-if='history_data.length > 0'>
+      <!-- <div id='history_list_bottom' v-if='history_data.length > 0'>
         <div id='page_num_box'>
           <div id='page_num_main'>
             <div id='page_num_day' class='page_num_btn_no' @click="load_more_btn">{{ mrs_load_more }}</div>
           </div>
         </div>
-      </div>
+      </div> 取消加载更多按钮 取消原因页面包含懒加载, 滚动条滚动到底部时会自动加载资源-->
     </div>
     <div id='history_img_page' v-if="picture_data_sign.src">
       <div id='history_img_box'>
@@ -227,7 +227,7 @@ export default {
         // console.log(inst, 'calendar_input_select_inst')
         let start_time = new Date(dateText).format("yyyy.MM.dd.00.00.00");
         start_time = _this.$api.history.getDateForStringDate(start_time).getTime();
-        let num = _this.vedio_day.length - _this.vedio_day.indexOf(start_time) - 1; //点击完日期cid检索
+        // let num = _this.vedio_day.length - _this.vedio_day.indexOf(start_time) - 1; //点击完日期cid检索
         let end_time = start_time + 60 * 60 * 24 * 1000;
         // let a_start = start_time;
         // let b_end = end_time;
@@ -378,7 +378,7 @@ export default {
         this.$router.push({ name: 'boxlist', params: { agent: this.history_info.agent, addr: this.history_info.addr } })
       } else if (this.history_info.back_page == "play") {
         let jumpData;
-        if (this.history_info.box_ipc == 1) { //如果从云盒子设备回放返回到播放页面，把box_ipc传回去 
+        if (this.history_info.box_ipc == 1) { //如果从云盒子设备回放返回到播放页面，把box_ipc传回去
           jumpData = { agent: this.history_info.agent, addr: this.history_info.addr, box_ipc: this.history_info.box_ipc, ipc_sn: this.history_info.ipc_sn, box_live: this.history_info.box_live, ipc_stat: this.history_info.ipc_stat }
           this.$router.push({ name: 'play', params: jumpData })
         } else {
@@ -388,11 +388,11 @@ export default {
       }
     },
     load_more_btn () { //点击加载更多
-      this.iscid = 1;
       if (this.num == this.vedio_day.length - 1) {
         this.publicFunc.msg_tips({ msg: mrs_already_earliest_video, type: "warning", timeout: 3000 });
         return
       } else {
+        this.iscid = 1;
         let start_time = this.vedio_day[this.vedio_day.length - 2 - this.num];
         let end_time = start_time + 86400000;
         // 展示遮罩层

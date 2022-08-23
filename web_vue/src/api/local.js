@@ -1,6 +1,7 @@
 'use strict'
 import axios from '@/axios'
 import mdh from '@/util/DHKeyExchange.js'
+import CryptoJS from '@/util/cryptojs_tripledes.js'
 import mcodec from '@/util/mcodec.js'
 import mme from '@/util/mme.js'
 import md5 from '@/util/mmd5.js'
@@ -26,9 +27,27 @@ const local = {
                 bnum_prime: mdh.prime,
                 root_num: mdh.g,
                 key_a2b: mdh.gen_public(secret_key),
-                tid: store.state.user.tid
+                tid: store.state.user.localTid
             }
         })
+    },
+    // CryptoJS 加密工具函数
+    get_uctx(data) {
+        let l_share_key = store.state.user.localShareKey
+        let json_buf = JSON.stringify(data)
+        let key = CryptoJS.MD5(l_share_key)
+        //to do 8 byte alignment
+        let json_bufs = login.bytes_align(json_buf)
+        let bytes_len = 8 * (parseInt(json_buf.length / 8) + 1),
+            str_len = bytes_len / 4
+        let json_obj = { sigBytes: bytes_len, words: json_bufs, length: str_len }
+        let json_uctx = CryptoJS.DES.encrypt(json_obj, key, { iv: CryptoJS.enc.Hex.parse('0000000000000000'), padding: CryptoJS.pad.NoPadding }).ciphertext.toString()
+        let b = login.str_2_16bytes(json_uctx)
+        let uctx = "data:application/octet-stream;base64," + mcodec.binary_2_b64(b)
+        return uctx
+    },
+    pwd_encrypt(pwd_md5_hex) {
+        return CryptoJS.DES.encrypt(CryptoJS.enc.Hex.parse(pwd_md5_hex), CryptoJS.enc.Hex.parse(md5.hex(store.state.user.localShareKey)), { iv: CryptoJS.enc.Hex.parse('0000000000000000'), padding: CryptoJS.pad.NoPadding }).ciphertext.toString()
     },
     /*
      ** 登录验证接口
@@ -43,24 +62,23 @@ const local = {
                 returnItem = false
             }
             // 请求成功 存储用户关键id信息
-            store.dispatch('setTid', data.tid)
-            store.dispatch('setLid', data.lid)
+            store.dispatch('setLocalTid', data.tid)
+            store.dispatch('setLocalLid', data.lid)
             // 注: 此处secret_key值为mdh()函数中所使用的secret_key,使用方法创建会重新随机私钥导致无法匹配
-            store.dispatch('setShareKey', mdh.gen_shared_secret(secret_key, data.key_b2a))
-            // store.dispatch('setShareKey', mdh.gen_shared_secret('569506728890274752', '634875532707788715527841908380286147'))
-            let uctx = login.get_uctx({ app: { id: params.appid } })
+            store.dispatch('setLocalShareKey', mdh.gen_shared_secret(secret_key, data.key_b2a))
+            let uctx = local.get_uctx({ app: { id: params.appid } })
             returnItem = axios.get('/ccm/cacs_login_req', { // 调用登录接口
                 params: {
-                    lid: store.state.user.lid,
+                    lid: store.state.user.localLid,
                     nid: login.create_nid_ex(2), // 计算nid
                     user: params.user,
-                    pass: login.pwd_encrypt(params.password),
+                    pass: local.pwd_encrypt(params.password),
                     session_req: 1,
                     param: [{ name: "spv", value: "v1" }, { name: "uctx", value: uctx }]
                 }
             })
         })
-        
+
         return returnItem
     },
     /*
@@ -169,9 +187,9 @@ const local = {
             password: param.password
         }).then(res => {
             returnItem = res.data;
-            if(returnItem.result === ''){
+            if (returnItem.result === '') {
                 sessionStorage.setItem("pass_" + param.sn, param.password)
-            }else if(returnItem.result === 'accounts.pass.invalid'){
+            } else if (returnItem.result === 'accounts.pass.invalid') {
                 sessionStorage.removeItem("pass_" + param.sn);
             }
         })
@@ -228,10 +246,10 @@ const local = {
             console.log(res, '播放res')
         })
     },
-    async local_box(params){
+    async local_box(params) {
         let param = params.data;
         // console.log(param,"param_data")
-        param.dom.parentNode.childNodes[0].childNodes[0].src = devlist.pic_url_get({sn: param.sn, token: "p1"});
+        param.dom.parentNode.childNodes[0].childNodes[0].src = devlist.pic_url_get({ sn: param.sn, token: "p1" });
     }
 }
 export default local
