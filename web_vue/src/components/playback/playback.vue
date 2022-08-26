@@ -37,8 +37,8 @@
               {{ start_time_show }}
             </div>
           </div>
-          <!-- 进度条展示 v-if="clientFlag"-->
-          <div id="playback_progress_bar" >
+          <!-- 进度条展示 -->
+          <div id="playback_progress_bar" v-if="clientFlag">
             <progress-bar :percent="percent" @percentChange="setProgress" @videoPlaySignal="playVideo"></progress-bar> <!-- 进度条组件(传递进度百分比) -->
           </div>
           <!-- 进度条展示 结束 -->

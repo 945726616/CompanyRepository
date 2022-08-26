@@ -694,12 +694,12 @@ export default {
         let msg_data = res.data
         let msg
         if (msg_data && msg_data.result === "") { // 对返回的数据进行处理
-          msg = mcs_successful_sign_up;
+          msg = mcs_successful_sign_up
           // _this.publicFunc.log_upload('regist', 'success'); //记录日志：注册成功
         } else {
           // _this.publicFunc.log_upload('regist', 'fail', msg_data.result); //记录日志：注册失败，失败原因
           if (msg_data.result === "accounts.user.existed") {
-            msg = mcs_username_already_exists;
+            msg = mcs_username_already_exists
           } else {
             msg = mcs_sign_up_failed
           }
@@ -712,6 +712,12 @@ export default {
           })
           // createPage('login', obj)
           _this.register_sign = false
+          // 填入注册成功的用户名
+          _this.user_val = username_value
+          // 清空密码框
+          _this.password_val = ''
+          // 取消记住密码单选框
+          _this.keep_pw = false
           // 切换回登录页面(此处后期可改成点击登录按钮事件)
         } else {
           _this.publicFunc.msg_tips({
