@@ -12,6 +12,7 @@ const path = require('path')
 // ffi插件声明
 const ffi = require('ffi-napi')
 const ref = require('ref-napi')
+const Ffmpeg = require('fluent-ffmpeg')
 // const refArray = require('ref-array')
 const StructType = require('ref-struct-di')(ref)
 
@@ -85,7 +86,7 @@ function createWindow () {
   child.hide()
 
 
-  win.loadURL('http://localhost:8080/vimtag/')//loadFile('index.html')
+  win.loadFile('index.html')//loadURL('http://localhost:8080/vimtag/')//loadFile('index.html')
   // win.loadFile('yuvIndex.html')
   // win.setBackgroundColor(rgba(255, 255, 255, 0))
   // 点击最大化按钮事件
@@ -313,4 +314,3 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 })
-

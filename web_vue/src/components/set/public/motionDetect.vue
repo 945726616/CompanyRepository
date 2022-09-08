@@ -5,7 +5,7 @@
             <div class='option_scene_list_right'>
                 <div class='option_scene_list_text'>
                     <div class='option_scene_list_text_left'> {{mcs_motion_detection}} </div>
-                    <div class='option_scene_list_text_right'>motion</div>
+                    <!-- <div class='option_scene_list_text_right'>motion</div> -->
                 </div>
             </div>
         </div>

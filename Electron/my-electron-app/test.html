@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <script src="./video.js"></script>
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+  <title>Hello World!</title>
+  <!-- flv.js -->
+  <!-- <script src="./flv.min.js"></script> -->
+</head>
+
+<body>
+  <h1>Hello World!!!!!</h1>
+  <h1>test</h1>
+  <video width="400" height="300" id="player" controls>
+    <source src="./test.mp4" type="video/mp4">
+  </video>
+  <iframe width="800" height="600" src="./test1.html"></iframe>
+  <style>
+    body {
+      background-color: transparent;
+    }
+  </style>
+  <!-- 额外的页面脚本功能, 可以使用常用的JS管理工具进行管理 -->
+  <script src="./preload.js"></script>
+  <!-- 信息交互方法 -->
+  <script src="./ipcRenderer.js"></script>
+  <script src="./rtmpPlay.js"></script>
+  <!-- <script src="renderer.js"></script> -->
+  <!-- <script src="./video_ffmpeg.js"></script> -->
+  <!-- <script>
+    function btn() {
+      var x = document.getElementById('input')
+      ipcRenderer.send('AsynMsg', x.value)
+    }
+  </script> -->
+</body>
+
+</html>

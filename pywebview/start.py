@@ -1,3 +1,4 @@
+from distutils.log import debug
 import os
 import webview
 # 与c混合编程库
@@ -31,6 +32,8 @@ if __name__ == '__main__':
     print(nResult)
     add = open_cv_dll.add(4, 8)
     print(add)
+    yuvVideo = open_cv_dll.yuvVideo('video.yuv')
+    print(yuvVideo)
     api = Api()
-    webview.create_window('Todos magnificos', 'assets/index.html', js_api=api, min_size=(600, 450))
-    webview.start()
+    webview.create_window('Todos magnificos', 'assets/index.html', js_api=api, min_size=(600, 450)) #assets/index.html
+    webview.start(debug = True)

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <script type="text/javascript">
+    var web_url = window.location.href // 当前页面链接
+    var new_url // 替换协议头后的链接
+    // 多国语言内容
+    var chromeLang = (navigator.language || navigator.userLanguage).substr(0, 2)
+    var remindWord, clickAppWord
+    if (chromeLang === 'zh') {
+      remindWord = '将会自动跳转回APP，如果没有发生跳转，请点击下面的链接跳转'
+      clickAppWord = '跳转APP'
+    } else {
+      remindWord = 'It will redirect to App automatically. If not, please click the link below.'
+      clickAppWord = 'APP Redirect'
+    }
+    function start () {
+      if (web_url.indexOf('https') > -1) { // https 协议去掉5个字符
+        new_url = 'app' + web_url.slice(5)
+      } else { // http协议去掉4个字符
+        new_url = 'app' + web_url.slice(4)
+      }
+      // new_url = "app://help.vimtag.com/vimtag"
+      document.getElementById('remind').innerHTML = remindWord
+      document.getElementById('clickSkipApp').innerHTML = clickAppWord
+      document.getElementById('autoJump').innerHTML = "<a id='setUrl' href='" + new_url + "' style='visibility: hidden'>" // 创建dom节点
+      document.getElementById('setUrl').click() //模拟点击
+      //document.getElementById('clickSkipApp').href = new_url
+    }
+  </script>
+  <style>
+    #remind{
+      margin-top: 40%;
+      margin-bottom: 10%;
+      padding: 1rem;
+      text-align: center;
+    }
+    .jumpApp{
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    html{font-size: 1rem;}
+    /* @media screen and (min-width:321px) and (max-width:375px){html{font-size:11px}}
+    @media screen and (min-width:376px) and (max-width:414px){html{font-size:12px}}
+    @media screen and (min-width:415px) and (max-width:639px){html{font-size:15px}}
+    @media screen and (min-width:640px) and (max-width:719px){html{font-size:20px}}
+    @media screen and (min-width:720px) and (max-width:749px){html{font-size:22.5px}}
+    @media screen and (min-width:750px) and (max-width:799px){html{font-size:23.5px}}
+    @media screen and (min-width:800px){html{font-size:25px}} */
+  </style>
+</head>
+<body onload="start()">
+  <div id="remind"></div>
+  <div class="jumpApp">
+    <a id="clickSkipApp" href=""></a>
+  </div>
+  <div id="autoJump"></div>
+</body>
+</html>

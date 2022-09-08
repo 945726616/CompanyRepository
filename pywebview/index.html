@@ -29,6 +29,7 @@
   <h1>Hello World!</h1>
   <h1>Hello World!</h1>
   <div id="testPython">test get</div>
+  <!-- <iframe src="http://localhost:8080/mipcm/" width="700" height="700"></iframe> -->
   <!-- <video id="videoPlayer" width="800" height="600" controls></video>
   <button id="play">playBtn</button> -->
   <script>
@@ -36,6 +37,7 @@
       console.log(str1 + " : " + str2)
       console.log(str1)
       console.log(typeof(str2))
+      console.log(window.fujikam)
       // alert(test.test + ":" + test.object)
     }
     window.addEventListener('pywebviewready', function() {
@@ -47,6 +49,8 @@
       window.test = test
         // alert(JSON.stringify(document.getElementById('testPython').innerHTML))
     })
+    console.log(window.pywebview)
+    window.pywebview.api.addItem(1)
   </script>
   <style>
     body {

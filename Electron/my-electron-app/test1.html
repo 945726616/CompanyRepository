@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<!--最后一次更新：2019-3-25，更改了产品x4模块，改为直接img调用图片。新增轮播图选择点。-->
+<html lang="zh">
+
+<head>
+
+
+
+
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <!--默认极速内核-->
+  <link href="./video-js.css" rel="stylesheet">
+  <script src="./video.js"></script>
+  <script src="./videojs-contrib-hls.min.js"></script>
+
+  <!-- 引入播放器 -->
+  <!-- 引入基础样式文件 mui-player.min.css -->
+  <link rel="stylesheet" type="text/css" href="https://muiplayer.js.org/css/mui-player.min.css" />
+  <!-- 引入基础脚本 mui-player.min.js -->
+  <script type="text/javascript" src="https://muiplayer.js.org/js/mui-player.min.js"></script>
+  <!-- 引入桌面拓展 -->
+  <script type="text/javascript" src="https://muiplayer.js.org/js/mui-player-desktop-plugin.min.js"></script>
+
+  <title>Vimtag智能云摄像机—微目腾科官网</title>
+
+  <meta name="keywords" content="Vimtag，微目腾科，智能摄像机，云摄像机，网络摄像机">
+
+  <meta name="description"
+    content="微目腾科(Vimtag)是一家面向全球海量用户，提供以视频为核心的空间智能化产品和服务的高科技企业，拥有上百项核心知识产权，业务范围涵盖：智能安防系列产品（云摄像机、云盒子、报警设备等）、智能家居系列产品、云服务（云存储、大数据处理、人工智能应用等），旗下智能云摄像机产品用户已覆盖全球上百个国家和地区，并成为北美高端智能摄像机销量前三品牌.">
+
+  <meta name="applicable-device" content="pc,mobile">
+  <!--媒体查询-->
+
+  <meta http-equiv="Cache-Control" content="no-transform ">
+  <!--媒体查询-->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!--自动把页面自适应到屏幕的大小-->
+
+  <script src="vimtagjs.js" type="text/javascript" charset="utf-8"> </script>
+
+  <link href="pcstyle.css" rel="stylesheet">
+  <!--外部CSS-->
+
+  <!--link rel="icon" href="images/vimtag.ico" type="image/x-icon"><!--LOGO标题-->
+
+  <!--link rel="shortcut icon" href="images/vimtag.ico" type="image/x-icon"><!--LOGO收藏夹-->
+
+  <!--script type="text/javascript" src="js/vimtagjs.js"></script><!--外部js-->
+
+  <style>
+    body {
+      background-color: #f0f0f0
+    }
+  </style>
+  <script>//cookie 1
+
+    var date = new Date();
+
+    var expireDays = 1;
+
+    date.setTime(date.getTime() + expireDays * 1 * 60 * 1000);
+
+    document.cookie = "icd=888; name=bill; expires=" + date.toUTCString();
+
+    cookie = document.cookie;
+
+  </script>
+  <script language="JavaScript" type="text/javascript">
+    // <!--
+    document.cookie = "userId=828";
+    document.cookie = "userName=hulk";
+
+    var strCookie = document.cookie;
+
+    if (cookie.length < 10) {
+      cookie = cookie.substr(cookie.lastIndexOf("i") + 1);
+    }
+    else {
+      cookie = cookie.substring(0, 10);
+    }
+    console.log(cookie, 'cookie');
+//-->
+  </script>
+  <script>//中文页面 语言切换js链接
+
+    filename = window.location.href;
+    //console.log(filename+"我是当前页面完整地址")
+    fx1 = filename.substr(filename.lastIndexOf("/") + 1);
+    //console.log(fx1+"我是判断地址有没有带文件名")
+    if (fx1.indexOf('index.htm') > -1) {//该文件为默认首页，故作判断.com或.com/xx
+      filename = filename.substring(0, filename.lastIndexOf("/") + 1);
+      //console.log(filename)
+      filename2 = filename + "indexen.htm";
+      //console.log(filename2+"我带了")
+    }
+    else {
+      filename2 = filename + "indexen.htm";
+      //console.log(filename2+"我没带")
+    }
+
+  </script>
+  <script> //lang
+    var domain = document.domain;
+
+    var type = navigator.appName
+
+    if (type == "Netscape")
+
+      var lang = navigator.language
+
+    else
+
+      var lang = navigator.userLanguage
+
+    //cut down to first 2 chars of country code 
+
+    var lang = lang.substr(0, 2)
+
+    // 英语
+
+    if (lang !== "zh" && (cookie == "cd=888" || cookie == "icd=888; H" || cookie == "Hm_lvt_7cb"))
+
+      window.location.replace(filename2)
+
+
+
+// 简体中文
+
+//else if (lang == "zh"&&(cookie=="cd=888"||cookie=="icd=888; H"||cookie=="Hm_lvt_7cb")&&abc =="2") 
+
+//window.location.replace(filename)  
+
+  </script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e4239c27d79f936afd4d41063d0cb919";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+
+<body>
+
+  <!--返回顶部-->
+  <div id="toop" style="height:1px;width:1px;color:#ffffff;"> </div>
+
+  <!--导航开始-->
+
+
+
+  <div class="header">
+
+    <ul class="nav">
+
+      <!--LOGO-->
+
+      <div class="nav1">
+
+        <li class="rel1">
+
+          <a href="index.htm">
+            <div id="logo"></div>
+          </a>
+
+        </li>
+
+      </div>
+
+      <!--左导航栏-->
+
+      <div class="nav2">
+
+        <li class="rel2" ">
+
+                <a href=" chanpin.html">产品</a>
+
+          <div id="side1">&nbsp </div>
+
+        </li>
+
+        <li class="rel2" ">
+
+                <a href=" yun.html">云存储</a>
+
+          <div id="side2">&nbsp </div>
+
+        </li>
+
+        <li class="rel2" ">
+
+                <a href=" jjfa.html">明厨亮灶</a>
+
+          <div id="side4">&nbsp </div>
+
+        </li>
+
+        <li class="rel2" ">
+
+                <a href=" fwxz.html">服务下载</a>
+
+          <div id="side3">&nbsp </div>
+
+        </li>
+
+        <li class="rel2" ">
+
+                <a href=" about.html">关于我们</a>
+
+          <div id="side5">&nbsp </div>
+
+        </li>
+
+      </div>
+
+      <!--右导航栏-->
+
+      <div class="nav3">
+
+        <li class="rel3" id="tmall">
+
+          <a target="_blank" style="border-right:0px;h" href="https://vimtag.tmall.com/" rel="nofollow">
+
+            <span></span>
+
+            <img src="images/tmall.jpg" style="width:20%;position:relative;top:-0.23rem;">
+            <span style="position:relative;top:-0.85rem;left:-0.65rem;color:red;">天猫购买</span>
+            </img>
+
+
+          </a>
+          <img id="tmall2" src="images/tmall2.png" style="position:absolute;top:4.75rem;width:10%;"></img>
+        </li>
+
+
+
+        <li class="rel3">
+
+          <a id="login" target="_blank" href="https://www.vimtag.com/device?hl=zh" rel="nofollow">
+            <div id="login1">
+
+            </div>
+            设备/登录
+
+
+
+
+          </a>
+
+        </li>
+
+      </div>
+      <div class="nav4" style="position:absolute;right:2rem;">
+        <li class="rel4" style="padding-top:1.84rem;">
+
+          <div id="lang" href="" rel="nofollow" style="background-color:;">
+            <a id="zh" href="">▸中文/ENG</a>
+            <a id="en" href="">▸English</a>
+          </div>
+
+        </li>
+      </div>
+
+    </ul>
+
+
+
+  </div>
+
+  <!--导航结束-->
+
+  <!--轮播开始-->
+
+  <div id="lunbo">
+
+    <li>
+
+      <div id="lunbo1">
+
+        <img id="lunboid1" art="智能摄像机CP3">
+
+        <div id="lunbo1tx">
+
+          <h1 style="letter-spacing:0.3rem;">让你的家更智能</h1>
+
+          <p>AI智能云摄像机-<span>CP3</span></p>
+
+          <a class="lbxq" href="chanpin/cp3.html">
+
+            了解详情
+            <span>
+              >
+            </span>
+
+          </a>
+
+        </div>
+        <!--手动切换控制-->
+        <div id="anan" style="position:absolute;bottom:1rem;left:calc(50% - 3.5rem);">
+          <p id="an11"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#00ccff;border:0px solid #ffffff;">
+          </p>
+          <p id="an12"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;border:0px solid #ffffff;">
+          </p>
+          <p id="an13"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;border:0px solid #ffffff;">
+          </p>
+          <!--p id="an14" style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;"></p-->
+        </div>
+      </div>
+
+    </li>
+
+    <li>
+      <div id="lunbo2">
+
+        <img id="lunboid2" art="智能摄像机P2">
+
+        <div id="lunbo1tx">
+
+          <h1 style="letter-spacing:0.3rem;color: #ffffff;">随时随地 无惧风雨</h1>
+
+          <p style="color: #ffffff;">星光级防水摄像机-<span>8310</span></p>
+
+          <a class="lbxq" href="chanpin/8310.html">
+
+            了解详情
+            <span>
+              >
+            </span>
+
+          </a>
+
+        </div>
+        <!--手动切换控制-->
+        <div id="anan" style="position:absolute;bottom:1rem;left:calc(50% - 3.5rem);">
+          <p id="an21"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;border:0px solid #ffffff;">
+          </p>
+          <p id="an22"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#00ccff;border:0px solid #ffffff;">
+          </p>
+          <p id="an23"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;border:0px solid #ffffff;">
+          </p>
+          <!--p id="an24" style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;"></p-->
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div id="lunbo3">
+
+        <img id="lunboid3" art="低功耗电池摄像机871">
+
+        <div id="lunbo1tx">
+
+          <h1 style="letter-spacing:0.3rem;">无需布线 自由安装</h1>
+
+          <p>低功耗电池摄像机-<span>871</span></p>
+
+          <a class="lbxq" href="chanpin/871.html">
+
+            了解详情
+            <span>
+              >
+            </span>
+
+          </a>
+
+        </div>
+        <!--手动切换控制-->
+        <div id="anan" style="position:absolute;bottom:1rem;left:calc(50% - 3.5rem);">
+          <p id="an31"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;border:0px solid #ffffff;">
+          </p>
+          <p id="an32"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;border:0px solid #ffffff;">
+          </p>
+          <p id="an33"
+            style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#00ccff;border:0px solid #ffffff;">
+          </p>
+          <!--p id="an34" style="float:left;height:0.5rem;margin-right:8px;width:2rem;background-color:#ffffff;"></p-->
+        </div>
+      </div>
+    </li>
+  </div>
+
+
+
+  <!--轮播结束-->
+
+  <!--产品开始-->
+
+  <div class="sycp">
+
+    <div class="sycptu1">
+
+      <a id="tu1a" href="">
+
+        <!--div id="tu1"></div-->
+        <img id="tu1i" src="images/8310.jpg">
+        <!--注意：产品链接与产品图片命名关联-->
+
+        <h1>星光级防水摄像机 8310</h1>
+
+      </a>
+
+    </div>
+
+    <div class="sycptu1" style="margin-left:0.625rem;margin-right:0.625rem;">
+
+      <a id="tu2a" href="">
+
+        <!--div id="tu2"></div-->
+        <img id="tu2i" src="images/8211.jpg">
+        <!--注意：产品链接与产品图片命名关联-->
+        <h1>AI智能云摄像机 8211</h1>
+
+      </a>
+
+    </div>
+
+    <div class="sycptu1" style="margin-left:0;margin-right:0.625rem;">
+      <!--注意：产品链接与产品图片命名关联-->
+
+      <a id="tu3a" href="">
+
+        <!--div id="tu3"></div-->
+        <img id="tu3i" src="images/815.jpg">
+        <h1>卡片机 815</h1>
+
+      </a>
+
+    </div>
+
+    <div class="sycptu1">
+
+      <a id="tu4a" href="">
+
+        <!--div id="tu4"></div-->
+        <img id="tu4i" src="images/871.jpg">
+        <!--注意：产品链接与产品图片命名关联-->
+        <h1>低功耗电池摄像机 871</h1>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!--产品结束-->
+
+  <!--视频-->
+  <div class="syvideo">
+    <!--左侧-->
+    <div id="syvideo1" style="background-color:;" onclick="play()">
+      <video id="myVideo" class="video-js vjs-default-skin vjs-big-play-centered  widthandheight1" controls x5-video-player-type="h5-page">
+        <source src="test.mp4">
+      </video>
+      <div id="video1s">
+        <img id="video1si" art="Vimtag智能摄像机视频">
+      </div>
+      <div id="video2">
+        <div id="sjx"></div>
+
+      </div>
+    </div>
+
+    <!--右侧-->
+
+    <a id="syvideo2" href="yycj.html">
+
+      <div id="video3">
+
+        <img id="video3i" art="智能摄像机应用场景">
+
+      </div>
+
+      <div id="video4">
+
+        <h1>应用场景</h1>
+
+        <p>你可以把家、父母、小孩等一切你牵挂的装进手机，随时可查看！</p>
+
+      </div>
+
+      <div id="video5">
+
+        了解详情
+        <span>
+          &nbsp; 〉
+        </span>
+
+      </div>
+      <div id="video6">
+
+      </div>
+
+    </a>
+
+
+
+  </div>
+  <!--视频结束-->
+
+  <!-- 指定播放器容器 -->
+  <div id="mui-player"></div>
+
+
+  <!--返回开始-->
+
+  <div id="foop" target="_self" style="display:none">
+
+    <a href="#toop" title="返回顶部" target="_self">︿</a>
+
+  </div>
+
+
+  <div id="footer"></div>
+  <!-- <div id="zhanhui" style="position:fixed;top:50%;float:left;background-color:;"><img src="images/zhanhui1.png"
+      style="width:12%;opacity:0.5;"></img></div> -->
+  <!--返回结束-->
+  <script>
+    // videojs 简单使用
+    // videojs('myVideo', {
+    //   bigPlayButton: false,
+    //   textTrackDisplay: false,
+    //   posterImage: false,
+    //   errorDisplay: false
+    // })
+  </script>
+
+
+
+</body>
+<script src="js/jquery.js"></script>
+<script>
+  $(function () {
+    $('#footer').load('footer.html');
+    // $('#zhanhui').load('zhanhui.html');
+  }
+  )
+
+</script>
+
+<script>
+  // 初始化 MuiPlayer 插件，MuiPlayer 方法传递一个对象，该对象包括所有插件的配置
+  var mp = new MuiPlayer({
+      container: '#mui-player',
+      title: '演示视频',
+      src: './test.mp4',
+      loop:true,
+      width:'500px',
+      height:'300px',
+      dragSpotShape:'square',
+      themeColor:'#3CB371',
+      plugins:[
+          new MuiPlayerDesktopPlugin({
+          })
+      ],
+  });
+</script>
+
+<script>
+
+  //视频显示条及点击播放
+  //22-7-19全注释
+  // var video1 = document.getElementById("myVideo");
+
+  // var player = videojs('myVideo', {});
+
+
+  // video1s.onclick = video2.onclick = function () {
+
+  //   var vst = document.getElementById("myVideo").style.display;
+  //   console.log(vst);
+
+  //   if (vst = "none" && player.paused) {
+  //     video1.className = "video-js vjs-default-skin vjs-big-play-centered widthandheight";
+
+  //     video1s.style.display = "none";
+
+  //     video2.style.display = "none";
+
+  //     video1.style.display = "block";
+
+  //     video1.style.width = "100%";
+  //     video1.style.height = "21.875rem";
+  //     player.load();
+  //     player.play();
+
+  //   }
+
+  //   else {
+
+  //   }
+
+  // }
+
+  //22-7-19 新video
+  var video1 = document.getElementById("myVideo");
+  var video1s = document.getElementById("video1s")
+  var video2 = document.getElementById("video2")
+  function play(){
+    video1.play();
+    video1s.style.display = "none";
+    video2.style.display = "none";
+    video1.style.display = "block";
+    video1.style.width = "100%";
+    video1.style.height = "21.875rem";
+  }
+</script>
+
+<script>
+
+  function aaaa(obj, type, fn) {
+
+    if (obj.attachEvent) {
+
+      obj.attachEvent('on' + type, function () {
+
+        fn.call(obj);
+
+      })
+
+    }
+
+    else {
+
+      obj.addEventListener(type, fn, false);
+
+    }
+
+  }
+
+  aaaa(window, 'scroll', function () {
+
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+    if (scrollTop >= 100) { //滚动条下拉到距离底部的高度隐藏物体被显示出来，这里指距离底部还有1500px隐藏物体被显示出来。
+
+      document.getElementById("foop").style.display = "block";
+
+    }
+
+    else {
+
+      document.getElementById("foop").style.display = "none";
+
+    }
+
+  });
+
+</script>
+
+
+
+<script>
+
+  //因为使用了document，所以js需要放在需要执行的代码下面生效才能生效
+
+  var li = document.getElementById('lunbo').getElementsByTagName("li");
+
+
+  var num = 0;
+
+  var len = li.length;
+
+
+
+
+  setInterval(function () {
+
+    li[num].style.display = "none";
+
+
+    num = ++num == len ? 0 : num;
+
+    li[num].style.display = "block";
+
+  }, 4000);//切换时间
+
+</script>
+<script>
+
+  an11.onclick = an21.onclick = an31.onclick = function () {
+    num = 0;
+
+    li[0].style.display = "block";
+    li[1].style.display = "none";
+    li[2].style.display = "none";
+    /*li[3].style.display="none";*/
+  }
+  an12.onclick = an22.onclick = an32.onclick = function () {
+    num = 1;
+    li[1].style.display = "block";
+    li[0].style.display = "none";
+    li[2].style.display = "none";
+    /* li[3].style.display="none";*/
+  }
+  an13.onclick = an23.onclick = an33.onclick = function () {
+    num = 2;
+
+    li[2].style.display = "block";
+    li[1].style.display = "none";
+    li[0].style.display = "none";
+    /*li[3].style.display="none";*/
+  }
+    /*an14.onclick=an24.onclick=an34.onclick=an44.onclick=function(){
+  num=2;
+
+  li[3].style.display="block";
+  li[1].style.display="none";
+  li[0].style.display="none";
+  li[2].style.display="none";
+  }
+  */
+</script>
+<script>//中文页面 语言切换js链接
+
+  document.getElementById("zh").href = filename;
+  document.getElementById("en").href = filename2;
+</script>
+
+<script>
+  //html加载完成后js加载图片
+  window.onload = function () {
+    document.getElementById("lunbo").style = "padding:0;height:auto;";
+    document.getElementById("lunboid1").src = "images/lunbo1A.jpg";
+    document.getElementById("lunboid2").src = "images/lunbo2A.jpg";
+    document.getElementById("lunboid3").src = "images/lunbo3A.jpg";
+    document.getElementById("video1si").src = "images/ceshi5.jpg";
+    document.getElementById("video3i").src = "images/video3.jpg";
+  }
+</script>
+<script>
+  var chanpintu1 = document.getElementById("tu1i").src;
+  chanpintu1 = chanpintu1.substr(chanpintu1.lastIndexOf("/") + 1);
+  //console.log(chanpintu1);
+  chanpintu1 = chanpintu1.substring(0, chanpintu1.indexOf("."));
+  ///console.log(chanpintu1);
+  chanpintu1 = "chanpin/" + chanpintu1 + ".html"
+  document.getElementById("tu1a").href = chanpintu1;
+</script>
+<script>
+  var chanpintu2 = document.getElementById("tu2i").src;
+  chanpintu2 = chanpintu2.substr(chanpintu2.lastIndexOf("/") + 1);
+  chanpintu2 = chanpintu2.substring(0, chanpintu2.indexOf("."));
+  chanpintu2 = "chanpin/" + chanpintu2 + ".html"
+  document.getElementById("tu2a").href = chanpintu2;
+</script>
+<script>
+  var chanpintu3 = document.getElementById("tu3i").src;
+  chanpintu3 = chanpintu3.substr(chanpintu3.lastIndexOf("/") + 1);
+  chanpintu3 = chanpintu3.substring(0, chanpintu3.indexOf("."));
+  chanpintu3 = "chanpin/" + chanpintu3 + ".html"
+  document.getElementById("tu3a").href = chanpintu3;
+</script>
+<script>
+  var chanpintu4 = document.getElementById("tu4i").src;
+  chanpintu4 = chanpintu4.substr(chanpintu4.lastIndexOf("/") + 1);
+  chanpintu4 = chanpintu4.substring(0, chanpintu4.indexOf("."));
+  chanpintu4 = "chanpin/" + chanpintu4 + ".html"
+  document.getElementById("tu4a").href = chanpintu4;
+</script>
+<script> //判断http/https
+  var proto = document.location.protocol;
+  var login = document.getElementById('login');
+  if(proto = 'http'){
+    login.setAttribute('href','http://www.vimtag.com/device?hl=zh')
+  } else if(proto = 'https'){
+    login.setAttribute('href','https://www.vimtag.com/device?hl=zh')
+  }
+</script>
+
+</html>

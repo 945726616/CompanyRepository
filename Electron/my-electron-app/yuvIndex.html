@@ -348,6 +348,7 @@
       const data = evt.data;
       if (typeof data !== 'string') {
         queue.push(data);
+        console.log(queue, 'queue')
         if (!schedued) {
           schedue();
           schedued = true;
