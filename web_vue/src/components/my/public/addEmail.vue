@@ -15,7 +15,7 @@
     <div id='email_invalid' v-if='email_invalid_sign'> {{mcs_invalid_email_addr}} </div>
     <div id='ae_email_exist' v-if='email_verification.exist'> {{mcs_accounts_bind_email_exist}} </div>
     <div id='ae_email_busy' v-if='email_verification.busy'> {{mcs_accounts_bind_email_busy}} </div>
-    <div id='ae_email_inactive' class='ae_email' v-if="!bind_email_sign && (email_addr !== '')"> {{mcs_email_inactive}} </div>
+    <div id='ae_email_inactive' class='ae_email' v-if="!bind_email_sign && (email_addr !== '') && active_email_flag"> {{mcs_email_inactive}} </div>
   </div>
 </template>
 
@@ -36,20 +36,22 @@ export default {
       mcs_email_inactive: mcs_email_inactive,
 
       email_addr: '', //邮箱地址
-      bind_email_sign: false, //是否绑定邮箱
+      bind_email_sign: false, // 是否绑定邮箱 get_user_email接口是否返回email地址(email)
       email_invalid_sign: false, //邮箱是否无效
       email_verification: { success: false, exist: false, busy: false }, //邮箱验证
       appid:'', //项目名.com
+      active_email_flag: false, // 绑定邮箱标识 true: 有邮箱未激活 false: 无邮箱无激活 get_user_email接口是否返回email激活标识(active_email)
     }
   },
   mounted () {
-    let project_name = this.$store.state.jumpPageData.projectName;
-    this.appid = project_name + '.com';
-    this.binding_accounts_info();
+    let project_name = this.$store.state.jumpPageData.projectName
+    this.appid = project_name + '.com'
+    this.binding_accounts_info()
   },
   methods: {
     binding_accounts_info () { //点击绑定邮箱功能
       let user_info = eval("(" + localStorage.getItem("remember_msg_info") + ")")
+      console.log(user_info, 'user_info')
       // this.$api.login.binding_email_get({
       //     username: user_info.user,
       //     appid: appid
@@ -70,16 +72,21 @@ export default {
         username: user_info.user,
         appid: this.appid
       }).then(res => {
-        if (res && res.data.email !== "") {
-          if (res.data.active_email) {
-            this.email_addr = res.data.email;
-            this.bind_email_sign = true;
-          } else {
-            this.email_addr = res.data.email;
-            this.bind_email_sign = false;
+        console.log(res, 'bindEmail')
+        if (res && res.data) {
+          if (res.data.active_email && res.data.email !== "") { // 返回值有邮箱有绑定标识
+            this.email_addr = res.data.email
+            this.bind_email_sign = true
+          } else if ((!res.data.active_email) && res.data.email !== "") { // 返回值有邮箱无绑定标识
+            this.email_addr = res.data.email
+            this.bind_email_sign = false
+            this.active_email_flag = true
+          } else { // 返回值无邮箱无绑定标识
+            this.bind_email_sign = false
+            this.active_email_flag = false
           }
         } else {
-          return;
+          return
         }
       })
     },

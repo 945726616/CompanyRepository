@@ -282,7 +282,7 @@
                         sessionStorage.clear();
                     } else {
                         // sessionStorage.clear();
-                        location.reload();
+                        // location.reload();
                     }
                 }
             },
