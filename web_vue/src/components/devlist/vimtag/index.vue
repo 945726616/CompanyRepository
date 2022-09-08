@@ -151,7 +151,7 @@ export default {
       return 100 / device_list_num
     },
     autoImgHeight: function () { // 动态计算图片高度
-      let singalImage = document.body.clientWidth * (this.autoImgWidth / 100)
+      let singalImage = this.screenWidth * (this.autoImgWidth / 100)
       return (singalImage / 16 * 9) + 34
     }
   },
@@ -267,6 +267,7 @@ export default {
       eye_hide_sign: true, //本地设备输入密码是否显示
       local_devlist_data: {}, //本地点击设备数据
       input_local_password: '', //本地设备输入密码
+      screenWidth: null, // 屏幕宽度值
     }
   },
   methods: {
@@ -1189,6 +1190,12 @@ export default {
       languageSelect.mipc($('#login_box'))
       $('#login_box').append("<div id='is_mipc_div'></div>")
     }
+    this.screenWidth = document.body.clientWidth
+    window.onresize = () => {
+      return (() => {
+        this.screenWidth = document.body.clientWidth
+      })()
+    }
     // this.publicFunc.projectReload.call(this);
   },
   created () {
@@ -1203,7 +1210,7 @@ export default {
       if (val === 0) {
         this.vimtagDevlist(this.pageObj)
       }
-    }
+    },
   }
 }
 </script>
