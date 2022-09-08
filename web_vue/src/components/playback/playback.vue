@@ -108,6 +108,7 @@ export default {
       downloadShowWorld: null, // 下载中暂停/开始按钮文字
       clientP2PingValue: '0kB', // 客户端视频播放流数据值显示
       playFlag: false, // 播放状态标识, 初始为false
+      downloadFlag: false, // 下载标识
     }
   },
   methods: {
@@ -276,6 +277,9 @@ export default {
     },
     // 点击事件
     clickPlay () { // 点击播放（客户端）
+      if (downloadFlag) { // 当前为下载状态则直接忽略播放请求
+          return
+        }
       // if (window.fujikam !== "fujikam") { // 客户端播放方法
       //   return
       // }
@@ -327,6 +331,9 @@ export default {
       }
     },
     clickPlayViewBox () { // 点击播放视图
+      if (downloadFlag) { // 当前为下载状态则直接忽略播放请求
+        return
+      }
       let pic_token = [];
       for (let i = 0; i < this.createPlaybackObj.data.length; i++) {
         pic_token.push(this.createPlaybackObj.data[i].pic_token)
@@ -419,6 +426,7 @@ export default {
       // moveProgressBar
     },
     clickDownloadSubmit () { // 点击下载弹窗中确定事件
+      this.downloadFlag = true // 添加下载标识(下载过程中禁止再次播放)
       // 添加点击下载后暂停后台视频播放
       if (this.is_playing) { // 当前播放状态 1 为播放中 0 为未播放 (切换为暂停)
         this.is_playing = 0
@@ -448,6 +456,9 @@ export default {
           download_path: download_path,
           playback: 1, // 此处额外添加参数
           isDownload: 1 // 此处额外添加参数
+        }).then(res => {
+          console.log(res, 'downloadOver')
+          this.downloadFlag = false
         })
       } else {
         this.$api.playback.replay_download({ // 原play_back_download接口
@@ -459,6 +470,9 @@ export default {
           download_path: download_path,
           playback: 1, // 此处额外添加参数
           isDownload: 1 // 此处额外添加参数
+        }).then(res => {
+          console.log(res, 'downloadOver')
+          this.downloadFlag = false
         })
       }
     },
@@ -474,6 +488,7 @@ export default {
       }
     },
     clickDownloadStop () { // 点击下载终止
+      this.downloadFlag = false
       this.$refs.downloadBufferFlag.style.display = 'none'
       this.$api.playback.video_stop({
         dom: $("#playback_screen"),
