@@ -62,6 +62,7 @@
                 mcs_feedback_dec_prompt: mcs_feedback_dec_prompt, //具体描述
                 mcs_feedback_upload_photo: mcs_feedback_upload_photo, //上传照片
                 mcs_feedback_submit: mcs_feedback_submit, //提交
+                mcs_feedback_submit_success: mcs_feedback_submit_success, // 提交成功
                 mcs_feedback_dec: mcs_feedback_dec, //请输入您的意见
 
                 feedback_type_value: '', //反馈类型
@@ -166,6 +167,11 @@
                         delete params.item.pic;
                     }
                     console.log(params)
+                    this.publicFunc.msg_tips({
+                      msg: mcs_feedback_submit_success,
+                      type: 'success',
+                      timeout: 3000
+                    })
                 }
             }
         }
