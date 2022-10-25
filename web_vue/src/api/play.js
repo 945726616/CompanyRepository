@@ -38,7 +38,7 @@ const play = {
             images[k].src = devlist.pic_url_get({
               sn: data.dom[k].getAttribute("sn"),
               token: "p1"
-            });
+            })
           }
         }
       }
@@ -770,11 +770,7 @@ const play = {
    ** 播放封面图
    */
   play_preview_img (params) {
-    let url;
-    // console.log(default_Play_img, '站位图片')
-    params.dom.css('background-image', 'url(' + default_Play_img + ')')
-    params.dom.css('background-size', '100% 100%')
-    params.dom.css('background-repeat', 'no-repeat')
+    let url
     if (process.env.NODE_ENV === 'production') {
       url = (params.addr ? "http://" + params.addr : window.location.protocol + "//" + window.location.host) + "/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + params.sn + "&dtoken=" + params.pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
     } else {

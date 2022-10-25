@@ -225,7 +225,7 @@ export default {
       date_infos: _this.history_initial_data.date_infos_time,
       onSelect: function (dateText, inst) {
         // console.log(inst, 'calendar_input_select_inst')
-        let start_time = new Date(dateText).format("yyyy.MM.dd.00.00.00");
+        let start_time = new Date(dateText).format("yyyy.MM.dd.00.00.00"); //this.parseISO8601(dateText) 
         start_time = _this.$api.history.getDateForStringDate(start_time).getTime();
         // let num = _this.vedio_day.length - _this.vedio_day.indexOf(start_time) - 1; //点击完日期cid检索
         let end_time = start_time + 60 * 60 * 24 * 1000;
@@ -416,6 +416,20 @@ export default {
       }
       this.num++;
     },
+    // 日历组件时间戳处理(解决部分特殊情况下出现NaN)
+    parseISO8601(dateStringInRange) {
+      var isoExp = /^s*(d{4})-(dd)-(dd)s*$/,
+          date = new Date(NaN), month,
+          parts = isoExp.exec(dateStringInRange)
+      if(parts) {
+        month = +parts[2]
+        date.setFullYear(parts[1], month - 1, parts[3])
+        if(month != date.getMonth() + 1) {
+          date.setTime(NaN)
+        }
+      }
+      return date
+    }
   },
   watch: {
     filter_type: {
