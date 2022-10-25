@@ -17,18 +17,26 @@ export default {
         type: Number,
         default: 0
       },
-      offsetFlag: true // 防止连续点击按钮导致获取offset异常值
+      offsetFlag: true, // 防止连续点击按钮导致获取offset异常值
+      progressBarLeft: null, // 进度条容器左侧偏移量
+      // progressBarWidth: null, // 进度条容器宽度
+      // progressWidth: null, // 计算后进度条长度
     }
   },
   props: {
     percent: {
       type: Number,
       default: 0
+    },
+    progressWidth: { // 进度条长度
+      type: Number,
+      default: 300
     }
   },
   mounted () {
     let _this = this
     this.btnWidth = this.$refs.dragBtn.clientWidth // 获取按钮宽度大小
+    this.progressBarLeft = this.$refs.progressBar.getBoundingClientRect().left
   },
   methods: {
     // 进度条点击事件
@@ -38,12 +46,9 @@ export default {
         return
       }
       // 获取进度条相关的信息
-      // left: 进度条容器control到最左侧的距离，width：容器的宽度
-      const { left, width } = this.$refs.progressBar.getBoundingClientRect()
       // e.clientX：鼠标点击的位置到最左侧的距离
-      const progressWidth = e.clientX - left
-      this.progressWidth = progressWidth + 'px'
-      this.updatePercent(progressWidth, width, 1) // 计算进度条百分比并传回父组件(仅负责动画效果)
+      this.progressSelectWidth = e.clientX - this.progressBarLeft
+      this.updatePercent(this.progressSelectWidth, this.progressWidth, 1) // 计算进度条百分比并传回父组件(仅负责动画效果)
       this.$emit('videoPlaySignal', true) // 传递播放标识(仅通知父组件进行播放操作)
       this.offsetFlag = false
       setTimeout(() => { // 定时器设置复位点击节流标识
@@ -51,10 +56,11 @@ export default {
       }, 1000)
     },
     // 更新进度条百分比并传递给父组件
-    updatePercent (progressWidth, width, code) {
-      console.log(progressWidth, width, 'progressWidth', code)
-      const barWidth = this.$refs.progressBar.clientWidth - this.btnWidth
-      const percent = Math.min(1, progressWidth / barWidth)
+    updatePercent (progressSelectWidth, width, code) {
+      console.log(progressSelectWidth, width, 'progressWidth', code)
+      let barWidth = this.progressWidth
+      let percent = Math.min(1, progressSelectWidth / barWidth)
+      console.log(barWidth, percent, 'percent')
       this.$emit('percentChange', percent) // 发送给父组件(进度条移动的百分比)
     },
     // 拖动事件
@@ -70,21 +76,19 @@ export default {
         const X = e.clientX
         // 减去滑块偏移量
         const cl = X - offsetX
-        const { left, width } = this.$refs.progressBar.getBoundingClientRect()
         // 除去滑块按钮长度的进度条长度
-        const ml = cl - left
+        const ml = cl - this.progressBarLeft
         let progressWidth
         if (ml <= 0) {
           //进度条长度最小和最大值的界定
           progressWidth = 0
-        } else if (ml >= width) {
-          progressWidth = width
+        } else if (ml >= this.progressWidth) {
+          progressWidth = this.progressWidth
         } else {
           progressWidth = ml
         }
-        this.progressWidth = progressWidth + 'px'
         // 更新当前时间
-        this.updatePercent(progressWidth, width, 2)
+        this.updatePercent(progressWidth, this.progressWidth, 2)
       }
       //抬起鼠标，结束移动事件
       document.onmouseup = () => {
@@ -109,13 +113,20 @@ export default {
       if (newPercent > 0) {
         console.log('enter watch', newPercent)
         // 进度条总长度
-        const barWidth = this.$refs.progressBar.clientWidth - this.btnWidth
-        const offsetWidth = barWidth * newPercent
-        console.log(barWidth, offsetWidth, 'barWidth, offsetWidth')
+        this.percent = newPercent
+        let offsetWidth = this.progressWidth * newPercent
+        console.log(offsetWidth, 'offsetWidth')
         this._setOffset(offsetWidth) // 设置进度条及按钮偏移
       }
     },
-  }
+    progressWidth (newProgressWidth, oldProgressWidth) {
+      this.progressWidth = newProgressWidth
+      let offsetWidth = this.progressWidth * this.percent
+      this.progressBarLeft = this.$refs.progressBar.getBoundingClientRect().left
+      this._setOffset(offsetWidth) // 设置进度条及按钮偏移
+      console.log(newProgressWidth, oldProgressWidth, this.progressWidth, '子组件中获取到的进度条长度')
+    }
+  },
 }
 </script>
 

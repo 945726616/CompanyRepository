@@ -29,6 +29,7 @@ const jumpPageData = {
     systemStopWait: null, // 系统停止等待
     loginStatus: '',// Keeping the login is ipc or user
     percent: 0, // 回放进度条百分比
+    playbackDownloadFlag: false, // 回放下载标识
     playBackObj: null, // 回放页面obj内容
     playBackSavePercent: 0, // 回放点击进度条时存储百分比
     clientP2Ping: 0, // 客户端播放时展示的KB数值
@@ -114,6 +115,9 @@ const jumpPageData = {
     SET_PERCENT: (state, percent) => {
       state.percent = percent
     },
+    SET_PLAYBACK_DOWNLOAD_FLAG:(state, playbackDownloadFlag) => {
+      state.playbackDownloadFlag = playbackDownloadFlag
+    },
     SET_PLAYBACK_OBJ:(state, playBackObj) => {
       state.playBackObj = playBackObj
     },
@@ -158,6 +162,7 @@ const jumpPageData = {
     setBoxDeviceData: ({ commit }, boxDeviceData) => commit('SET_BOX_DEVICE_DATA', boxDeviceData),
     setLoginStatus: ({ commit }, loginStatus) => commit('SET_LOGIN_STATUS', loginStatus),
     setPercent: ({ commit }, percent) => commit('SET_PERCENT', percent),
+    setPlaybackDownloadFlag: ({ commit }, playbackDownloadFlag) => commit('SET_PLAYBACK_DOWNLOAD_FLAG', playbackDownloadFlag),
     setPlayBackObj: ({ commit }, playBackObj) => commit('SET_PLAYBACK_OBJ', playBackObj),
     setPlayBackSavePercent: ({ commit }, playBackSavePercent) => commit('SET_PLAYBACK_SAVE_PERCENT', playBackSavePercent),
     setClientP2Ping: ({ commit }, clientP2Ping) => commit('SET_CLIENT_P2PING', clientP2Ping),

@@ -30,25 +30,27 @@
         </div>
         <!-- 回放视频播放 结束 -->
         <!-- 播放菜单控制 -->
-        <div id="playback_menu_box">
-          <div id="play_menu_left">
-            <div id="video_play" :class="{'video_play_stop':!playFlag, 'video_play_start': playFlag }" @click="clickPlay"></div>
-            <div id="playback_start_time" v-if="clientFlag">
+        <div id="playback_menu_box" ref="playback_menu_box">
+          <div id="play_menu_left" ref="play_menu_left">
+            <div id="video_play" :class="{'video_play_stop':!playFlag, 'video_play_start': playFlag }"
+              @click="clickPlay"></div>
+            <div id="playback_start_time" v-show="clientFlag">
               {{ start_time_show }}
             </div>
           </div>
           <!-- 进度条展示 -->
-          <div id="playback_progress_bar" v-if="clientFlag">
-            <progress-bar :percent="percent" @percentChange="setProgress" @videoPlaySignal="playVideo"></progress-bar> <!-- 进度条组件(传递进度百分比) -->
+          <div id="playback_progress_bar" ref="playback_progress_bar" v-show="clientFlag">
+            <progress-bar :percent="percent" :progressWidth="progressWidth" @percentChange="setProgress" @videoPlaySignal="playVideo"></progress-bar>
+            <!-- 进度条组件(传递进度百分比) -->
           </div>
           <!-- 进度条展示 结束 -->
-          <div id="play_menu_right" v-if="clientFlag">
-            <div id="playback_download_img" @click="downloadBoxFlag = true"></div>
-            <!-- 声音开关暂且注释 -->
-            <!-- <div id="playback_voice_close" class="voice_close_open" v-show="clientFlag" @click="clickVoice($event)"></div> -->
+          <div id="play_menu_right" ref="play_menu_right" v-show="clientFlag">
             <div id="playback_end_time">
               {{ end_time_show }}
             </div>
+            <div id="playback_download_img" v-show="clientFlag" @click="downloadBoxFlag = true"></div>
+            <!-- 声音开关暂且注释 -->
+            <!-- <div id="playback_voice_close" class="voice_close_open" v-show="clientFlag" @click="clickVoice($event)"></div> -->
           </div>
         </div>
         <!-- 播放菜单控制 结束 -->
@@ -103,17 +105,20 @@ export default {
       b_start_time: null, // b开始时间
       clientFlag: window.fujikam === 'fujikam' ? true : false, // 客户端判别标识(true: 客户端, false: 网页端)
       play_progress: null, // 回放进度条参数
-      percent: 0,
+      percent: 0, // 传递至进度条组件的百分比
+      progressWidth: 300, // 传递至进度条组件的进度条宽度
       downloadBoxFlag: false, // 下载提示框标识
       downloadShowWorld: null, // 下载中暂停/开始按钮文字
       clientP2PingValue: '0kB', // 客户端视频播放流数据值显示
       playFlag: false, // 播放状态标识, 初始为false
-      downloadFlag: false, // 下载标识
+      downloadFlag: this.$store.state.jumpPageData.playbackDownloadFlag, // 下载标识
+      listenFunc: null, // 监听函数
+      pageData: null, // 页面传递的参数
     }
   },
   methods: {
     create_playback_page (obj) {
-      // console.log(obj, '进入create_playBack_page函数的obj')
+      console.log(obj, '进入create_playBack_page函数的obj')
       this.createPlaybackObj = obj // 存储调用时的obj内容
       this.$store.dispatch('setPlayBackObj', this.createPlaybackObj)
       if (obj.data) { // 移动侦测标识数组
@@ -148,15 +153,19 @@ export default {
       this.end_time = obj.end_time
       sessionStorage.setItem('play_back_endTime', JSON.stringify(this.end_time)) // 存储结束时间(playback.js中使用)
       // 存储页面展示时间(格式: 小时:分钟:秒)
+      console.log(this.start_time, 'start_time', new Date(this.start_time).format('hh:mm:ss'))
+      console.log(this.end_time, 'end_time', new Date(this.end_time).format('hh:mm:ss'))
       this.start_time_show = new Date(this.start_time).format('hh:mm:ss')
       this.end_time_show = new Date(this.end_time).format('hh:mm:ss')
       // 时间相关赋值结束
       this.play_menu_control({ parent: l_dom_playback_menu_box }) // 调用播放器控制菜单渲染
       this.create_preview({ parent: $("#playback_screen") }) // 创建暂停遮罩层渲染
-      window.onresize = () => { // 更改页面大小时重新设置相应高度
-        // console.log('enter onresize')
-        this.create_playback_page(obj)
-      }
+      // 更改页面大小时重新设置相应高度
+      window.addEventListener('resize', this.listeningFunc)
+    },
+    listeningFunc () {
+      this.clickPlay()
+      this.create_playback_page(this.pageData)
     },
     play_menu_control (data) { // 播放控制菜单
       let _this = this
@@ -165,11 +174,13 @@ export default {
       if (this.$store.state.jumpPageData.localFlag) { // 本地模式下隐藏下载功能
         this.clientFlag = false
       }
-      if (this.publicFunc.mx("#playback_progress_bar")) { // 进度条相关参数获取
-        let l_width = this.publicFunc.mx("#play_menu_left").offsetWidth
-        let r_width = this.publicFunc.mx("#play_menu_right") ? this.publicFunc.mx("#play_menu_right").offsetWidth : null
-        let box_width = this.publicFunc.mx("#playback_menu_box").offsetWidth
-        this.publicFunc.mx("#playback_progress_bar").style.width = (box_width - l_width - r_width - 180) + "px"
+      if (this.$refs.playback_progress_bar) { // 进度条相关参数获取
+        let l_width = this.$refs.play_menu_left.getBoundingClientRect().width // 增加margin值 getBoundingClientRect()方法只能获取元素自身宽度
+        let r_width = this.$refs.play_menu_right ? this.$refs.play_menu_right.getBoundingClientRect().width : null
+        let box_width = this.$refs.playback_menu_box.getBoundingClientRect().width
+        this.publicFunc.mx("#playback_progress_bar").style.width = (box_width - l_width - r_width - 30) + "px" // 30为margin不计算在进度条长度中
+        this.progressWidth = this.$refs.playback_progress_bar.getBoundingClientRect().width
+        console.log(this.progressWidth,this.$refs.playback_progress_bar.getBoundingClientRect().width, '在主页面获取到进度条长度')
         // console.log(box_width, l_width, r_width, 'style_null')
       }
       // 添加移动侦测进度条标识
@@ -178,16 +189,16 @@ export default {
           // console.log(msg[i], 'create_flag_item msg[i]')
           if (msg[i] !== 0) {
             // console.log('enter true')
-            let process_flag_true = document.createElement("span");
-            process_flag_true.setAttribute("class", "flag_item");
-            process_flag_true.style.width = (1 / msg.length * 100 + "%");
-            process_flag_dom.appendChild(process_flag_true);
+            let process_flag_true = document.createElement("span")
+            process_flag_true.setAttribute("class", "flag_item")
+            process_flag_true.style.width = (1 / msg.length * 100 + "%")
+            process_flag_dom.appendChild(process_flag_true)
           } else {
             // console.log('enter false')
-            let process_flag_false = document.createElement("span");
-            process_flag_false.setAttribute("class", "no_flag_item");
-            process_flag_false.style.width = (1 / msg.length * 100 + "%");
-            process_flag_dom.appendChild(process_flag_false);
+            let process_flag_false = document.createElement("span")
+            process_flag_false.setAttribute("class", "no_flag_item")
+            process_flag_false.style.width = (1 / msg.length * 100 + "%")
+            process_flag_dom.appendChild(process_flag_false)
           }
           // console.log(process_flag_dom, 'process_flag_dom')
         }
@@ -238,7 +249,10 @@ export default {
       let play_end_time = new Date(this.end_time).format("hh:mm:ss")
       if (play_start_time_stop >= play_end_time_stop) {
         // $("#playback_start_time").html(play_end_time)
+        console.log('播放完成终止')
         this.start_time_show = this.end_time_show
+        // this.start_time_show = this.b_start_time // 回到初始状态
+        // this.percent = 0
         this.$api.playback.video_stop({
           dom: $("#playback_screen")
         }).then(res => {
@@ -277,9 +291,10 @@ export default {
     },
     // 点击事件
     clickPlay () { // 点击播放（客户端）
-      if (downloadFlag) { // 当前为下载状态则直接忽略播放请求
-          return
-        }
+      console.log(this.downloadFlag, 'downloadFlag')
+      if (this.downloadFlag) { // 当前为下载状态则直接忽略播放请求
+        return
+      }
       // if (window.fujikam !== "fujikam") { // 客户端播放方法
       //   return
       // }
@@ -331,7 +346,8 @@ export default {
       }
     },
     clickPlayViewBox () { // 点击播放视图
-      if (downloadFlag) { // 当前为下载状态则直接忽略播放请求
+      console.log(this.downloadFlag, 'downloadFlag')
+      if (this.downloadFlag) { // 当前为下载状态则直接忽略播放请求
         return
       }
       let pic_token = [];
@@ -426,7 +442,8 @@ export default {
       // moveProgressBar
     },
     clickDownloadSubmit () { // 点击下载弹窗中确定事件
-      this.downloadFlag = true // 添加下载标识(下载过程中禁止再次播放)
+      this.$store.dispatch('setPlaybackDownloadFlag', true)  // 添加下载标识(下载过程中禁止再次播放)
+      console.log(this.$store.state.jumpPageData.playbackDownloadFlag, 'change download flag')
       // 添加点击下载后暂停后台视频播放
       if (this.is_playing) { // 当前播放状态 1 为播放中 0 为未播放 (切换为暂停)
         this.is_playing = 0
@@ -456,11 +473,9 @@ export default {
           download_path: download_path,
           playback: 1, // 此处额外添加参数
           isDownload: 1 // 此处额外添加参数
-        }).then(res => {
-          console.log(res, 'downloadOver')
-          this.downloadFlag = false
         })
       } else {
+        console.log(this.createPlaybackObj, 'this.createPlaybackObj')
         this.$api.playback.replay_download({ // 原play_back_download接口
           agent: this.createPlaybackObj.agent,
           dom: $("#playback_screen"),
@@ -470,9 +485,6 @@ export default {
           download_path: download_path,
           playback: 1, // 此处额外添加参数
           isDownload: 1 // 此处额外添加参数
-        }).then(res => {
-          console.log(res, 'downloadOver')
-          this.downloadFlag = false
         })
       }
     },
@@ -488,7 +500,7 @@ export default {
       }
     },
     clickDownloadStop () { // 点击下载终止
-      this.downloadFlag = false
+      this.$store.dispatch('setPlaybackDownloadFlag', false)
       this.$refs.downloadBufferFlag.style.display = 'none'
       this.$api.playback.video_stop({
         dom: $("#playback_screen"),
@@ -568,26 +580,34 @@ export default {
         this.clientP2PingValue = val
         // // console.log(val, 'p2pingvalue')
       }
+    },
+    "$store.state.jumpPageData.playbackDownloadFlag" (val) {
+      console.log(val, 'watchVal')
+      this.downloadFlag = val
+      console.log(this.downloadFlag)
     }
   },
   async mounted () {
     await this.$chooseLanguage.lang(this.$store.state.user.userLanguage)
-    let pageData;//页面创建相关对象
     if (this.$route.params) {
-      pageData = this.$route.params;
-      pageData.parent = $("#" + this.$route.name)
+      this.pageData = this.$route.params;
+      this.pageData.parent = $("#" + this.$route.name)
     } else {
-      pageData = { parent: $("#" + this.$route.name) }
+      this.pageData = { parent: $("#" + this.$route.name) }
     }
     // // console.log(pageData,"pageData")
     this.publicFunc.projectReload.call(this);
-    await this.create_playback_page(pageData) // 进入页面后加载
+    console.log(this.pageData, 'pageData')
+    await this.create_playback_page(this.pageData) // 进入页面后加载
     await this.publicFunc.importCss('Public.scss') // 动态引入css样式 页面加载完成后加载样式(如果加载过早则会无法改变jq填充的dom)
     if (window.location.href.indexOf('vimtag') === -1) {
       // mipc系列
       languageSelect.mipc($('#login_box'))
       $('#login_box').append("<div id='is_mipc_div'></div>")
     }
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.listenFunc)
   }
 }
 </script>

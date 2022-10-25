@@ -88,49 +88,61 @@
 	background: url(~@/assets/device/vimtag_img.png) -15px -273px no-repeat;
 }
 #playback_menu_box{
+  display: flex;
+  justify-content: space-between;
 	height:44px;
 	background-color: rgb(43, 43, 43);
+
+  #play_menu_left{
+    display: flex;
+
+    .video_play_start, .video_play_stop{
+      width:16px;
+      height:20px;
+      margin-top:12px;
+      margin-left:24px;
+      cursor: pointer;
+    }
+
+    #playback_start_time {
+      width: 63px;
+      color:$projectColor;
+      margin-top:15px;
+      margin-left:15px;
+      cursor:default;
+    }
+  }
+
+  #playback_progress_bar{
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    width:300px;
+  }
+
+  #play_menu_right{
+    display: flex;
+
+    #playback_end_time{
+      color:$projectColor;
+      width: 63px;
+      margin-top:15px;
+      margin-right:15px;
+      cursor: default;
+    }
+
+    #playback_download_img{
+      width:20px;
+      height:20px;
+      margin-top:12px;
+      margin-right:24px;
+      cursor:pointer;
+      background: url(~@/assets/device/file.png) no-repeat;
+      background-size: 100% 100%;
+    }
+  }
 }
-#play_menu_left{
-	float:left;
-}
-.video_play_start, .video_play_stop{
-	float:left;
-	width:16px;
-	height:20px;
-	margin-top:12px;
-	margin-left:24px;
-	cursor: pointer;
-	// background:url(~@/assets/device/pause.png) no-repeat;
-}
-#playback_start_time{
-	color:$projectColor;
-	float:left;
-	margin-top:15px;
-	margin-left:15px;
-	cursor:default;
-}
-#playback_progress_bar{
-	float: left;
-	margin-top: 20px;
-	margin-left: 15px;
-	width:300px;
-}
-#play_menu_right{
-	float:right;
-	/*5.12.2*/
-	position:relative;
-}
-#playback_download_img{
-	width:20px;
-	height:20px;
-	margin-top:12px;
-	margin-right:24px;
-	cursor:pointer;
-	float:right;
-	background: url(~@/assets/device/file.png) no-repeat;
-	background-size: 100% 100%;
-}
+
 #playback_voice_close{
 	float:right;
 	width:20px;
@@ -139,13 +151,7 @@
 	margin-right:15px;
 	cursor: pointer;
 }
-#playback_end_time{
-	color:$projectColor;
-	float:right;
-	margin-top:15px;
-	margin-right:15px;
-	cursor: default;
-}
+
 #playback_download_path_box{
 	width:300px;
 	height:150px;
