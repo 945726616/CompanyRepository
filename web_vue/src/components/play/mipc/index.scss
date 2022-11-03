@@ -1,505 +1,520 @@
 @import "../../../css/public.scss";
 
 #play_box {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 #play_box::after {
-    content:'';
-    display: block;
-    clear: both;
-    visibility: hidden;
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
 }
 
 // 顶部菜单栏样式
 #play_top_menu::after {
-    content:'';
-    display: block;
-    clear: both;
-    visibility: hidden;
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
 }
+
 .play_top_menu_li {
-    float: left;
-    cursor: pointer;
-    margin: 10px 15px 10px 0;
+  float: left;
+  cursor: pointer;
+  margin: 10px 15px 10px 0;
 }
 
 #enter_history_img {
-    background: url(~@/assets/mipc/mipc_new_img.png) no-repeat -367px -3px;
-    width: 20px;
-    height: 20px;
-    float: left;
-    margin-right: 5px;
+  background: url(~@/assets/mipc/mipc_new_img.png) no-repeat -367px -3px;
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 5px;
 }
 
 #enter_history_txt {
-    color: #6b7a99;
-    float: left;
+  color: #6b7a99;
+  float: left;
 }
 
 #enter_set_img {
-    width: 20px;
-    height: 20px;
-    float: left;
-    margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 5px;
 }
 
 #enter_set_txt {
-    color: #6b7a99;
-    float: left;
+  color: #6b7a99;
+  float: left;
 }
 
 // 播放内容主体
 #play_view {
+  width: 100%;
+  float: left;
+
+  #timezone_err_tip {
+    position: absolute;
+    background-color: red;
+    z-index: 999;
     width: 100%;
-    float: left;
+    text-align: center;
+    color: #fff;
+    cursor: default;
 
-    #timezone_err_tip {
-        position: absolute;
-        background-color: red;
-        z-index: 999;
-        width: 100%;
-        text-align: center;
-        color: #fff;
-        cursor: default;
-
-        .err_tip_close{
-            width: 15px;
-            height: 15px;
-            background: url(~@/assets/device/n-close.png) no-repeat;
-            background-size: 100%;
-            float: right;
-            margin-top: 5px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
+    .err_tip_close {
+      width: 15px;
+      height: 15px;
+      background: url(~@/assets/device/n-close.png) no-repeat;
+      background-size: 100%;
+      float: right;
+      margin-top: 5px;
+      margin-right: 10px;
+      cursor: pointer;
     }
+  }
 }
 
 #play_buffer_ret {
-    position: absolute;
-    color: white;
-    font-size: 14px;
-    float: left;
-    margin-top: 10px;
-    z-index: 100;
-    right: 100px;
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  float: left;
+  margin-top: 10px;
+  z-index: 100;
+  right: 100px;
 }
 
 #play_screen {
-    position: relative;
+  position: relative;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: gray;
+}
+
+#play_thumbnail {
+  position: relative;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: gray;
 }
 
 #play_view_box {
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    opacity: 0.5;
-    background-color: gray;
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: gray;
 }
 
 #play_pause_pic {
-    cursor: pointer;
-    position: relative;
-    opacity: 0.5;
-    left: 45%;
-    top: 40%;
-    width: 80px;
-    height: 80px;
-    background-image: url(~@/assets/mipc/vimtag_img.png);
-    background-repeat: no-repeat;
-    background-position: -15px -273px;
+  cursor: pointer;
+  position: relative;
+  opacity: 0.5;
+  left: 45%;
+  top: 40%;
+  width: 80px;
+  height: 80px;
+  background-image: url(~@/assets/mipc/vimtag_img.png);
+  background-repeat: no-repeat;
+  background-position: -15px -273px;
 }
 
 // 播放器控制栏样式
 #play_menu_box {
-    width: 80%;
-    height: 40px;
-    position: relative;
-    z-index: 9;
-    background-color: #5c5c66;
-    bottom: 45px;
-    left: 10%;
+  width: 80%;
+  height: 40px;
+  position: relative;
+  z-index: 9;
+  background-color: #5c5c66;
+  bottom: 45px;
+  left: 10%;
 }
 
 #play_menu_left {
-    float: left;
+  float: left;
 }
 
-.video_play_stop, .video_play_start {
-    float: left;
-    width: 18px;
-    height: 20px;
-    margin-top: 10px;
-    margin-left: 24px;
-    cursor: pointer;
+.video_play_stop,
+.video_play_start {
+  float: left;
+  width: 18px;
+  height: 20px;
+  margin-top: 10px;
+  margin-left: 24px;
+  cursor: pointer;
 }
 
 .enter_nav_left {
-    height: 18px;
-    width: 1px;
-    background: #d6d7dc;
-    float: left;
-    margin-top: 11px;
-    margin-left: 15px;
+  height: 18px;
+  width: 1px;
+  background: #d6d7dc;
+  float: left;
+  margin-top: 11px;
+  margin-left: 15px;
 }
 
 .video_off_picture {
-    width: 20px;
-    height: 20px;
-    float: left;
-    margin-left: 15px;
-    margin-top: 10px;
-    cursor: pointer;
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-left: 15px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 .camera_off_picture {
-    width: 20px;
-    height: 20px;
-    float: left;
-    margin-left: 15px;
-    margin-top: 10px;
-    cursor: pointer;
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-left: 15px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 .talkback_off_picture {
-    width: 18px;
-    height: 20px;
-    float: left;
-    margin-left: 15px;
-    margin-top: 10px;
-    cursor: pointer;
+  width: 18px;
+  height: 20px;
+  float: left;
+  margin-left: 15px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 .adjust_off_picture {
-    width: 18px;
-    height: 20px;
-    float: left;
-    margin-left: 15px;
-    margin-top: 10px;
-    cursor: pointer;
+  width: 18px;
+  height: 20px;
+  float: left;
+  margin-left: 15px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
-.alarm_off_picture, .alarm_on_picture {
-	width: 22px;
-    height: 20px;
-    float: left;
-    margin-left: 15px;
-    margin-top: 10px;
-    cursor: pointer;
+.alarm_off_picture,
+.alarm_on_picture {
+  width: 22px;
+  height: 20px;
+  float: left;
+  margin-left: 15px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 #alarm_countdown {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-radius: 20px;
-    height:20px;
-    width: 120px;
-    line-height: 20px;
-    border:1px solid #fff;
-    position: absolute;
-    top:5%;
-    left:50%;
-    transform: translate(-50%, 0);
-    z-index: 9999;
-    color:#fff;
-    padding:10px 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+  height: 20px;
+  width: 120px;
+  line-height: 20px;
+  border: 1px solid #fff;
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 9999;
+  color: #fff;
+  padding: 10px 5px;
 
-    .audio_alarm {
-        background: url(~@/assets/mipc/alarm_countdown.png) no-repeat;
-        background-size: 100%;
-        width: 30px;
-        height: 25px;
-    }
+  .audio_alarm {
+    background: url(~@/assets/mipc/alarm_countdown.png) no-repeat;
+    background-size: 100%;
+    width: 30px;
+    height: 25px;
+  }
 }
 
 .enter_nav {
-    height: 18px;
-    width: 1px;
-    background: #d6d7dc;
-    float: right;
-    margin-top: 11px;
-    margin-left: 15px;
+  height: 18px;
+  width: 1px;
+  background: #d6d7dc;
+  float: right;
+  margin-top: 11px;
+  margin-left: 15px;
 }
 
 // 菜单栏右侧控制按钮
 #play_menu_right {
-    float: right;
-    position: relative;
+  float: right;
+  position: relative;
 }
 
 #choice_play_definition {
-    background-color: #000000;
-    position: absolute;
-    opacity: 0.4;
-    right: 0;
-    z-index: 30;
+  background-color: #000000;
+  position: absolute;
+  opacity: 0.4;
+  right: 0;
+  z-index: 30;
 }
 
 .definition_cha {
-    color: #ffffff;
-    font-size: 14px;
-    height: 25px;
-    line-height: 25px;
-    text-align: center;
-    cursor: pointer;
+  color: #ffffff;
+  font-size: 14px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .definition_cha:hover {
-    color: #83eefa;
+  color: #83eefa;
 }
 
 .definition_nav {
-    width: 55px;
-    height: 0.5px;
-    background-color: #ffffff;
-    margin: auto;
+  width: 55px;
+  height: 0.5px;
+  background-color: #ffffff;
+  margin: auto;
 }
 
 #resolute_choice {
-    font-size: 16px;
-    padding: 0 10px;
-    color: #a0a5b1;
-    border: none;
-    margin-top: 9px;
-    text-align: center;
-    float: right;
-    cursor: pointer;
+  font-size: 16px;
+  padding: 0 10px;
+  color: #a0a5b1;
+  border: none;
+  margin-top: 9px;
+  text-align: center;
+  float: right;
+  cursor: pointer;
 }
 
 #voice_close {
-    float: left;
-    width: 20px;
-    height: 20px;
-    margin-top: 10px;
-    margin-left: 15px;
-    cursor: pointer;
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+  margin-left: 15px;
+  cursor: pointer;
 }
 
 // 设置弹窗样式
 #adjust_setting {
-    width: 70%;
-    height: 340px;
-    background-color: #fff;
-    position: absolute;
-    left: 15%;
-    bottom: 100px;
-    box-shadow: 0 2px 30px #050505;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  width: 70%;
+  height: 340px;
+  background-color: #fff;
+  position: absolute;
+  left: 15%;
+  bottom: 100px;
+  box-shadow: 0 2px 30px #050505;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .delete_adjust_page {
-    padding-right: 8px;
-    padding-top: 8px;
-    color: #6b7a99;
-    font-size: 24px;
-    cursor: pointer;
-    height: 24px;
-    width: 24px;
-    line-height: 16px;
-    align-self: flex-end;
+  padding-right: 8px;
+  padding-top: 8px;
+  color: #6b7a99;
+  font-size: 24px;
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  line-height: 16px;
+  align-self: flex-end;
 }
 
 .adjust_line {
-    height: 40px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .adjust_cha {
-    height: 30px;
-    line-height: 40px;
-    font-size: 14px;
-    color: #6b7a99;
-    width: 20%;
-    text-align: center;
+  height: 30px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #6b7a99;
+  width: 20%;
+  text-align: center;
 }
 
 .adjust_cha_right {
-    height: 30px;
-    width: 240px;
-    float: right;
-    display: block;
-    margin-right: 10px;
+  height: 30px;
+  width: 240px;
+  float: right;
+  display: block;
+  margin-right: 10px;
 }
 
 .adjust_mode {
-    height: 40px;
-    width: 62%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  height: 40px;
+  width: 62%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .mode_cha {
-    font-size: 14px;
-    text-align: center;
-	width: 30%;
-	height: 30px;
-    // line-height: 30px;
-	color: $projectColor;
-	background-color: #fff;
-	border: 1px solid $projectColor;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  width: 30%;
+  height: 30px;
+  // line-height: 30px;
+  color: $projectColor;
+  background-color: #fff;
+  border: 1px solid $projectColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
-.mode_cha_active{
-	font-size: 14px;
-    text-align: center;
-	width: 30%;
-	height: 30px;
-    // line-height: 30px;
-	color:  #fff;
-	background-color: $projectColor;
-	border: 1px solid $projectColor;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
+.mode_cha_active {
+  font-size: 14px;
+  text-align: center;
+  width: 30%;
+  height: 30px;
+  // line-height: 30px;
+  color: #fff;
+  background-color: $projectColor;
+  border: 1px solid $projectColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 #adjust_reset {
-    margin: 0 auto;
-    margin-top: 10px;
-    color: #fff;
-    font-size: 14px;
-    width: 230px;
-    height: 34px;
-    cursor: pointer;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    text-align: center;
-    line-height: 34px;
+  margin: 0 auto;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 14px;
+  width: 230px;
+  height: 34px;
+  cursor: pointer;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-align: center;
+  line-height: 34px;
 }
 
 .adjust_line input[type='range'] {
-    width: 60%;
-    height: 2px;
+  width: 60%;
+  height: 2px;
 }
 
 // 摄像头方向控制
 #mipc_ptz_control {
-    position: absolute;
+  position: absolute;
 }
 
 #ptz_control_center {
-    float: left;
-    width: 70%;
-    height: 60%;
+  float: left;
+  width: 70%;
+  height: 60%;
 }
 
 #ptz_control_left {
-    width: 15%;
-    height: 80%;
-    float: left;
-    text-align: center;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
+  width: 15%;
+  height: 80%;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
 }
 
 .left_key {
-    background-image: url(~@/assets/mipc/control_left.png);
-    background-repeat: no-repeat;
-    width: 24px;
-    height: 44px;
-    margin-top: 246.5px;
-    position: absolute;
-    bottom: 50%;
+  background-image: url(~@/assets/mipc/control_left.png);
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 44px;
+  margin-top: 246.5px;
+  position: absolute;
+  bottom: 50%;
 }
 
 #ptz_control_up {
-    width: 100%;
-    height: 20%;
-    text-align: center;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
+  width: 100%;
+  height: 20%;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
 }
 
 .up_key {
-    background-image: url(~@/assets/mipc/control_top.png);
-    background-repeat: no-repeat;
-    width: 44px;
-    height: 24px;
-    position: absolute;
-    left: 46%;
+  background-image: url(~@/assets/mipc/control_top.png);
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 24px;
+  position: absolute;
+  left: 46%;
 }
 
 #ptz_control_right {
-    width: 15%;
-    height: 80%;
-    float: right;
-    text-align: center;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
+  width: 15%;
+  height: 80%;
+  float: right;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
 }
 
 .right_key {
-    background: url(~@/assets/mipc/control_right.png);
-    background-repeat: no-repeat;
-    width: 24px;
-    height: 44px;
-    margin-top: 136.5px;
-    position: absolute;
-    right: 10px;
-    bottom: 50%;
+  background: url(~@/assets/mipc/control_right.png);
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 44px;
+  margin-top: 136.5px;
+  position: absolute;
+  right: 10px;
+  bottom: 50%;
 }
 
 #ptz_control_down {
-    width: 100%;
-    height: 20%;
-    text-align: center;
-    line-height: 83.7px;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
-    position: absolute;
-    bottom: 0;
+  width: 100%;
+  height: 20%;
+  text-align: center;
+  line-height: 83.7px;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  position: absolute;
+  bottom: 0;
 }
 
 .down_key {
-    background-image: url(~@/assets/mipc/control_bottom.png);
-    background-repeat: no-repeat;
-    width: 44px;
-    height: 24px;
-    position: absolute;
-    left: 46%;
-    bottom: 0;
+  background-image: url(~@/assets/mipc/control_bottom.png);
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 24px;
+  position: absolute;
+  left: 46%;
+  bottom: 0;
 }
 
 // 截图弹窗
 #snapshot_preview_div {
-    width: 666px;
-    height: 386px;
-    position: absolute;
-    z-index: 50;
-    top: 20%;
-    left: 28%;
+  width: 666px;
+  height: 386px;
+  position: absolute;
+  z-index: 50;
+  top: 20%;
+  left: 28%;
 }
 
 #snapshot_preview_inner {
-    border-radius: 10px;
-    background-color: #F4F4F4;
-    width: 653px;
-    height: 373px;
-    padding: 6px;
+  border-radius: 10px;
+  background-color: #F4F4F4;
+  width: 653px;
+  height: 373px;
+  padding: 6px;
 }
 
 #snapshot_preview_content {
-    width: 100%;
-    height: 100%;
-    cursor: default;
+  width: 100%;
+  height: 100%;
+  cursor: default;
 }
 
 #snapshot_img_page_download {
   position: absolute;
-  cursor: pointer; 
+  cursor: pointer;
   background: url(~@/assets/device/snap_download.png) no-repeat;
   background-size: 100%;
   width: 20px;
@@ -509,14 +524,14 @@
 }
 
 #snapshot_preview_close {
-    position: absolute;
-    right: 6px;
-    top: 6px;
-    cursor: pointer;
-    background-image: url(~@/assets/mipc/close.png);
-    background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  cursor: pointer;
+  background-image: url(~@/assets/mipc/close.png);
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
 }
 
 // #adjust_mode_white_light {

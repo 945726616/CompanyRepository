@@ -2,6 +2,7 @@ host_name = "";
 var MacOSVersion
 var myloc
 var evalFuncStr // 发送给入口服务器文件的eval字符串
+var download // download内容html
 function detectOS () {
   var u = navigator.userAgent;
   //	console.log(u)
@@ -221,8 +222,13 @@ function layout (obj) { // 框架加载 (包含接受入口index传递的信息)
       var android_download_url = "https://play.google.com/store/apps/details?id=com.conico.conicoa";
     }
     if (is_weixin()) {
-      download = "<a href='javascript:;'><div id='normal_download'>" + lang_normal_download + "</div></a>"
+      // 暂时删除ebitcam/vsmahome的谷歌play下载
+      if (host_name == "Ebitcam" || host_name == "Vsmahome") {
+        download = "<a href='javascript:;'><div id='normal_download' style='width: 100%'>" + lang_normal_download + "</div></a>";
+      } else {
+        download = "<a href='javascript:;'><div id='normal_download'>" + lang_normal_download + "</div></a>"
         + "<a target='_top' href='" + android_download_url + "'><div id='fast_download' " + host_style + ">" + lang_fast_download + "</div></a>";
+      }
       size = lang_size + (parseFloat(obj[1].size / (1024 * 1024)).toFixed(1)) + "M";
       version = lang_ver + obj[1].ver_to;
       content_img = "<img src='images/" + host_name + "_android.png?v4.7.1'>"
@@ -231,8 +237,13 @@ function layout (obj) { // 框架加载 (包含接受入口index传递的信息)
         android_load_tips();
       })
     } else {
-      download = "<a href='" + obj[1].link_url + "'><div id='normal_download'>" + lang_normal_download + "</div></a>"
+      // 暂时删除ebitcam/vsmahome的谷歌play下载
+      if (host_name == "Ebitcam" || host_name == "Vsmahome") {
+        download = "<a href='" + obj[1].link_url + "'><div id='normal_download' style='width: 100%'>" + lang_normal_download + "</div></a>";
+      } else {
+        download = "<a href='" + obj[1].link_url + "'><div id='normal_download'>" + lang_normal_download + "</div></a>"
         + "<a target='_top' href='" + android_download_url + "'><div id='fast_download' " + host_style + ">" + lang_fast_download + "</div></a>";
+      }
       size = lang_size + (parseFloat(obj[1].size / (1024 * 1024)).toFixed(1)) + "M";
       version = lang_ver + obj[1].ver_to;
       content_img = "<img src='images/" + host_name + "_android.png?v4.7.1'>"

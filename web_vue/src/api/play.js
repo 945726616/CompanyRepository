@@ -73,6 +73,8 @@ const play = {
    ** 停止视频播放
    */
   async video_stop (params) {
+    let returnItem
+    console.log(params, 'video_stop_params')
     let flash_isplay = store.state.jumpPageData.flashIsPlay
     console.log(flash_isplay, 'flash_isplay')
     let play_info = store.state.jumpPageData.playInfo
@@ -95,16 +97,19 @@ const play = {
     play_info.inner_window_info.video_max_bit_rate = 0;
     play_info.inner_window_info.video_min_bit_rate = 0;
     if (params.isDownload) {
+      console.log('下载')
       $("#download_dom").html('')
+      returnItem = 'download'
     } else {
+      returnItem = 'pause'
       params.dom.html('')
     }
-    console.log('下载')
-    publicFunc.mx('#play_screen').innerHTML =
-            "<div id='play_view_box'>"
-            + "<div id='play_pause_pic'></div>"
-            + "</div>"
-    return await params.dom
+    // publicFunc.mx('#play_screen').innerHTML =
+    //         "<div id='play_view_box'>"
+    //         + "<div id='play_pause_pic'></div>"
+    //         + "</div>"
+    // return await params.dom
+    return returnItem
   },
   /*
    ** 播放总接口
@@ -178,8 +183,8 @@ const play = {
       data.dom.html("<img id='flash_img' width='1px' src='" + urls + "'>") // 写入封面图
       if (publicFunc.mx("#flash_img")) {
         publicFunc.mx("#flash_img").onload = function () {
-          data.dom.css('background', "url(" + this.src + ")")
-          data.dom.css('backgroundSize', "100% 100%")
+          data.dom.css('background-image', "url(" + this.src + ")")
+          data.dom.css('background-size', "100% 100%")
         }
       } else {
         clearInterval(flash_isplay) // 终止定时器 取消循环请求图片播放视频

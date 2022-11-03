@@ -377,12 +377,11 @@ const playback = {
       if (play_start_time_stop >= play_end_time_stop) {
         // console.log('进入终止播放函数')
         store.dispatch('setPlayBackSavePercent', 0) // 偏移百分比设置为0
-        store.dispatch('setPercent', 1) // 停止播放百分比设置1
+        store.dispatch('setPercent', 0) // 停止播放百分比设置1
         playback.video_stop({
           dom: $("#playback_screen")
         }).then(res => {
           // create_preview(res)
-          sessionStorage.setItem("pause_start_time", start_time)
           let pic_token = store.state.jumpPageData.playBackObj.pic_token.replace("_p3_", "_p0_")
           play.play_preview_img({
             dom: $("#playback_screen"),
@@ -390,11 +389,11 @@ const playback = {
             pic_token: pic_token
           })
           // console.log('执行遮罩层')
-          publicFunc.mx('#playback_screen').innerHTML =
-            "<div id='play_view_box'>"
-            + "<div id='play_pause_pic'></div>"
-            + "</div>"
-          $("#video_play").attr("class", "video_play_stop")
+          // publicFunc.mx('#playback_screen').innerHTML =
+          //   "<div id='play_view_box'>"
+          //   + "<div id='play_pause_pic'></div>"
+          //   + "</div>"
+          // $("#video_play").attr("class", "video_play_stop")
         })
         // msdk_ctrl({ type: "play_video_stop", data: { dom: l_dom_playback_screen, func: create_preview } });
       }
@@ -591,6 +590,7 @@ const playback = {
                   dom: $("#playback_screen"),
                   isDownload: 1 // 是否下载中特殊标记
                 }).then(res => {
+                  store.dispatch('setPlaybackDownloadFlag', false)
                   // sessionStorage.setItem("pause_start_time", start_time)
                   let pic_token = store.state.jumpPageData.playBackObj.pic_token.replace("_p3_", "_p0_")
                   play.play_preview_img({
@@ -608,7 +608,6 @@ const playback = {
               }
             }
             function create_preview (data) {
-              sessionStorage.setItem("pause_start_time", start_time)
               data.parent.innerHTML =
                 "<div id='play_view_box'>"
                 + "<div id='play_pause_pic'></div>"

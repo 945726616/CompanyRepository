@@ -23,16 +23,16 @@
         <div id='topClientP2Ping' v-show="clientFlag">{{clientP2PingValue}}</div>
         <!-- 回放视频播放 -->
         <div id="playback_screen">
-          <!-- 暂停播放遮罩层 -->
-          <div id="play_view_box" @click="clickPlayViewBox">
-            <div id="play_pause_pic"></div>
-          </div>
+        </div>
+        <!-- 暂停播放遮罩层 -->
+        <div id="play_view_box" @click="clickPlayViewBox" v-show="!is_playing">
+          <div id="play_pause_pic"></div>
         </div>
         <!-- 回放视频播放 结束 -->
         <!-- 播放菜单控制 -->
         <div id="playback_menu_box" ref="playback_menu_box">
           <div id="play_menu_left" ref="play_menu_left">
-            <div id="video_play" :class="{'video_play_stop':!playFlag, 'video_play_start': playFlag }"
+            <div id="video_play" :class="{'video_play_stop':!is_playing, 'video_play_start': is_playing }"
               @click="clickPlay"></div>
             <div id="playback_start_time" v-show="clientFlag">
               {{ start_time_show }}
@@ -97,12 +97,12 @@ export default {
       start_time_show: null, // 视频当前时间/开始时间(展示值)
       end_time: null, // 视频结束时间
       end_time_show: null, // 视频结束时间(展示值)
-      is_playing: 0, // 播放状态记录
+      is_playing: 0, // 播放状态记录 0: 未播放 1: 播放
       videoSize: 0, // 视频大小记录
       first: sessionStorage.getItem('play_first') ? sessionStorage.getItem('play_first') : false, // 是否第一次播放
       bo_type: sessionStorage.getItem('bo_type') ? sessionStorage.getItem('bo_type') : false, // 播放类型
       play_back_token: null, // 回放token
-      b_start_time: null, // b开始时间
+      b_start_time: null, // 原始开始时间(该时间不变, 始终未回放视频最开始的时间)
       clientFlag: window.fujikam === 'fujikam' ? true : false, // 客户端判别标识(true: 客户端, false: 网页端)
       play_progress: null, // 回放进度条参数
       percent: 0, // 传递至进度条组件的百分比
@@ -110,7 +110,6 @@ export default {
       downloadBoxFlag: false, // 下载提示框标识
       downloadShowWorld: null, // 下载中暂停/开始按钮文字
       clientP2PingValue: '0kB', // 客户端视频播放流数据值显示
-      playFlag: false, // 播放状态标识, 初始为false
       downloadFlag: this.$store.state.jumpPageData.playbackDownloadFlag, // 下载标识
       listenFunc: null, // 监听函数
       pageData: null, // 页面传递的参数
@@ -164,7 +163,10 @@ export default {
       window.addEventListener('resize', this.listeningFunc)
     },
     listeningFunc () {
-      this.clickPlay()
+      console.log(this.is_playing)
+      if (this.is_playing) {
+        this.clickPlay()
+      }
       this.create_playback_page(this.pageData)
     },
     play_menu_control (data) { // 播放控制菜单
@@ -216,6 +218,7 @@ export default {
       let _this = this
       let getPauseTime = JSON.parse(sessionStorage.getItem('play_back_startTime'))
       sessionStorage.setItem("pause_start_time", getPauseTime) // 存储暂停时间
+      console.log(getPauseTime, '查看getPauseTime')
       let pic_token = this.createPlaybackObj.pic_token.replace("_p3_", "_p0_")
 
       this.$api.play.play_preview_img({
@@ -223,13 +226,13 @@ export default {
         sn: this.$store.state.jumpPageData.selectDeviceIpc,
         pic_token: pic_token
       })
-      this.publicFunc.mx('#playback_screen').innerHTML =
-        "<div id='play_view_box'>"
-        + "<div id='play_pause_pic'></div>"
-        + "</div>"
-      this.publicFunc.mx('#play_view_box').onclick = function () {
-        _this.clickPlayViewBox()
-      }
+      // this.publicFunc.mx('#playback_screen').innerHTML =
+      //   "<div id='play_view_box'>"
+      //   + "<div id='play_pause_pic'></div>"
+      //   + "</div>"
+      // this.publicFunc.mx('#play_view_box').onclick = function () {
+      //   _this.clickPlayViewBox()
+      // }
     },
     playback_speed (data, progress, record_played_duration) { // 视频播放速度
       // console.log('enter Play_speed playBack.vue')
@@ -298,9 +301,9 @@ export default {
       // if (window.fujikam !== "fujikam") { // 客户端播放方法
       //   return
       // }
+      console.log(this.is_playing, '播放标识')
       if (this.is_playing) { // 当前播放状态 1 为播放中 0 为未播放 (切换为暂停)
         this.is_playing = 0
-        this.playFlag = false
         this.$api.playback.video_stop({
           dom: $("#playback_screen")
         }).then(res => {
@@ -308,7 +311,7 @@ export default {
         })
       } else { // 当前为暂停状态(切换为播放)
         this.is_playing = 1
-        // console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
+        console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
         if (JSON.parse(sessionStorage.getItem('pause_start_time')) && JSON.parse(sessionStorage.getItem('pause_start_time')) !== this.b_start_time) { // 如果存在暂停时间且时间不等于原始开始时间
           this.start_time = Number(sessionStorage.getItem('pause_start_time'))
           this.start_time_show = new Date(this.start_time).format("hh:mm:ss")
@@ -316,6 +319,7 @@ export default {
           sessionStorage.setItem('bo_type', true)
           this.bo_type = true
           this.percent = (this.start_time - this.b_start_time) / (this.end_time - this.b_start_time) // 计算暂停的时间所占的百分比
+          console.log(this.percent, '查看计算后的百分比')
           this.$store.dispatch('setPercent', this.percent) // 存储至vuex中
           this.$store.dispatch('setPlayBackSavePercent', this.percent) // 中断续播存储至vuex中
           let new_token = parseInt(this.createPlaybackObj.data.length * this.percent) // 计算回放token
@@ -342,7 +346,6 @@ export default {
             box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
         }
-        this.playFlag = true
       }
     },
     clickPlayViewBox () { // 点击播放视图
@@ -357,7 +360,7 @@ export default {
       this.is_playing = 1 // 是否播放标识
       // console.log(this.percent, 'set_percent')
       sessionStorage.setItem('playBackPercent', this.percent)
-      // console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
+      console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), this.b_start_time, '开始结束时间')
       if (JSON.parse(sessionStorage.getItem('pause_start_time')) && JSON.parse(sessionStorage.getItem('pause_start_time')) !== this.b_start_time) { // 如果存在暂停时间且时间不等于原始开始时间
         this.start_time = Number(sessionStorage.getItem('pause_start_time'))
         this.start_time_show = new Date(this.start_time).format("hh:mm:ss")
@@ -379,7 +382,7 @@ export default {
           box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
         })
       } else {
-        // console.log('从头开始')
+        console.log('从头开始')
         this.$api.playback.play({ // 调用播放接口(从开始播放)
           agent: this.createPlaybackObj.agent,
           dom: $("#playback_screen"),
@@ -390,7 +393,6 @@ export default {
           box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
         })
       }
-      this.playFlag = true
     },
     clickBack () { // 点击返回
       // console.log(this.createPlaybackObj, 'createPlaybackObj')
@@ -447,7 +449,6 @@ export default {
       // 添加点击下载后暂停后台视频播放
       if (this.is_playing) { // 当前播放状态 1 为播放中 0 为未播放 (切换为暂停)
         this.is_playing = 0
-        this.playFlag = false
         this.$api.playback.video_stop({
           dom: $("#playback_screen")
         }).then(res => {
@@ -558,13 +559,13 @@ export default {
             box_ipc: this.createPlaybackObj.box_ipc //判断是否为云盒子的录像
           })
         })
-        this.playFlag = true
       }
     }
     // 进度条 结束
   },
   watch: {
     "$store.state.jumpPageData.percent" (val) {
+      console.log('playBack percent', val)
       let percent = val
       if (percent > 1 || percent < 0) {
         return
@@ -574,17 +575,26 @@ export default {
       // 计算当前播放时间
       let nowTimeStamp = this.b_start_time + (this.videoSize * percent)
       this.start_time_show = new Date(nowTimeStamp).format('hh:mm:ss')
+      console.log(this.start_time, 'watch start_time', this.b_start_time)
+      if (this.percent === 0) { // 百分比为0时初始化进度条
+        this.setProgress(this.percent)
+        // 重置暂停时间
+        sessionStorage.setItem("pause_start_time", JSON.parse(this.b_start_time))
+        console.log(JSON.parse(sessionStorage.getItem('pause_start_time')), '修改过后')
+        this.is_playing = 0 // 切换成暂停
+        console.log(this.is_playing, '检查is_playing')
+      }
     },
     "$store.state.jumpPageData.clientP2Ping" (val) {
       if (val) {
         this.clientP2PingValue = val
-        // // console.log(val, 'p2pingvalue')
+        // console.log(val, 'p2pingvalue')
       }
     },
     "$store.state.jumpPageData.playbackDownloadFlag" (val) {
-      console.log(val, 'watchVal')
+      // console.log(val, 'watchVal')
       this.downloadFlag = val
-      console.log(this.downloadFlag)
+      // console.log(this.downloadFlag)
     }
   },
   async mounted () {

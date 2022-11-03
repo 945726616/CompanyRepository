@@ -710,15 +710,16 @@ export default {
             type: 'success',
             timeout: 3000
           })
-          // createPage('login', obj)
+          // 关闭注册页面
           _this.register_sign = false
           // 填入注册成功的用户名
           _this.user_val = username_value
-          // 清空密码框
-          _this.password_val = ''
+          // 填入注册成功的密码
+          _this.password_val = password_value
           // 取消记住密码单选框
           _this.keep_pw = false
-          // 切换回登录页面(此处后期可改成点击登录按钮事件)
+          // 点击登录按钮事件
+          _this.sign_in()
         } else {
           _this.publicFunc.msg_tips({
             msg: msg,

@@ -117,6 +117,9 @@ export default {
         let offsetWidth = this.progressWidth * newPercent
         console.log(offsetWidth, 'offsetWidth')
         this._setOffset(offsetWidth) // 设置进度条及按钮偏移
+      } else if (newPercent === 0){ // 播放完成初始化进度条
+        console.log('初始化进度条')
+        this._setOffset(0)
       }
     },
     progressWidth (newProgressWidth, oldProgressWidth) {

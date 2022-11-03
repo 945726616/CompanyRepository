@@ -128,10 +128,14 @@ mme.prototype =
 
       /* for chrome video color error bug hack */
       if ((navigator.platform == "Win32") && navigator.userAgent.toLowerCase().match(/chrome\/([\d.]+)/)) {
-        if (parent.style)
-          parent.style.background = "black";
-        else
-          parent.css("background", "black")
+        if (parent.style) {
+          parent.style.backgroundColor = "black";
+          parent.style.backgroundImage = "none";
+        }
+        else {
+          parent.css("background-color", "black")
+          parent.css("background-image", "none")
+        }
       }
       parent.innerHTML = "<object id='plug_" + id + "' width='100%' height='100%'"
         + (ie ? (" classid='clsid:" + type.clsid + "'") : (" type='" + type.mime + "'"))
