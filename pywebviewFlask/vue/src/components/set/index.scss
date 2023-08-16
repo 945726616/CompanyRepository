@@ -1,0 +1,367 @@
+@import "../../css/public.scss";
+
+#device_setting_page {
+    width: 90%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+#set_back {
+    width: 90%;
+    /*6.1.2*/
+    height: 58px;
+    /*margin-top: 10px;
+	margin-bottom:30px;*/
+    margin: 0 auto;
+}
+
+#back {
+    cursor: pointer;
+    float: left;
+    /*6.1.2*/
+    line-height: 58px;
+    font-size: 15px;
+    /*margin-left:13px; g 5.5*/
+    position: absolute;
+    // z-index: 100000;
+}
+
+#back:hover {
+    color: #00a6ba;
+}
+
+#back:hover #main_title_box_return_img {
+    background: url(../../assets/device/choose-back.png) no-repeat 0 22px;
+}
+
+#main_title_box_return_img {
+    /*6.1.2*/
+    /*width: 11px;
+	height: 21px;
+	float: left;
+	background: url(../assets/device/back.png) no-repeat 0 3px;*/
+    width: 14px;
+    height: 58px;
+    float: left;
+    background: url(../../assets/device/back.png) no-repeat 0 22px;
+}
+
+#create_setting_page_left {
+    /*min-width:200px;*/
+    min-width: 20%;
+}
+
+.vimtag_list_idle_div {
+    height: 40px;
+    min-width: 200px;
+    /*border-bottom: 1px solid #22aaaa; 6.1.2*/
+    border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #323232;
+
+    &:last-child {
+        color: #fff;
+        background-color: #f1474f;
+        text-align: center;
+        line-height: 40px;
+    }
+}
+
+.vimtag_list_idle_div_active {
+    color: #666;
+}
+
+.mipc_list_idle_div {
+    height: 46px;
+    cursor: pointer;
+    color: #6b7a99;
+    padding-left: 40px;
+    padding-right: 10px;
+    font-size: 16px;
+    background-color: #E6E9F0;
+}
+
+.mipc_list_idle_div_active {
+    background-color: #FFF;
+    color: $projectColor;
+    border-left: 4px solid $projectColor;
+    padding-left: 36px;
+}
+
+.list_left_img {
+    width: 19px;
+    height: 40px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: 0 13px;
+    float: left;
+}
+
+.list_left_text {
+    float: left;
+    font-size: 15px;
+    margin-top: 13px;
+    margin-left: 21px;
+    padding-right: 20px;
+}
+
+.list_img {
+    float: right;
+    margin-top: 13px;
+    background: url("../../assets/device/vimtag_img.png") no-repeat -332px -89px;
+    width: 8px;
+    height: 13px;
+}
+
+#create_setting_page_right {
+    /*margin-right: 20%;
+	width: 480px;*/
+    min-width: 70%;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+}
+
+.system_new_version {
+    float: right;
+    margin-top: 13px;
+    margin-right: 10px;
+    font-size: 10px;
+    height: 15px;
+    width: 30px;
+    border: 2px;
+    line-height: 15px;
+    background-color: red;
+    text-align: center;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.list_right_item {
+    width: 520px;
+    height: 50px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list_right_item_ex {
+    width: 520px;
+    height: 51px;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list_right_button {
+    float: right;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    height: 30px;
+    width: 120px;
+    line-height: 30px;
+    text-align: center;
+    border: 0;
+    background-color: $projectColor;
+    margin-top: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.attribute_key_text {
+    // float: left;
+    font-size: 14px;
+    // margin-top: 13px;
+}
+
+.list_right_input {
+    float: right;
+    height: 34px;
+    width: 200px;
+    border: 1px solid #ccc;
+    color: $projectColor;
+    text-align: right;
+    padding-right: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+}
+
+.options_float_right {
+    height: auto;
+    float: right;
+    margin-top: 5px;
+    color: $projectColor;
+}
+
+.options_float_right input {
+    font-size: 15px;
+    color: $projectColor;
+    // height: 34px;
+}
+
+.input_read_only {
+    width: 300px;
+    border: 0 none;
+    background: transparent;
+    cursor: default;
+    text-align: right;
+    color: #6D6D6D;
+}
+
+.list_right_button_ex {
+    float: right;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    height: 30px;
+    width: 120px;
+    border: 0;
+    background-color: $projectColor;
+    cursor: pointer;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+// .options_float_right_button {
+//     margin-top: 10px;
+// }
+
+// .options_float_left {
+//     clear: both;
+//     float: left;
+//     margin-top: 13px;
+// }
+
+.sd_mode_text {
+    float: left;
+    color: #666;
+}
+
+// .vimtag_options_float_left {
+//     clear: both;
+//     float: left;
+//     margin-top: 10px;
+// }
+
+.menu_list_box {
+    overflow: hidden;
+}
+
+.menu_list_last {
+    border-bottom: 1px solid rgb(204, 204, 204);
+    height: 50px;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    line-height: 50px;
+}
+
+.list_name {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    cursor: default;
+}
+
+.list_info {
+    float: right;
+    height: 50px;
+    line-height: 50px;
+    color: $projectColor;
+    font-size: 16px;
+    // cursor: pointer;
+}
+
+.menu_list_mode{
+	border-bottom:1px solid #ccc;
+	padding:10px 0;
+	color:#000 !important;
+	margin-top:20px;
+}
+
+.menu_list_box_title2 {
+    margin-top: -3px;
+    padding: 8px 10px;
+    color: #666;
+}
+
+.vimtag_list_info_clickselect_img {
+    width: 20px;
+    height: 20px;
+    background: url(../../assets/device/check.png) no-repeat;
+    margin-top: 15px;
+}
+
+.ebitcam_list_info_clickselect_img {
+    width: 20px;
+    height: 20px;
+    background: url(../../assets/mipc/ebit_check.png) no-repeat;
+    margin-top: 15px;
+}
+
+.mipcm_list_info_clickselect_img,
+.vsmahome_list_info_clickselect_img {
+    width: 20px;
+    height: 20px;
+    background: url(../../assets/mipc/mipc_check.png) no-repeat;
+    margin-top: 15px;
+}
+
+.list_info_select_img {
+    width: 20px;
+    height: 20px;
+    background: url(../../assets/device/nocheck.png) no-repeat;
+    margin-top: 15px;
+}
+
+.fd-slider-bar {
+    background-image: none;
+    cursor: pointer;
+    height: 0.5px;
+    background-color: rgb(0, 166, 186) !important;
+    border-bottom: 1px solid rgb(0, 166, 186) !important;
+}
+
+.fd-slider-cover {
+    background: #c0c0c0 !important;
+    border-bottom: 1px solid #c0c0c0 !important;
+    cursor: pointer;
+    height: 0.5px;
+}
+
+.fd-slider-handle {
+    background: none;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background: rgb(255, 255, 255) !important;
+    height: 15px !important;
+    width: 15px !important;
+    border: 1px solid rgb(204, 204, 204) !important;
+}
+
+.fd-slider-hover .fd-slider-handle {
+    background: none;
+    background-color: #fff;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}

@@ -1,0 +1,410 @@
+@import "../../../css/public.scss";
+
+#set_main {
+    width: 90%;
+    margin: 0 auto;
+}
+
+#set_left {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.ul_public {
+    width: 100%;
+    overflow: hidden;
+}
+
+#left_ul_top {
+    border-bottom: 1px solid #ccc;
+}
+
+#left_ul_bottom {
+    border-top: 1px solid #ccc;
+}
+
+#li_line {
+    display: inline-block;
+    width: 900px;
+    border-bottom: 1px solid #ccc;
+}
+
+#set_left ul li {
+    float: left;
+    /*width:300px; 6.1.2*/
+    width: 25%;
+    height: 140px;
+    margin: 20px 0;
+    text-align: center;
+    border-right: 1px solid #ccc;
+}
+
+.set_img {
+    width: 24px;
+    height: 26px;
+    margin: 30px auto 14px;
+}
+
+.set_name {
+    font-size: 16px;
+}
+
+.set_list {
+    cursor: pointer;
+    color: #666;
+    // display:none;
+    box-sizing: border-box;
+    padding: 20px 0;
+}
+
+.set_list:hover {
+    color: $projectColor;
+}
+
+.set_list #search {
+    background: url(../../../assets/device/search.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #file {
+    background: url(../../../assets/device/file.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #manage_password {
+    background: url(../../../assets/device/adminstration.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #guest_password {
+    background: url(../../../assets/device/visiter.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #add_email {
+    background: url(../../../assets/device/email.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #order {
+    background: url(../../../assets/device/order.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #download {
+    background: url(../../../assets/device/download.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #sd {
+    background: url(../../../assets/device/sd.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #feedback {
+    background: url(../../../assets/device/feedback.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #about {
+    background: url(../../../assets/device/about.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+.set_list #my_other {
+    background: url(../../../assets/device/choose-setting.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+#set_right {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#set_right_content {
+    width: 600px;
+    margin: 0 auto;
+}
+
+/*#ae_lable{
+	margin-left:100px;
+}*/
+
+.about_input {
+    height: 50px;
+    float: right;
+    color: #333333;
+    font-size: 16px;
+    line-height: 50px;
+}
+
+.about_title {
+    float: left;
+    min-width: 150px;
+    margin-right: 20px;
+    height: 50px;
+    font-size: 16px;
+    color: #333333;
+    line-height: 50px;
+}
+
+.about_list {
+    margin-top: 100px;
+}
+
+#sd_export {
+    background: url(../../../assets/device/sd.png) no-repeat;
+    background-size: 24px 26px;
+}
+
+#set_sd_export_page {
+    width: 500px;
+    margin: 0 auto;
+    display: none;
+}
+
+#set_about_page {
+    width: 500px;
+    margin: 0 auto;
+}
+
+#export_success_icon {
+    line-height: 36px;
+    padding-left: 40px;
+    color: $projectColor;
+    height: 36px;
+    background: url(../../../assets/device/over.png) no-repeat;
+    margin-left: 110px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+#notice_content {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 14px;
+    width: 330px;
+}
+
+#progress_bar_div {
+    width: 340px;
+    float: left;
+    margin-bottom: 20px;
+}
+
+#progress_bar_num {
+    float: right;
+}
+
+#progress_bar_box {
+    line-height: 5px;
+    background: #ccc;
+    width: 270px;
+    height: 5px;
+    border-radius: 3px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+#progress_bar {
+    float: left;
+    line-height: 5px;
+    width: 0;
+    border-radius: 3px;
+    height: 5px;
+    background: $projectColor;
+}
+
+#sd_export_path_show {
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    float: left;
+    padding-left: 5px;
+    color: #666;
+    overflow: hidden;
+}
+
+#sd_export_path_btn {
+    float: left;
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    color: #666;
+    line-height: 30px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 14px;
+}
+
+#sd_export_submit {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background: $projectColor;
+    float: left;
+    margin-left: 220px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+#sd_export_submit_tip {
+    color: #f00;
+}
+
+#logo_exit {
+    width: 100%;
+    margin: 0 auto;
+    height: 120px;
+    border-bottom: 1px solid #ccc;
+}
+
+#logo_exit .user_logo {
+    float: left;
+    background: url(../../../assets/device/user.png) no-repeat;
+    // width: 150px;
+    height: 60px;
+    margin-left: 128px;
+}
+
+#logo_exit .user_logo span {
+    display: inline-block;
+    margin-left: 80px;
+    line-height: 60px;
+}
+
+#logo_exit #exit_btn_img {
+    float: right;
+    border: 1px solid $projectColor;
+    color: $projectColor;
+    font-size: 16px;
+    border-radius: 2px;
+    text-align: center;
+    margin-right: 128px;
+    margin-top: 17px;
+    line-height: 34px;
+}
+
+#logo_exit #exit_btn_img:hover {
+    background: $projectColor;
+    color: #fff;
+}
+
+#feedback {
+    background: url(../../../assets/device/feedback_icon.png) no-repeat;
+}
+
+#commit_btn {
+    width: 100px;
+    height: 34px;
+    color: #fff;
+    background: #0EA9BB;
+    text-align: center;
+    line-height: 36px;
+    margin-top: 20px;
+    cursor: pointer;
+    align: center;
+}
+
+.my_page_box_back:hover {
+    color: $projectColor;
+    background: url("../../../assets/device/choose-back.png") 0 12px no-repeat;
+}
+
+.my_page_box_back {
+    cursor: pointer;
+    padding-left: 10px;
+    line-height: 35px;
+    /*margin-left: -221px;*/
+    margin-bottom: 20px;
+    margin-top: 10px;
+    background: url("../../../assets/device/back.png") 0 12px no-repeat;
+}
+
+#set_feedback_page {
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.feedback_input input::-webkit-input-placeholder {
+    color: #999999;
+    font-size: 14px;
+}
+
+#feedback_describe_text::-webkit-input-placeholder {
+    color: #999999;
+    font-size: 14px;
+    font-family: Arial;
+}
+
+.menu_list_box {
+    overflow: hidden;
+}
+
+.my_menu_list {
+    border-bottom: 1px solid rgb(204, 204, 204);
+    height: 50px;
+    line-height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.options_float_right {
+    height: auto;
+    float: right;
+    margin-top: 5px;
+    color: $projectColor;
+}
+
+#my .options_float_right input {
+    font-size: 15px;
+    color: $projectColor;
+    height: 34px;
+}
+
+.list_name {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    cursor: default;
+}
+
+.normal_input_right {
+    float: right;
+    height: 34px;
+    width: 200px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #22aaaa;
+    text-align: right;
+    margin-top: 5px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    color: $projectColor;
+}
+
+.list_right_button {
+    float: right;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    height: 30px;
+    width: 120px;
+    line-height: 30px;
+    text-align: center;
+    border: 0;
+    background-color: $projectColor;
+    margin-top: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #ffffff;
+}

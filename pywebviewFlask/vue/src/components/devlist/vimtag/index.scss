@@ -1,0 +1,988 @@
+@import '@/css/public.scss';
+
+// css中url的相对路径需要使用~@进行定位否则会报错
+
+#device_list_menu { // 设备列表顶部菜单
+  width:90%;
+	margin:22px auto;
+	height:30px;
+  font-size:14px;
+  .device_list_menu{ // 筛选,添加,编辑选项按钮class样式
+    float:right;
+    margin-left:30px;
+    cursor:pointer;
+    line-height: 30px;
+    &:hover{
+      color:$projectColor;
+    }
+  }
+  #device_refresh_btn{ // 刷新设备列表图标按钮
+    float:right;
+    margin-left:20px;
+    margin-top:3px;
+    cursor:pointer;
+    width:22px;
+    height:22px;
+    background-image: url(~@/assets/device/refresh.png);
+    background-repeat: no-repeat;
+    &:hover{
+      background-image: url(~@/assets/device/refresh2.png);
+      background-repeat: no-repeat;
+    }
+  }
+  #dev_search{ // 搜索输入框
+    margin-left:20px;
+    float:right;
+    border-right:0px;
+    border-radius: 2px;
+    #dev_search_input{
+      float:left;
+      height:30px;
+      width:220px;
+      border: 1px solid #ccc;
+      border-right: none;
+      box-sizing: border-box;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px; 
+      padding-left:3px;
+    }
+    #dev_search_btn{
+      font-size: 14px;
+      color:#fff;
+      cursor:pointer;
+      float:left;
+      width:40px;
+      height:30px;
+      background-image: url(~@/assets/device/search2.png);
+      background-repeat: no-repeat;
+      background-position: 10px 5px;
+      background-color: $projectColor;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+  #dev_filter_box{ // 筛选框
+    margin-left:30px;
+    line-height: 30px;
+    float:right;
+    position:relative;
+    #online_btn{
+      // padding:2px 14px;
+      // border:1px solid $projectColor;
+      cursor: pointer;
+      &:hover{
+        color:$projectColor;
+      }
+      #online_btn_direction{
+        width:14px;
+        height:6px;
+        float:right;
+        margin-top:12px;
+        margin-left:6px;
+      }
+      .online_btn_down{
+        background-image: url(~@/assets/device/down.png);
+        background-repeat: no-repeat;
+      }
+      .online_btn_up{
+        background-image: url(~@/assets/device/up.png);
+        background-repeat: no-repeat;
+      }
+    }
+    #online_btn_box{
+      width: 100px;
+      height: 82px;
+      background-image: url(~@/assets/device/frame2.png);
+      background-repeat: no-repeat;
+      background-size:100% 100%;
+      font-size:14px;
+      left:-33px;
+      top:32px;
+      position: absolute;
+      z-index: 10000;
+      display: none;
+      color:#666666;
+      #online_btn_select_all{
+        margin:0 auto;
+        margin-top: 12px;
+        height:23px;
+        text-align: center;
+        cursor: pointer;
+        width: 80px;
+        border-bottom: 1px solid #dedede;
+        box-sizing: border-box;
+        font-size: 13px;
+        line-height: 23px;
+        &:hover{
+          color:$projectColor;
+        }
+      }
+      #online_btn_select_online{
+        border-bottom:1px solid #ccc;
+        box-sizing: border-box;
+        height:23px;
+        margin:0 auto;
+        text-align: center;
+        cursor: pointer;
+        width: 80px;
+        font-size: 13px;
+        line-height: 23px;
+        &:hover{
+          color:$projectColor;
+        }
+      }
+      #online_btn_select_offline{
+        margin:0 auto;
+        font-size: 13px;
+        line-height: 23px;
+        box-sizing: border-box;
+        /*line-height: 36px;*/
+        height:23px;
+        text-align: center;
+        cursor: pointer;
+        /*background: #fff;*/
+        width: 98px;
+        margin-top: -1px;
+        border-radius: 0 0 5px 5px;
+        &:hover{
+          color:$projectColor;
+        }
+      }
+    }
+  }
+  #device_add_btn{ // 添加设备选项
+    position:relative;
+    #device_add_btn_down{ // 添加设备下拉提示框
+      font-size:16px;
+      color:#333333;
+      text-align:center;
+      line-height:52px;
+      width:146px;
+      height:52px;
+      background-image:url(~@/assets/device/prompt-box.png);
+      background-repeat: no-repeat;
+      position:absolute;
+      left:-47px;
+      top:32px;
+      z-index:1001;
+    }
+  }
+}
+#vimtag_device_list_box{ // 设备列表展示框
+  width:90%;
+  margin:0 auto;
+  padding-bottom:100px;
+}
+.device_list_img{ // 设备图片
+  width: 25%;
+  height: 169px;
+  float: left;
+  text-align: center;
+  cursor: pointer;
+  padding-right:10px;
+  box-sizing: border-box;
+  margin-top:10px;
+  position: relative;
+}
+.device_list_alert_box{ // 设备列表警示图标展示部分
+  float:left;
+  position:absolute;
+  top: 5px;
+  right: 14px;
+  width:20px;
+  z-index:999;
+  .device_list_move_ico, .device_list_sos_ico, .device_list_door_ico{
+    display: none;
+  }
+}
+.device_list_img_child{ // 设备列表图片样式
+  cursor: pointer;
+  background-size: 100% 100%;
+  position: relative;
+  width: 100%;
+  .camera_sign_picture_div{
+    position: absolute;
+    z-index: 10;
+    width:100%;
+    height:100%;
+    .img_class {
+      width:100%;
+      height:100%;
+    }
+  }
+  .camera_sign_video{
+    width: 100%;
+    height:100%;
+    position: absolute;
+  }
+}
+.device_nick { // 设备列表昵称样式
+  width: 100%;
+  height: 34px;
+  color: #000000;
+  font-size: 14px;
+  background: #ffffff;
+  line-height: 34px;
+  bottom: 0;
+  border-left:1px solid #d6d7dc;
+  border-right:1px solid #d6d7dc;
+  border-bottom:1px solid #d6d7dc;
+  box-sizing:border-box; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  .device_list_del_ico{
+    z-index: 2; // 提升层级防止层级过低点击无效
+    width:16px;
+    height:16px;
+    float:right; 
+    /*position:absolute; 
+    right:0;*/
+    margin-top:10px;
+    margin-right:10px;
+    // display: none;
+    background-image: url(~@/assets/device/device_delete.png);
+    background-repeat: no-repeat;
+    &:hover{
+      background-image: url(~@/assets/device/device_delete2.png);
+      background-repeat: no-repeat;
+    }
+  }
+  .device_list_sort_box{
+    z-index: 2; // 提升层级防止层级过低点击无效
+    float:right;
+    // display: none;
+    .device_list_sort_num{
+      width:20px;
+    }
+    .device_list_sort_btn{
+      float:right;
+      background: $projectColor;
+      color:#fff;
+      font-size: 12px;
+      padding:0px 5px;
+      line-height: 20px;
+      margin-top:7px;
+      margin-left:5px;
+      border-radius:2px;
+    }
+  }
+  .device_IPC_nick {
+    display: inline-block;
+    width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+#empty_div_img{ // 设备列表无设备时展示图片
+  background-image:url(~@/assets/device/dev_no.png);
+  background-repeat: no-repeat;
+  width:52px;
+  height:52px;
+  background-size: 100% 100%;
+  /*6.1.2 178+58 改为116*/
+  margin: 116px auto 20px;
+}
+.empty_div_txt{ // 设备列表无设备时展示的文字样式
+  text-align:center;
+  color:#333333;
+  font-size:14px;
+}
+
+// 添加设备弹窗样式
+#add_device_model{
+	width:100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+	background: rgba(0,0,0,0.5) none repeat scroll;
+  z-index: 1099;
+  #add_devices_box{ // 弹窗展示盒子
+    width:840px;
+    height:580px;
+    background: #fff;
+    border-radius: 10px;
+    position: fixed;
+    left:50%;
+    top:50%;
+    margin-left:-420px;
+    margin-top:-290px;
+    box-sizing: border-box;
+    #add_devices_box_menu{ // 顶部标题菜单栏样式
+      #add_devices_box_close{
+        width:20px;
+        height:20px;
+        margin-right:20px;
+        margin-top:17px;
+        float:right;
+        cursor:pointer;
+        background-image: url(~@/assets/device/n-close.png);
+        background-repeat: no-repeat;
+        &:hover {
+          background-image: url(~@/assets/device/c-close.png);
+          background-repeat: no-repeat;
+        }
+      }
+      #add_devices_help{
+        width:22px;
+          height:22px;
+          float:right;
+          cursor:pointer;
+          margin-right: 20px; 
+          margin-top: 17px;
+          background-image: url(~@/assets/device/help.png);
+          background-repeat: no-repeat;
+          background-size:100% 100%;
+      }
+      #add_devices_box_back{
+        float:left;
+        cursor:pointer;
+        padding-left: 13px;
+        line-height: 60px;
+        margin-left:20px;
+        background-image: url(~@/assets/device/back.png);
+        background-repeat: no-repeat;
+        background-position: 0 24px;
+        &:hover{
+          color:$projectColor;
+          background-image: url(~@/assets/device/choose-back.png);
+          background-repeat: no-repeat;
+          background-position: 0 24px;
+        }
+      }
+      #add_devices_box_title{
+        text-align: center;
+        line-height: 60px;
+        border-bottom: 1px solid #d6d7dc;
+        color:#333333;
+        font-size: 16px;
+      }
+    }
+    #add_devices_box_body{ // 添加设备弹窗主体样式
+      width:772px;
+      margin:0 auto;
+      .add_devices_type{ // 选择设备类型
+        width:100%;
+        float:left;
+        .add_devices_type_name{
+          margin-top:20px;
+          margin-bottom: 15px;
+          margin-left: 5px;
+          font-size: 16px;
+          color:#333333;
+        }
+        .add_devices_type_list{
+          width:180px;
+          height:120px;
+          margin:5px 5px;
+          border:1px solid #d6d7dc;
+          border-radius: 5px;
+          float:left;
+          color:#333333;
+          cursor:pointer;
+          &:hover {
+            color: $projectColor;
+          }
+          .add_devices_type_list_img{
+            width:60px;
+            height:60px;
+            margin:15px auto;
+          }
+          .add_devices_type_list_name{
+            text-align: center;
+            font-size:14px;
+          }
+        }
+      }
+      #input_device_id{ // 填写设备id
+        .vimtag_add_device_sample_img_361{
+          background-image: url(~@/assets/device/id_361.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_b1{
+          background-image: url(~@/assets/device/id_b1.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_b2{
+          background-image: url(~@/assets/device/id_b2.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_b3{
+          background-image: url(~@/assets/device/id_b3.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_cm1{
+          background-image: url(~@/assets/device/id_cm1.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_cp1{
+          background-image: url(~@/assets/device/id_cp1.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_fisheye{
+          background-image: url(~@/assets/device/id_fisheye.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_m1{
+          background-image: url(~@/assets/device/id_m1.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_p1{
+          background-image: url(~@/assets/device/id_p1.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .vimtag_add_device_sample_img_s1{
+          background-image: url(~@/assets/device/id_s1.png);
+          background-repeat: no-repeat;
+        }
+        .vimtag_add_device_sample_img_IPC{
+          background-image: url(~@/assets/device/id_361.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .add_device_input_id_box_del{
+          width:16px;
+          height:16px;
+          float: right;
+          margin: 10px;
+          cursor: pointer;
+          background-image: url(~@/assets/device/cause.png);
+          background-repeat: no-repeat;
+        }
+      }
+      #add_offline_device{ // 离线设备添加
+        .dev_offline_tips{ // 设备类型为cm1,m1,fisheye 显示用手机添加
+          text-align: center;
+          .dev_offline_tips_img{
+            margin:70px 0;
+          }
+          .dev_offline_tips_text{
+            text-align: center;
+            font-size:16px;
+            color:#333;
+          }
+        }
+        #add_devices_img{
+          width:20px;
+          height:20px;
+          display:inline-block;
+          background-image:url(~@/assets/device/sound.png);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          margin-left: 12px;
+          vertical-align: middle;
+        }
+      }
+      #connect_net{ // 连接网线等待设备上线
+        .add_devices_wait_online{
+          text-align: center;
+          color:#333;
+        }
+        #add_devices_timenum{
+          width:30px;
+          height:30px;
+          background:$projectColor;
+          color:#fff;
+          margin:0 auto;
+          border-radius: 50%;
+          margin-top: 15px;
+          text-align: center;
+          line-height: 30px;
+        }
+      }
+      #connect_fail{ // 配置失败
+        #add_device_fail_img{
+          width:100px;
+          height:100px;
+          margin:55px auto;
+          cursor: pointer;
+          background-image: url(~@/assets/device/error.png);
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+        }
+        #add_devices_unconnect_info{
+          margin-left:141px;
+        }
+      }
+      #connect_fail_reason{ // 配置失败帮助
+        .device_offline_reason{
+          margin-top:10px;
+          font-size: 15px;
+        }
+        .device_offline_reason_public{
+          margin-top: 15px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color:#646464;
+        }
+      }
+      #input_device_password{ // 设备在线输入密码
+        #add_device_info{
+          width:300px;
+          margin:0 auto;
+          text-align: center;
+          font-size: 16px;
+          margin-top:140px;
+          margin-bottom: 20px;
+          color:#333;
+        }
+        #add_device_forget_pass{
+          text-align: center;
+          margin:20px auto;
+          cursor:pointer;
+          width: 240px;
+        }
+      }
+      #set_device_wifi{ // 设备设置wifi
+        #add_device_set_wifi_refresh{
+          width:22px;
+          height:22px;
+          float:right;
+          margin-top:7px;
+          margin-right:230px;
+          cursor:pointer;
+          background-image: url(~@/assets/device/refresh.png);
+          background-repeat: no-repeat;
+      }
+      #add_device_set_wifi_refresh:hover{
+          background-image: url(~@/assets/device/refresh2.png);
+          background-repeat: no-repeat;
+      }
+        #add_device_set_wifi_box{
+          width:240px;
+          height: 35px;
+          margin:0 auto;
+          border:1px solid #999;
+          border-radius: 5px;
+          margin-bottom:30px;
+          .add_device_set_wifi_box_ico{
+            width:16px;
+            height:16px;
+            float: left;
+            margin: 10px;
+            background-image: url(~@/assets/device/wifi.png);
+            background-repeat: no-repeat;
+          }
+        }
+      }
+      #set_device_nick{ // 设置设备昵称
+        #add_device_edit_name_tips{
+          width:400px;
+          margin:0 auto;
+          text-align: center;
+          font-size: 16px;
+          margin-top:150px;
+          margin-bottom: 20px;
+          color:#333;
+        }
+        .add_device_input_name_box_ico{
+          width:14px;
+          height:16px;
+          float: left;
+          margin: 10px;
+          background-image: url(~@/assets/device/nickname.png);
+          background-repeat: no-repeat;
+        }
+      }
+      #set_tree_device_nick{ // 树状列表修改昵称(vimtag特有)
+        .set_device_edit_name_tips{
+          width:400px;
+          margin:0 auto;
+          text-align: center;
+          font-size: 16px;
+          margin-bottom: 20px;
+          color:#333;
+          &:first-child {
+            margin-top: 150px;
+          }
+        }
+        .add_device_input_name_box_ico{
+          width:14px;
+          height:16px;
+          float: left;
+          margin: 10px;
+          background-image: url(~@/assets/device/nickname.png);
+          background-repeat: no-repeat;
+        }
+      }
+      #set_device_zone{ // 设置设备时区
+        #add_device_set_zone_box{
+          width:240px;
+          height: 35px;
+          margin:0 auto;
+          border:1px solid #999;
+          border-radius: 5px;
+          margin-bottom:30px;
+          margin-top:150px;
+          .add_device_set_zone_box_ico{
+            width:16px;
+            height:16px;
+            float: left;
+            margin: 10px;
+            background-image: url(~@/assets/device/place.png);
+            background-repeat: no-repeat;
+          }
+        }
+      }
+      #offline_device_alert{ // 点击离线设备显示弹框
+        #video_play_offline{
+          margin: 195px auto 10px;
+          text-align: center;
+          font-size: 15px;
+          letter-spacing: 3px;
+        }
+        #video_play_id, #video_play_offline_word{
+          margin-bottom: 20px;
+        }
+        #search_help{
+          color: #fff;
+          background: $projectColor;
+          font-size: 14px;
+          margin: 0 auto;
+          width: 200px;
+          line-height: 24px;
+          height: 24px;
+          text-align: center;
+          border-radius: 2px;
+          padding: 5px;
+          letter-spacing: 1px;
+          cursor: pointer;
+        }
+      }
+      #offline_device_help{ // 点击离线设备
+        .device_offline_reason_box{
+          margin-top:100px;
+          margin-left:100px;
+        }
+        #reconfig_wifi{
+          color:$projectColor;
+          display:inline-block;
+          cursor: pointer;
+        }
+      }
+
+      // 公共弹窗内样式
+      #add_device_sample_img{
+        width:320px;
+        height:200px;
+        margin:55px auto;
+      }
+      .add_device_input_id_box{
+        width:240px;
+        height: 35px;
+        margin:0 auto;
+        border:1px solid #999;
+        border-radius: 5px;
+        margin-bottom:30px;
+      }
+      .add_device_input_id_box_ico{
+        width:16px;
+        height:16px;
+        float: left;
+        margin: 10px;
+        background-image: url(~@/assets/device/camera.png);
+        background-repeat: no-repeat;
+      }
+      #add_device_submit{
+        color:#fff;
+        width:240px;
+        text-align: center;
+        cursor: pointer;
+        line-height: 35px;
+        margin:0 auto;
+        border-radius: 5px;
+        background: $projectColor;
+      }
+      .add_device_input_id_box_input{
+        border:none;
+        height:35px;
+        width:160px;
+      }
+      .add_devices_box_info{
+        width:476px;
+        text-align: center;
+        color:#333;
+        font-size: 16px;
+        margin-top:20px;
+        margin-bottom: 30px;
+        margin-left: 159px;
+        letter-spacing: 1px;
+      }
+      #vimtag_add_device_success_ico{
+        width:44px;
+        height:44px;
+        margin:0 auto;
+        margin-top:50px;
+        margin-bottom: 14px;
+        background-image: url(~@/assets/device/success2.png);
+        background-repeat: no-repeat;
+      }
+      .add_device_input_pass_box_ico{
+        width:16px;
+        height:16px;
+        float: left;
+        margin: 10px;
+        background-image: url(~@/assets/device/key.png);
+        background-repeat: no-repeat;
+      }
+      #add_device_success_txt{
+        text-align: center;
+        color:$projectColor;
+        font-size: 16px;
+      }
+      #add_device_edit_pass_tips{
+        width:400px;
+        margin:0 auto;
+        text-align: center;
+        font-size: 16px;
+        margin-top:50px;
+        margin-bottom: 20px;
+        color:#333;
+      }
+      .add_device_set_wifi_down{
+        width:14px;
+        height:6px;
+        float:right;
+        margin-top:15px;
+        margin-right:10px;
+        background-image: url(~@/assets/device/up.png);
+        background-repeat: no-repeat;
+      }
+      .add_device_set_wifi_up{
+        width:14px;
+        height:6px;
+        float:right;
+        margin-top:15px;
+        margin-right:10px;
+        background-image: url(~@/assets/device/down.png);
+        background-repeat: no-repeat;
+      }
+      .add_device_set_wifi_input{
+        line-height: 34px;
+      }
+      #add_device_set_wifi_list_box{
+        background: #fff;
+        position: absolute;
+        z-index: 1000;
+        width:240px;
+        max-height:220px;
+        overflow: auto !important;
+        border:1px solid #999;
+        border-top:none;
+        border-radius: 0 0 5px 5px;
+      }
+      #add_device_set_wifi_list_box::-webkit-scrollbar{
+          width:5px;
+      }
+      #add_device_set_wifi_list_box::-webkit-scrollbar-thumb:vertical{
+          background-color:#999;
+          border-radius: 6px;
+      }
+      .add_device_set_wifi_list{
+        line-height: 30px;
+        border-top:1px solid #999;
+        padding-left:33px;
+        cursor:pointer;
+      }
+      .add_device_set_wifi_list:hover{
+          color:$projectColor;
+      }
+      #add_device_skip{
+        color:#fff;
+        width:240px;
+        text-align: center;
+        cursor: pointer;
+        line-height: 35px;
+        margin:0 auto;
+        border-radius: 5px;
+        background: $projectColor;
+        margin-top:20px;
+      }
+      // 公共弹窗内样式 结束
+    }
+  }
+}
+
+// 树状结构样式
+#device_list_tree_box{
+	position: fixed;
+	left: 0;
+	top:82px;
+  z-index: 100;
+  #device_list_tree_div{
+    height:100%;
+    float:left;
+    #device_list_tree{
+      background: #f2f2f2;
+      /*g 5.5后改127*/
+      width:127px; 
+      height:100%;
+      padding-left:10px;
+      float:left;
+      overflow: auto;
+      #device_list_tree_level_box{
+        width:100%;
+        float:left;
+      }
+      #device_list_tree_all{
+        cursor:pointer;
+      }
+    }
+  }
+}
+
+#device_list_tree_box_btn{
+  width:40px;
+  height:40px;
+  background: $projectColor;
+  border:1px solid $projectColor;
+  cursor: pointer;
+  float:left;
+  color:#fff;
+  font-size: 12px;
+  text-align: center;
+  background-image: url(~@/assets/device/tree_close.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  // margin-top: 50%;
+}
+
+// 本地设备密码输入框样式
+#input_password_page{
+	width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+	background: rgba(0,0,0,0.5) none repeat scroll;
+	z-index: 9999;
+}
+#input_password_box_close{
+	width:20px;
+	height:20px;
+	background: url(~@/assets/device/n-close.png) no-repeat;
+	float:right;
+	cursor:pointer;
+}
+#input_password_box{
+	width: 400px;
+	height: 230px;
+	background-color: #fff;
+	margin: 0 auto;
+	margin-top: 15%;
+	padding-right:10px;
+	padding-top:10px;
+	text-align: center;
+	box-shadow: 0 2px 30px #050505;
+	border-radius: 10px;
+}
+#input_password_username{
+	margin-left: 55px;
+	padding-top:25px;
+}
+#input_password_username_ico{
+	margin-left: 20px;
+	margin-top: 12px;
+	margin-right: 10px;
+	position: absolute;
+	background: url(~@/assets/device/vimtag_img.png) no-repeat -349px -86px;
+	width: 22px;
+	height: 16px;
+}
+#input_password_username_input{
+	margin-top: 4px;
+	margin-left: 48px;
+	color: #ccc;
+	width: 240px;
+	vertical-align: text-top;
+	line-height: 25px;
+	height: 38px;
+	float: left;
+	border: none;
+	background-color: #f5f5f5;
+	outline: none;
+}
+#input_password_username_div{
+	margin-bottom: 16px;
+	margin-top: 2px;
+	padding-top: 10px;
+	background: url(~@/assets/device/vimtag_img.png) no-repeat -202px -177px;
+	width: 290px;
+	height: 44px;
+}
+#input_password_password{
+	margin-left: 55px;
+}
+#input_password_password_ico{
+	margin-left: 20px;
+	margin-top: 12px;
+	margin-right: 10px;
+	position: absolute;
+	background: url(~@/assets/device/vimtag_img.png) no-repeat -31px -85px;
+	width: 20px;
+	height: 21px;
+}
+#input_password_password_input{
+	margin-top: 2px;
+	width: 220px;
+	margin-left: 45px;
+	color: #cccccc;
+	vertical-align: text-top;
+	line-height: 25px;
+	height: 38px;
+	float: left;
+	border: none;
+	background-color: #f5f5f5;
+}
+#dev_pwd_eye{
+	float: left;
+	margin-top: 17.5px;
+	width: 20px;
+	height: 9px;
+	cursor: pointer;
+}
+.dev_pwd_eye_hide{
+	background: url(~@/assets/device/vimtag_img.png) no-repeat -81px -95px;
+}
+.dev_pwd_eye_show{
+	background: url(~@/assets/device/vimtag_img.png) no-repeat -56px -95px;
+}
+#input_password_password_div{
+	margin-bottom: 16px;
+	background: url(~@/assets/device/vimtag_img.png) no-repeat -202px -177px;
+	width: 290px;
+	height: 44px;
+}
+#input_password_submit{
+	color: #ffffff;
+	font-size: 16px;
+	width: 290px;
+	height: 44px;
+	margin:0 auto;
+	cursor: pointer;
+	background-color: $projectColor;
+	border: 0px;
+	border-radius: 4px;
+	line-height: 44px;
+}
+.dev_box{
+  margin-top: 10px;
+}
+.dev_box::after{
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+}

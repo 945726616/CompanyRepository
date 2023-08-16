@@ -1,0 +1,321 @@
+@import "../../css/public.scss";
+
+#top {
+    height: 62px;
+    width: 100%;
+    margin-bottom: 1px;
+}
+
+#top_box {
+    width: 100%;
+    height: 62px;
+    border-bottom: 1px solid #d6d7dc;
+}
+
+.menu_box {
+    background-color: $projectColor;
+}
+
+#top_box_main {
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#top_box_left {
+    height: 100%;
+    float: left;
+}
+
+#top_logo {
+    float: left;
+    margin-top: 9px;
+    margin-right: 10px;
+    // background: url(../../assets/device/logo.png) no-repeat;
+    width: 145px;
+    height: 36px;
+}
+
+.top_list_menu {
+    padding: 0 15px;
+    height: 100%;
+    text-align: center;
+    float: left;
+    color: #666666;
+    line-height: 62px;
+}
+
+.top_list_menu:hover {
+    color: #fff;
+    background: $projectColor;
+}
+
+#top_box_right {
+    height: 100%;
+    color: #666666;
+    float: right;
+}
+
+.top_right_menu {
+    float: right;
+    line-height: 62px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.top_right_menu:hover {
+    color: $projectColor;
+}
+
+#top_menu_my {
+    height: 100%;
+    text-align: center;
+    line-height: 62px;
+    margin-left: 8px;
+    padding: 0 5px;
+    min-width: 50px;
+    border-radius: 3px;
+}
+
+#top_menu_my:hover {
+    color: white;
+    background: $projectColor;
+}
+
+#top_login_div {
+    border: none;
+    height: 100%;
+    line-height: 62px;
+    margin-top: 0;
+    padding: 0 10px;
+    /*padding: 5px 10px;*/
+    border-radius: 3px;
+    /*margin-top: 16px;*/
+    font-size: 15px;
+    /*border: 1px solid $projectColor;*/
+    float: right;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+#top_login_div_ico {
+    float: left;
+    width: 18px;
+    height: 16px;
+    margin-right: 5px;
+    background: url(../../assets/device/equipment.png) no-repeat;
+}
+
+#top_login_div:hover {
+    color: #fff;
+    background: $projectColor;
+}
+
+#top_login_div:hover #top_login_div_ico {
+    background: url(../../assets/device/equipment2.png) no-repeat;
+}
+
+#top_login_span:hover {
+    color: #fff;
+    background: $projectColor;
+    height: 62px;
+}
+
+#bottom_select_lang {
+    float: left;
+    height: 100%;
+    line-height: 62px;
+    position: static;
+    /*position: absolute;*/
+    bottom: 50px;
+    right: 100px;
+    cursor: pointer;
+    color: #646464;
+    font-size: 14px;
+}
+
+#bottom_select_lang:hover {
+    color: $projectColor;
+}
+
+#select_lang_box {
+    position: absolute;
+    display: none;
+    background: #fafafa;
+    padding: 10px;
+    border: 1px solid #d3d3d3;
+    z-index: 10000;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+#select_lang_box::-webkit-scrollbar {
+    width: 2px;
+}
+
+#select_lang_box::-webkit-scrollbar-track {
+    background-color: #ccc;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+
+#select_lang_box::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+
+.select_lang {
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#menu_more {
+    margin-right: 35px;
+}
+
+#mipc_logo_img {
+    float: left;
+    cursor: pointer;
+    margin-left: 40px;
+    margin-top: 15px;
+}
+
+.vsmahome_logo_img {
+    width: 51px;
+    height: 32px;
+    background: url(../../assets/mipc/vsmahome_m.png) no-repeat;
+}
+
+.ebitcam_logo_img {
+    background: url(../../assets/mipc/ebit_img.png) no-repeat -426px -328px;
+    width: 134px;
+    height: 26px;
+}
+
+.mipcm_logo_img {
+    background: url(../../assets/mipc/mipcm.ico) no-repeat;
+    background-size: 100% 100%;
+    width: 32px;
+    height: 32px;
+}
+
+.menu_img {
+    width: 21px;
+    height: 21px;
+    float: left;
+    margin-top: 18px;
+}
+
+.menu_txt {
+    float: left;
+}
+
+.menu_top_li {
+    float: right;
+    color: #fff;
+    line-height: 61.99px;
+    padding: 0 20px;
+    cursor: pointer;
+
+    #menu_more_img {
+        background: url(../../assets/mipc/mipc_new_img.png) no-repeat -168px -3px;
+    }
+
+    #menu_download_img {
+        background: url(../../assets/mipc/mipc_new_img.png) no-repeat -127px -3px;
+    }
+}
+
+.menu_top_li_active {
+    float: right;
+    color: #2988cc;
+    line-height: 61.99px;
+    padding: 0 20px;
+    cursor: pointer;
+    background: #fff;
+
+    #menu_more_img {
+        background: url(../../assets/mipc/mipc_new_img.png) no-repeat -148px -3px;
+    }
+
+    #menu_download_img {
+        background: url(../../assets/mipc/mipc_new_img.png) no-repeat -107px -3px;
+    }
+}
+
+.ebit_menu_top_li_active {
+    float: right;
+    color: #fff;
+    line-height: 61.99px;
+    padding: 0 20px;
+    cursor: pointer;
+    background: #ff781f;
+
+    #menu_download_img {
+        background: url(../../assets/mipc/ebit_img.png) no-repeat -107px -3px;
+    }
+
+    #menu_more_img {
+        background: url(../../assets/mipc/ebit_img.png) no-repeat -148px -3px;
+    }
+}
+
+.ebit_menu_top_li {
+    float: right;
+    color: #a1a6b3;
+    line-height: 61.99px;
+    padding: 0 20px;
+    cursor: pointer;
+
+    #menu_more_img {
+        background: url(../../assets/mipc/ebit_img.png) no-repeat -168px -3px;
+    }
+
+    #menu_download_img {
+        background: url(../../assets/mipc/ebit_img.png) no-repeat -127px -3px;
+    }
+}
+
+#top_back {
+    color: #fff;
+    margin-left: 30px;
+    float: left;
+    line-height: 61px;
+    font-size: 16px;
+}
+
+#ebit_back {
+    color: #5c5c66;
+    margin-left: 30px;
+    float: left;
+    line-height: 61px;
+    font-size: 16px;
+}
+
+#mipcBack {
+    cursor: pointer;
+    float: left;
+  #main_title_box_return_img {
+    background: url(../../assets/mipc/new_mipc_back.png);
+    width: 20px;
+    height: 16px;
+    margin-top: 21px;
+    margin-right: 5px;
+    float: left;
+  }
+  #ebit_main_title_box_return_img {
+    background: url(../../assets/mipc/ebit_back.png);
+    width: 20px;
+    height: 16px;
+    margin-top: 21px;
+    margin-right: 5px;
+    float: left;
+  }
+}
+

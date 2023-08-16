@@ -1,0 +1,25 @@
+#centerPlayScreen{
+  width: 80%;
+  height: 60%;
+  margin: 10%;
+  position: absolute;
+}
+.playScreen{
+  position: relative;
+  background-color: black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 49%;
+  height: 50%;
+  // width: 800px;
+  // height: 600px;
+  color: white;
+  float: left;
+  text-align: center;
+  border: 1px solid;
+}
+.centerAddIco{
+  margin: 25% auto;
+  font-size: 30px;
+}

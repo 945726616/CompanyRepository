@@ -1,0 +1,385 @@
+@import "../../css/public.scss";
+
+#login {
+    height: calc(100% - 62px);
+}
+
+#login_page {
+    width: 100%;
+    height: 100%;
+}
+
+input::placeholder {
+    color: #bdbdbd;
+}
+
+input {
+    color: #404040;
+}
+
+#login_box {
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    text-align: center;
+}
+
+.vimtag_login_bg {
+    background-image: url(../../assets/device/vimtag_bg.png);
+    background-color: rgb(90, 194, 208);
+}
+
+.input_div {
+    margin-bottom: 16px;
+}
+
+#vimtag_signin_inner {
+    margin: 0 auto;
+    padding-top: 10%;
+}
+
+#signin_logo_vimtag {
+    margin: 0 auto;
+    margin-bottom: 35px;
+    background: url("../../assets/device/vimtag_img.png") no-repeat -242px -116px;
+    width: 214px;
+    height: 53px;
+}
+
+#signin_logo_mipc {
+    width: 168px;
+    height: 88px;
+    /*background: url(../assets/mipc/mipc_new_img.png) no-repeat -416px -288px;*/
+    margin: 0 auto;
+    margin-bottom: 35px;
+}
+
+#signin_logo_ebit {
+    background: url(../../assets/mipc/ebit_img.png) no-repeat -425px -284px;
+    width: 186px;
+    height: 36px;
+    margin: 0 auto;
+    margin-bottom: 35px;
+}
+
+#signin_logo_vsmahome {
+    background: url(../../assets/mipc/vsmahome_b.png) no-repeat;
+    width: 148px;
+    height: 88px;
+    margin: 0 auto;
+    margin-bottom: 35px;
+}
+
+.vimtag_login_user {
+    width: 20px;
+    height: 21px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 12px;
+    margin-right: 10px;
+    background: url("../../assets/device/vimtag_img.png") no-repeat -5px -85px;
+}
+
+.mipc_login_user,
+.vsmahome_login_user {
+    width: 20px;
+    height: 21px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 8px;
+    margin-right: 5px;
+    background: url(../../assets/mipc/mipc_new_img.png) no-repeat -20px -3px;
+}
+
+.ebit_login_user {
+    margin-left: 5px;
+    margin-top: 8px;
+    margin-right: 5px;
+    float: left;
+    background: url(../../assets/mipc/ebit_img.png) no-repeat -20px -3px;
+    width: 20px;
+    height: 21px;
+}
+
+.vimtag_input_username {
+    float: left;
+    border: none;
+    vertical-align: text-top;
+    margin-top: 2px;
+    // color: rgb(189, 189, 189);
+    width: 240px;
+    line-height: 25px;
+    height: 38px;
+    background-color: #f5f5f5;
+}
+
+.mipc_input_username {
+    float: left;
+    border: none;
+    vertical-align: text-top;
+    margin-top: 6px;
+    // margin-left: 5px;
+    width: 190px;
+    height: 25px;
+}
+
+.vimtag_login_input {
+    background: url("../../assets/device/vimtag_img.png") no-repeat -202px -177px;
+    width: 290px;
+    height: 44px;
+}
+
+.mipc_login_input,
+.vsmahome_login_input {
+    border: 1px solid #6b7a99;
+    width: 230px;
+    height: 34px;
+}
+
+.ebit_login_input {
+    background: #fff;
+    border: 1px solid #d6d7dc;
+    width: 230px;
+    height: 34px;
+}
+
+.vimtag_password_img {
+    float: left;
+    width: 20px;
+    height: 21px;
+    margin-left: 10px;
+    margin-top: 12px;
+    margin-right: 10px;
+    background: url("../../assets/device/vimtag_img.png") no-repeat -31px -85px;
+}
+
+.mipc_password_img,
+.vsmahome_password_img {
+    float: left;
+    width: 20px;
+    height: 21px;
+    margin-left: 5px;
+    margin-top: 8px;
+    margin-right: 5px;
+    background: url(../../assets/mipc/mipc_new_img.png) no-repeat -56px -3px;
+}
+
+.ebit_password_img {
+    margin-left: 5px;
+    margin-top: 8px;
+    margin-right: 5px;
+    float: left;
+    background: url(../../assets/mipc/ebit_img.png) no-repeat -56px -3px;
+    width: 20px;
+    height: 21px;
+}
+
+.vimtag_input_password {
+    vertical-align: text-top;
+    float: left;
+    border: none;
+    margin-top: 2px;
+    width: 220px;
+    line-height: 25px;
+    height: 38px;
+    background-color: #f5f5f5;
+}
+
+.mipc_input_password {
+    vertical-align: text-top;
+    float: left;
+    border: none;
+    margin-top: 6px;
+    margin-left: 5px;
+    color: #6b7a99;
+    width: 190px;
+    height: 25px;
+}
+
+
+.password_eye_gray {
+    float: left;
+    margin-top: 17.5px;
+    width: 20px;
+    height: 9px;
+    cursor: pointer;
+    background: url("../../assets/device/vimtag_img.png") no-repeat -81px -95px;
+}
+
+.password_eye {
+    float: left;
+    margin-top: 17.5px;
+    width: 20px;
+    height: 9px;
+    cursor: pointer;
+    background: url("../../assets/device/vimtag_img.png") no-repeat -56px -95px;
+}
+
+#keep_sign_in {
+    float: right;
+    margin-bottom: 10px;
+    color: $projectColor;
+}
+
+#keep_sign_in_check {
+    float: left;
+    margin-top: 2px;
+    margin-right: 5px;
+}
+
+.vimtag_btn {
+    color: #ffffff;
+    margin-bottom: 16px;
+    cursor: pointer;
+    background-color: $projectColor;
+    border: 0px;
+    font-size: 16px;
+    width: 290px;
+    height: 44px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.mipc_btn {
+    color: #ffffff;
+    margin-bottom: 16px;
+    cursor: pointer;
+    background-color: $projectColor;
+    border: 0px;
+    font-size: 14px;
+    width: 230px;
+    height: 34px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+#register_account {
+    color: $projectColor;
+    font-size: 14px;
+    cursor: pointer;
+    float: left;
+}
+
+#forget_pass {
+    color: $projectColor;
+    font-size: 14px;
+    cursor: pointer;
+    float: right;
+}
+
+#sign_account {
+    color: $projectColor;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#binding_account {
+    display: none;
+    color: #404040;
+    width: 230px;
+    float: none;
+}
+
+#forget_pass_inner {
+    position: absolute;
+    left: 35%;
+    top: 30%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    width: 480px;
+    height: 320px;
+    box-shadow: 0 2px 30px #050505;
+}
+
+#binding_account_cancel_btn {
+    float: right;
+    background-color: $projectColor;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+}
+
+.standard_inputs_normal {
+    width: 168px;
+    vertical-align: top;
+    line-height: 25px;
+    height: 27px;
+    float: left;
+}
+
+#binding_account_next_btn {
+    width: 100%;
+    line-height: 34px;
+    height: 34px;
+    color: #fff;
+    border: none;
+    background-color: $projectColor;
+}
+
+#recovery_pass_ok_btn {
+    width: 100%;
+    line-height: 34px;
+    height: 34px;
+    color: #fff;
+    border: none;
+    background-color: $projectColor;
+}
+
+#forget_password_close_btn {
+    width: 100%;
+    line-height: 34px;
+    height: 34px;
+    color: #fff;
+    border: none;
+    background-color: $projectColor;
+}
+
+.vimtag_button_right {
+    float: right;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    height: 26px;
+    width: 100px;
+    border: 0;
+    background-color: #22aaaa;
+    cursor: pointer;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+#input_email_page {
+    margin-top: 50px;
+    color: $projectColor;
+    font-size: 14px;
+}
+
+#forget_password_page {
+    margin-top: 50px;
+    display: none;
+    color: $projectColor;
+    font-size: 14px;
+}
+
+#select_lang_btn {
+    height: 35px;
+    position: absolute;
+    right: 0px;
+    top: 60px;
+    margin-right: 25px;
+}
+
+.select_language_mipc_new {
+    float: right;
+    width: 100px;
+    margin-top: 6px;
+    cursor: pointer;
+    color: #6b7a99;
+    border: none;
+}

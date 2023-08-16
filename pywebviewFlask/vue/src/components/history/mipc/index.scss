@@ -1,0 +1,316 @@
+@import '../../../css/public.scss';
+
+#dev_main_page {
+    width: 100%;
+}
+
+#history_list_bottom {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#page_num_box {
+    /* width:350px; */
+    margin: 0 auto;
+}
+
+#page_num_main {
+    display: flex;
+    justify-content: space-around;
+}
+
+.page_num_btn {
+    min-width: 30px;
+    height: 30px;
+    margin: 0 10px 0 10px;
+    padding: 0 5px;
+    cursor: pointer;
+    border: 1px solid $projectColor;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 30px;
+    float: left;
+    flex-shrink: 0;
+}
+
+.page_num_btn_yes {
+    color: #fff;
+    background: $projectColor;
+}
+
+.page_num_btn_no {
+    color: $projectColor;
+    background: #fff;
+}
+
+.page_jump_input {
+    height: 28px;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+    border: 1px solid $projectColor;
+    color: $projectColor;
+}
+
+.page_jump_input::-webkit-outer-spin-button,
+.page_jump_input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+}
+
+.page_jump_btn {
+    width: 75px;
+    height: 30px;
+    padding: 0 10px;
+    margin: 0 10px;
+    color: #fff;
+    background-color: $projectColor;
+    flex-shrink: 0;
+}
+
+#mipc_device_list_box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+#mipc_history_menu_box {
+    width: 260px;
+    /*height:100%;*/
+    float: left;
+    background-color: #e6e9f0;
+    padding-bottom: 20px;
+}
+
+#date_box {
+    height: 300px;
+    width: 220px;
+    margin: 0 auto;
+}
+
+#select_date {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.history_select_data {
+    float: left;
+    color: #6b7a99;
+}
+
+#select_day {
+    color: #6b7a99;
+    margin-left: 30px;
+}
+
+.history_menu_li {
+    width: 220px;
+    font-size: 16px;
+    margin: 0 auto;
+}
+
+#history_menu_edit {
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #6b7a99;
+}
+
+.history_select {
+    width: 100%;
+    float: left;
+    color: #6b7a99;
+}
+
+.filter_format_btn {
+    color: #6b7a99;
+    margin-left: 20px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.select_filter_li_active {
+    color: $projectColor;
+    margin-left: 20px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.filter_category_btn {
+    color: #6b7a99;
+    margin-left: 20px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.filter_time_btn {
+    color: #6b7a99;
+    margin-left: 20px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+#history_list_main {
+    height: 90vh;
+    padding-bottom:50px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+#history_img_list{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.history_list_img {
+    margin: 10px 0 0 10px;
+    width: 304px;
+    height: 205px;
+    // float: left;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.alarm_ico_div {
+    width: 20px;
+    height: 150px;
+    top: 10px;
+    position: absolute;
+    right: 4px;
+}
+
+.alarm_sign_ico {
+    background: url("../../../assets/mipc/move.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.snapshot_sign_ico {
+    background: url("../../../assets/mipc/snapshot.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.sos_sign_ico {
+    background: url("../../../assets/mipc/snapshot.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.door_sign_ico {
+    background: url("../../../assets/mipc/snapshot.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.video_ico_show {
+    width: 22px;
+    height: 12px;
+    background: url("../../../assets/mipc/video.png");
+    position: absolute;
+    bottom: 38px;
+    left: 3px;
+}
+
+.video_duration_show {
+    width: 50px;
+    height: 20px;
+    position: absolute;
+    right: 0px;
+    bottom: 34px;
+    font-size: 14px;
+    background-color: rgba(157, 156, 156, 0.2);
+    color: #fff;
+}
+
+.camera_sign_picture {
+    background-color: #d9d9d9;
+    width: 304px;
+    height: 171px;
+}
+
+.video_list_picture {
+    width: 304px;
+    height: 171px;
+}
+
+.video_delete {
+    float: right;
+    background: url(../../../assets/mipc/video_delete.png) no-repeat;
+    width: 20px;
+    height: 19px;
+    margin-top: 6px;
+    margin-right: 4px;
+}
+
+#history_no_list {
+    width: 100%;
+    text-align: center;
+    color: #999;
+    margin-top: 10%;
+}
+
+#history_no_list_img {
+    background: url(../../../assets/mipc/mipc_new_img.png) no-repeat -20px -155px;
+    width: 110px;
+    height: 120px;
+    margin: 0 auto;
+    margin-bottom: 24px;
+}
+
+#history_img_page {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1000;
+    top: 10%;
+}
+
+#history_img_box {
+    position: relative;
+    width: 666px;
+    height: 386px;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: #F4F4F4;
+    padding: 6px;
+}
+
+#history_img_page_close {
+    position: absolute;
+    cursor: pointer;
+    background: url("../../../assets/mipc/vimtag_img.png") no-repeat -162px -152px;
+    width: 25px;
+    height: 25px;
+    right: 8px;
+    top: 10px;
+}
+
+#history_img_main {
+    width: 100%;
+    height: 100%;
+}
+
+#history_img_show {
+    width: 100%;
+    height: 100%;
+}
+
+#history_img_page_download {
+    position: absolute;
+    cursor: pointer;
+    background: url(~@/assets/device/snap_download.png) no-repeat;
+    background-size: 100%;
+    width: 25px;
+    height: 25px;
+    right: 12px;
+    bottom: 10px;
+}

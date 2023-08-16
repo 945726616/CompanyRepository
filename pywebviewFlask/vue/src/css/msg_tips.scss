@@ -1,0 +1,89 @@
+.tip_container {
+    display: none;
+    z-index: 999999;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    margin-left: -300px;
+    text-align: left;
+    width: 600px;
+  }
+  .mtip {
+    border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    padding: 8px 8px 6px 8px;
+    font-size: 14px;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    color: #fff;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.2);
+    &.error {
+      background-color: #ff5659;
+      border: 1px solid #ca3e3e;
+      .micon {
+        background-position: 0 0;
+        vertical-align: top;
+        background-position: 0 0;
+        vertical-align: top;
+      }
+      .mclose {
+        background-position: -8px 0;
+        &:hover {
+          background-position: -8px -8px;
+        }
+      }
+    }
+    .micon {
+      background-image: url(~@/assets/device/micon.png);
+      background-repeat: no-repeat;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      padding-right: 5px;
+    }
+    &.success {
+      background-color: #43ab00;
+      border: 1px solid #338100;
+      .micon {
+        background-position: 0 -66px;
+        vertical-align: top;
+      }
+      .mclose {
+        background-position: -16px 0;
+        &:hover {
+          background-position: -16px -8px;
+        }
+      }
+    }
+    &.warning {
+      background-color: #71d4e0;
+      border: 1px solid #006096;
+      .micon {
+        background-position: 0 -132px;
+        vertical-align: top;
+      }
+      .mclose {
+        background-position: 0 0;
+        &:hover {
+          background-position: 0 -8px;
+        }
+      }
+    }
+    & > span {
+      vertical-align: 3px;
+      line-height: 1;
+      display: inline-block;
+      width: 510px;
+    }
+  }
+  .mtip .mclose, .mtip .mclose, .mtip .mclose {
+    background-image: url(~@/assets/device/mclose.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-top: 4px;
+    float: right;
+    cursor: pointer;
+  }
+  

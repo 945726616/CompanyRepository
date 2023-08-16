@@ -1,0 +1,210 @@
+<!-- version v9.5.1.2205101417 -->
+<!-- 版本号 v9.5.1.2205101417 -->
+<html>
+<!-- 发布到dcm服务器上用于测试入口服务器index文件 -->
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <script type="text/javascript">
+    if (location.href.indexOf("f=app") > -1) {
+      document.write("<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'/>")
+    }
+    var m_hostname // 全局品牌名
+    var web_url = window.location.href // 当前访问url地址
+    var contain_https // https域名在返回值中固定位置获取
+    var proto // 协议
+    var host // 域名
+    var serverArr = [] // 获取所有信令服务器地址数组
+    var httpsTest // https协议测试结果
+    var cmipcgwGetData // cmipcgw获取的全部数据
+    function start() {
+      var s, temp, tp = null, request, oem_domain
+      if (web_url.indexOf("m=") > -1) { // 如果地址中有m参数,则品牌名称为m
+        oem_domain = GetUrlParms().m
+      }
+      m_hostname = oem_domain ? oem_domain : window.location.hostname // 获取品牌名称
+      var dit_len = m_hostname.split(".").length // 截取域名并获取分割的数组长度
+      if (dit_len === 2) { // 域名不包含www则补全www
+        m_hostname = "www." + m_hostname
+      }
+      var ran = Math.random() // handle为随机数变量,用于控制请求是否相同
+      var appid = window.location.hostname.split('.') // 获取域名除去一级域名www/test/debug等
+      if (appid.length === 3) {
+        appid.shift()
+      }
+      appid = appid.join('.')
+      // 仅请求信令服务器地址不需要其他参数暂定使用简单参数方法
+      request = "/cmipcgw/cmipcgw_get_req.js?handle=" + ran + "&dclient=1&dclient_param__x_countz_=1&dclient_param=1&dclient_param_name=appid&dclient_param_value=" + appid
+      if (window.location.hostname.indexOf("i-live.net.cn") > -1 || window.location.hostname === "58.61.153.230") {
+        document.title = "Error"
+        document.write("404: unable to display this page")
+      } else {
+        if (window.location.protocol === "https:") { // https协议入口服务器地址遍历
+          var urls = ["www.mipcm.com:7443", "www.vimtag.com:7446", "www.ebitcam.com:7445", "www.vsmahome.com:7444"]
+          function url_sort(url, data) {
+            var test
+            for (var i = 0; i < url.length; i++) {
+              if (url[i].indexOf(data) !== -1) {
+                test = url[0]
+                url[0] = url[i]
+                url[i] = test
+              }
+            }
+            return url
+          }
+          url_sort(urls, m_hostname)
+          function check_link_https(index) {
+            var temp = urls[index]
+            s = document.createElement("script")
+            s.setAttribute("type", "text/javascript")
+            s.setAttribute("src", "https://" + temp + request)
+            s.onerror = function () {
+              if ((index + 1) >= urls.length) {
+                return false
+              } else {
+                check_link_https(index + 1)
+              }
+            }
+            document.getElementsByTagName('head').item(0).appendChild(s)
+          }
+          check_link_https(0)
+        }
+        if (window.location.protocol === "http:") { // http协议入口服务器地址遍历
+          var urls = ["52.8.41.82:7080", "209.133.212.170:7080", "149.202.201.87:7080", "119.23.57.95:7080"]
+          function check_link(index) {
+            var temp = urls[index]
+            s = document.createElement("script")
+            s.setAttribute("type", "text/javascript")
+            s.setAttribute("src", "http://" + temp + request)
+            s.onerror = function () {
+              if ((index + 1) >= urls.length) {
+                return false
+              } else {
+                check_link(index + 1)
+              }
+            }
+            document.getElementsByTagName('head').item(0).appendChild(s)
+          }
+          check_link(0)
+        }
+      }
+    }
+    function load() {
+      console.log(serverArr, 'serverArr')
+      console.log(m_hostname, 'm_hostname')
+      console.log(httpsTest, 'httpsTest')
+      console.log(window.location.href, 'window.location.href')
+      // 传递的参数signalServer: 信令服务器地址数组 host: 域名 browserHref: 当前浏览器URL httpsTest: https测试结果True/False, cmipcgwGetData: cmipcgw获取的全部数据
+      document.getElementById('main_ifr').contentWindow.postMessage({
+        signalServer: serverArr,
+        host: m_hostname,
+        httpsTest: httpsTest,
+        browserHref: window.location.href,
+        cmipcgwGetData: cmipcgwGetData
+      }, '*')
+    }
+    function message(obj) {
+      if (obj && obj.type === "cmipcgw_get_ack") { // 获取信令服务器接口回调截取
+        if (obj && obj.data && obj.data.result == "" && obj.data.server.signal && obj.data.server.signal[0]) { // 筛选正确返回值的接口内容
+          // proto = ("https:" === window.location.protocol) ? "https://" : "http://" // 判断访问协议https/http
+          // host = obj.data.server.signal[0].substring(obj.data.server.signal[0].indexOf("//") + 2, obj.data.server.signal[0].lastIndexOf("/")) // 截取返回的第一个服务器域名(去除协议https/http, 以及端口号后的部分)
+          obj.data.server.signal[0] = obj.data.server.signal[0].substring(0, obj.data.server.signal[0].lastIndexOf("/")) // 去除第一条返回数据中的/ccm 原第一条数据为'http://45.113.201.4:7080/ccm'
+          // var httpsIndex = undefined
+          // var signalIndex
+          serverArr = obj.data.server.signal // 将信令服务器地址全部存储
+          cmipcgwGetData = obj.data // cmipcgw接口获取的全部数据信息
+          // for (signalIndex = 0; signalIndex < obj.data.server.signal.length; signalIndex++) { // 循环遍历服务器数组寻找https域名(目前默认一个)
+          //   if (obj.data.server.signal[signalIndex].indexOf('https') !== -1) { // 有https域名则获取其index
+          //     httpsIndex = signalIndex
+          //   }
+          // }
+          // if (httpsIndex) { // 有https域名
+          //   contain_https = obj.data.server.signal[httpsIndex]
+          // } else { // 返回的入口服务器地址中没有https的域名
+          //   contain_https = undefined
+          // }
+          // if (window.fujikam) { // 客户端不使用https链接
+          //   contain_https = undefined
+          // }
+          function get_pic() { // 使用测试图片测试链接通断
+            var o = new Image()
+            o.src = "https://" + m_hostname + "/test_img.png?" + (Math.random()) // 请求固定地址的测试图片
+            o.onload = function () { // 成功加载切换地址为https协议
+              httpsTest = true
+              // load_https()
+            }
+            o.onerror = function () { // 保持当前http协议
+              // contain_https = undefined
+              httpsTest = false
+              // load_iframe()
+            }
+            load_iframe()
+          }
+          get_pic()
+          function load_iframe(data) { // 渲染下一层iframe地址(固定dcm地址, 加载版本js文件并且渲染最终要展示的页面)
+            // 新增https地址头返回异常的简单处理, 对于未正常返回https的情况进行http地址的重新加载
+            if ("https:" === window.location.protocol && !serverArr[2]) { // 请求的方式为https, 但返回的信令服务器地址不包含https
+              var changeHttpsToHttp = window.location.href.replace("https:", "http:")
+              window.location.href = changeHttpsToHttp
+              return
+            }
+            // 调用的为version_control的正式版地址
+            document.body.innerHTML = "<iframe id='main_ifr' onload='load()' src='" + (("https:" === window.location.protocol) ? serverArr[2] : serverArr[0]) + "/dcm/static/version_control/index.htm'></iframe>"
+          }
+
+          // function load_https() { // 更改http协议为https协议并重新加载网页, 目前vimtag项目限定不要转换
+          //   if (contain_https && (proto === "http://") && (m_hostname !== 'www.vimtag.com')) {
+          //     var web_url = window.location.href.replace("http:", "https:")
+          //     window.location.href = web_url
+          //   } else {
+          //     load_iframe()
+          //   }
+          // }
+        }
+      }
+    }
+    function GetUrlParms() { // url参数截取方法
+      var args, query, pairs
+      args = new Object()
+      query = location.search.substring(1)
+      pairs = query.split("&")
+      for (var i = 0; i < pairs.length; i++) {
+        var pos = pairs[i].indexOf('=')
+        if (pos === -1) {
+          continue
+        }
+        var argname = pairs[i].substring(0, pos)
+        var value = pairs[i].substring(pos + 1)
+        args[argname] = unescape(value)
+      }
+      return args
+    }
+    window.addEventListener('message', function(e) { // 从子页面中接收需要修改的title值,并修改title
+        console.log('get childPage postMessage change the browser title', e.data)
+        console.log('e.data.sendEvalFunc', e.data.sendEvalFunc)
+        eval(e.data.sendEvalFunc)
+    }, false)
+  </script>
+
+  <style type="text/css">
+    html,
+    body,
+    #iframe_div,
+    iframe {
+      background: #fff;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      /*overflow:hidden; */
+      position: relative;
+      border: 0;
+    }
+  </style>
+  <title></title>
+</head>
+
+<body onload="start()">
+</body>
+
+</html>

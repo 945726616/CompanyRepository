@@ -1,0 +1,509 @@
+@import "../../../css/public.scss";
+
+#device_list_sidebar_center {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#play_box {
+  width: 90%;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+#page_top_menu {
+  width: 100%;
+  height: 58px;
+}
+
+#play_view {
+  float: left;
+  // position: relative;
+
+  #play_buffer_ret {
+    text-align: right;
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    z-index: 999;
+  }
+
+  #timezone_err_tip {
+    position: absolute;
+    background-color: red;
+    z-index: 9999;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    cursor: default;
+
+    .err_tip_close {
+      width: 15px;
+      height: 15px;
+      background: url(~@/assets/device/n-close.png) no-repeat;
+      background-size: 100%;
+      float: right;
+      margin-top: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+
+  #alarm_countdown {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px;
+    height: 20px;
+    width: 120px;
+    line-height: 20px;
+    border: 1px solid #fff;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 9999;
+    color: #fff;
+    padding: 10px 5px;
+
+    .audio_alarm {
+      background: url(~@/assets/device/alarm_countdown.png) no-repeat;
+      background-size: 100%;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  #play_screen {
+    position: relative;
+
+    #play_view_box {
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+      background-color: gray;
+      z-index: 1;
+
+      #play_pause_pic {
+        cursor: pointer;
+        position: relative;
+        opacity: 0.5;
+        left: 45%;
+        top: 40%;
+        width: 80px;
+        height: 80px;
+      }
+    }
+  }
+
+  #play_menu_box {
+    display: flex;
+    height: 44px;
+    background-color: #ebebeb;
+    justify-content: space-between;
+
+    #play_menu_left {
+      display: flex;
+
+      .video_play_start,
+      .video_play_stop {
+        width: 44px;
+        height: 44px;
+        background-position: 24px 12px;
+        cursor: pointer;
+      }
+
+      #voice_close {
+        float: left;
+        width: 20px;
+        height: 22px;
+        margin-top: 12px;
+        margin-left: 15px;
+        cursor: pointer;
+      }
+    }
+
+    #full_screen {
+      width: 18px;
+      height: 18px;
+      float: right;
+      margin: 12px 25px 0 25px;
+      cursor: pointer;
+    }
+
+
+    #play_menu_right {
+      display: flex;
+      /*5.12.2*/
+      // position: relative;
+      #enter_history_img {
+        width: 18px;
+        height: 18px;
+        float: right;
+        margin: 12px 25px 0 25px;
+        cursor: pointer;
+        position: relative;
+
+        #enter_history_img_box_tip {
+          position: absolute;
+          top: -63px;
+          width: 175px;
+          height: 50px;
+          left: -60px;
+          z-index: 9999;
+          color: #909090;
+          padding: 10px 55px 0;
+          font-size: 14px;
+          display: none;
+        }
+      }
+
+      #enter_set_img {
+        width: 18px;
+        height: 18px;
+        float: right;
+        margin: 12px 25px 0 25px;
+        cursor: pointer;
+      }
+
+      #resolute_div {
+        position: relative;
+
+        #choice_play_definition {
+          /*width: 66px;*/
+          padding: 0 5px;
+          background-color: #000000;
+          position: absolute;
+          /*5.12.2*/
+          bottom: 31px;
+          right: 0;
+          opacity: 0.4;
+          z-index: 30;
+          // display: none;
+          .definition_cha {
+            color: #ffffff;
+            font-size: 14px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            cursor: pointer;
+
+            :hover {
+              color: #83eefa;
+            }
+          }
+          
+        }
+
+        #resolute_choice {
+          font-size: 16px;
+          padding: 0 10px;
+          color: #909090;
+          border: none;
+          margin-top: 12px;
+          text-align: center;
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+#topClientP2Ping {
+  text-align: right;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  color: white;
+}
+
+.enter_nav {
+  height: 18px;
+  width: 1px;
+  background: #d6d7dc;
+  float: right;
+  margin-top: 12px;
+}
+
+.definition_nav {
+  width: 55px;
+  height: 1px;
+  background-color: #ffffff;
+  margin: auto;
+}
+
+
+
+#play_view_control {
+  position: absolute;
+  overflow: hidden;
+  z-index: 10;
+  top: 0;
+  left: 0;
+}
+
+#vimtag_ptz_control {
+  width: 100%;
+  height: 100%;
+}
+
+#ptz_control_left {
+  width: 15%;
+  height: 100%;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+}
+
+.left_key {
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  top: 50%;
+  left: 20px;
+  position: absolute;
+}
+
+#ptz_click_up {
+  display: none;
+}
+
+#ptz_click_left {
+  display: none;
+}
+
+#ptz_click_down {
+  display: none;
+}
+
+#ptz_click_right {
+  display: none;
+}
+
+#ptz_control_center {
+  width: 70%;
+  height: 100%;
+  float: left;
+}
+
+#ptz_control_up {
+  width: 100%;
+  /*height: 10%;*/
+  height: 15%;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+}
+
+.up_key {
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+}
+
+#ptz_control_bottom_center {
+  width: 100%;
+  height: 70%;
+}
+
+#ptz_control_bottom {
+  width: 100%;
+  display: none;
+}
+
+#control_menu {
+  width: 420px;
+  height: 59px;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.right_key {
+  background: url(~@/assets/device/vimtag_img.png) no-repeat -61px -457px;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+}
+
+.down_key {
+  margin-left: -20px;
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  background: url(~@/assets/device/vimtag_img.png) no-repeat -5px -457px;
+  width: 40px;
+  height: 40px;
+}
+
+.video_off_picture {
+  width: 61px;
+  height: 59px;
+  float: left;
+  margin-left: 44px;
+}
+
+.video_on_picture {
+  width: 61px;
+  height: 59px;
+}
+
+.camera_off_picture {
+  width: 61px;
+  height: 59px;
+  float: left;
+  margin-left: 44px;
+}
+
+.talkback_off_picture {
+  width: 61px;
+  height: 58px;
+  float: left;
+  margin-left: 44px;
+}
+
+.adjust_off_picture {
+  width: 61px;
+  height: 58px;
+  float: left;
+  margin-left: 44px;
+}
+
+.adjust_on_picture {
+  background: url(~@/assets/device/vimtag_img.png) no-repeat -71px -6px;
+  width: 61px;
+  height: 58px;
+  float: left;
+  margin-left: 44px;
+}
+
+.alarm_off_picture {
+  background: url(~@/assets/device/alarm.png) no-repeat;
+  background-size: 60px 60px;
+  width: 61px;
+  height: 61px;
+  float: left;
+  margin-left: 44px;
+}
+
+.alarm_on_picture {
+  background: url(~@/assets/device/in_alarm.png) no-repeat;
+  background-size: 60px 60px;
+  width: 61px;
+  height: 61px;
+  float: left;
+  margin-left: 44px;
+}
+
+#snapshot_preview_div {
+  width: 666px;
+  position: absolute;
+  z-index: 50;
+  top: 22%;
+  left: 41%;
+}
+
+#snapshot_img_page_download {
+  position: absolute;
+  cursor: pointer;
+  background: url(~@/assets/device/snap_download.png) no-repeat;
+  background-size: 100%;
+  width: 20px;
+  height: 25px;
+  right: 7px;
+  bottom: 3px;
+}
+
+#adjust_setting {
+  width: 55%;
+  height: 320px;
+  background-color: #000000;
+  opacity: 0.4;
+  filter: Alpha(opacity=40);
+  position: absolute;
+  left: 25%;
+  top: 20%;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  color: #ffffff;
+  // align-items: center;
+}
+
+.delete_adjust_page {
+  background: url("../../../assets/device/vimtag_img.png") no-repeat -157px -227px;
+  width: 14px;
+  height: 15px;
+  align-self: flex-end;
+  margin-right: 24px;
+}
+
+.adjust_line {
+  // height: 40px;
+  // width: 272px;
+  // margin-left: 24px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  &:first-child {
+    align-self: flex-end;
+  }
+}
+
+.adjust_mode_cha {
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
+}
+
+.adjust_mode {
+  display: flex;
+  // justify-content: space-around;
+  align-items: center;
+  // align-self: flex-start;
+  width: 30%;
+}
+
+.mode_cha {
+  font-size: 14px;
+  text-align: center;
+  margin-left: 5px;
+}
+
+.adjust_cha {
+  width: 20%;
+  text-align: center;
+}
+
+.adjust_show_value {
+  font-size: 14px;
+  color: #ffffff;
+  width: 5%;
+  text-align: center;
+  line-height: 15px;
+}
+
+.adjust_line input[type='range'] {
+  width: 55%;
+  height: 4px;
+}
+
+#snapshot_preview_content {
+  width: 100%;
+  /*height:88%; 6.1.2*/
+  vertical-align: top;
+  cursor: default;
+}

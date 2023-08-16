@@ -1,0 +1,224 @@
+@import "../../css/public.scss";
+
+#playback_box{
+	width:90%;
+	/*6.1.2*/
+	/*width:100%;*/
+	margin:0 auto;
+	margin-top:10px;
+}
+#page_top_menu{
+	width:100%;
+	/*6.1.2*/
+	height:58px;
+/*	padding-left:71px; g5.5后注销*/
+	/*margin-top:15px;
+	margin-bottom:3px;6.1.2*/
+}
+#back{
+	cursor: pointer;
+	float:left;
+	/*6.1.2*/
+	line-height: 58px;
+	font-size: 15px;
+	/*margin-left:13px; g 5.5*/ 
+	position:absolute;
+	// z-index: 100000;
+}
+#back:hover{
+	color:$projectColor;
+}
+#back:hover #main_title_box_return_img{
+	background: url(~@/assets/device/choose-back.png) no-repeat 0 22px;
+}
+#main_title_box_return_img{
+	/*6.1.2*/
+	/*width: 11px;
+	height: 21px;
+	float: left;
+	background: url(~@/assets/device/back.png) no-repeat 0 3px;*/
+	width: 14px;
+	height: 58px;
+	float: left;
+	background: url(~@/assets/device/back.png) no-repeat 0 22px;
+}
+#playback_view{
+	width:80%;
+  margin:0 auto;
+  position: relative;
+}
+#topClientP2Ping {
+  text-align: right;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  color: white;
+}
+#playback_buffer_ret{
+	position: absolute; 
+	color:white;
+	font-size:14px;
+	float:left;
+	margin-top:10px;
+  	z-index: 100;
+  	top: 40%;
+	display: none;
+}
+#playback_screen{
+	position: relative;
+}
+#play_view_box{
+	cursor: pointer;
+	/*position: absolute;
+	left: 0px;
+	top: 0px;*/
+	width: 100%;
+	height: 100%;
+	opacity: 0.5;
+	background-color: gray;
+}
+#play_pause_pic{
+	cursor: pointer;
+	position: relative;
+	opacity: 0.5;
+	left: 45%;
+	top: 40%;
+	width: 80px;
+	height: 80px;
+	background: url(~@/assets/device/vimtag_img.png) -15px -273px no-repeat;
+}
+#playback_menu_box{
+  display: flex;
+  justify-content: space-between;
+	height:44px;
+	background-color: rgb(43, 43, 43);
+
+  #play_menu_left{
+    display: flex;
+
+    .video_play_start, .video_play_stop{
+      width:16px;
+      height:20px;
+      margin-top:12px;
+      margin-left:24px;
+      cursor: pointer;
+    }
+
+    #playback_start_time {
+      width: 63px;
+      color:$projectColor;
+      margin-top:15px;
+      margin-left:15px;
+      cursor:default;
+    }
+  }
+
+  #playback_progress_bar{
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    width:300px;
+  }
+
+  #play_menu_right{
+    display: flex;
+
+    #playback_end_time{
+      color:$projectColor;
+      width: 63px;
+      margin-top:15px;
+      margin-right:15px;
+      cursor: default;
+    }
+
+    #playback_download_img{
+      width:20px;
+      height:20px;
+      margin-top:12px;
+      margin-right:24px;
+      cursor:pointer;
+      background: url(~@/assets/device/file.png) no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+}
+
+#playback_voice_close{
+	float:right;
+	width:20px;
+	height:22px;
+	margin-top:12px;
+	margin-right:15px;
+	cursor: pointer;
+}
+
+#playback_download_path_box{
+	width:300px;
+	height:150px;
+	background: #fff;
+	border-radius: 5px;
+  	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#playback_download_path_main{
+	text-align: center;
+	margin-top:30px;
+	margin-bottom: 48px;
+}
+#playback_download_path_input{
+	margin-left:10px;
+	padding-left:10px;
+}
+#playback_download_path_cancel{
+	border-radius: 4px;
+	height: 30px;
+	width: 120px;
+	color:#fff;
+	background: $projectColor;
+	text-align: center;
+	line-height: 30px;
+	float:left;
+	margin-left:20px;
+	cursor:pointer;
+}
+#playback_download_path_submit{
+	border-radius: 4px;
+	height: 30px;
+	width: 120px;
+	color:#fff;
+	background: $projectColor;
+	text-align: center;
+	line-height: 30px;
+	float:right;
+	margin-right:20px;
+	cursor:pointer;
+}
+.no_flag_item{
+	display: block;
+	float:left;
+	background: #c0c0c0;
+  height:4px;
+  pointer-events:none;
+}
+.flag_item{
+	display: block;
+	float:left;
+	background: rgba(255,0,0,.5);
+  height: 5px;
+  pointer-events:none;
+}
+.fd_slider_flag{
+	cursor: pointer;
+	position: absolute;
+	display: block;
+	z-index: 3;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	line-height: 5px;
+	border-radius: 3px;
+  -moz-border-radius: 3px;
+  width: 100%;
+}

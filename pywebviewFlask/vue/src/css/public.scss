@@ -1,0 +1,197 @@
+@import "./date-timepicker.scss";
+@import "./jquery.mCustomScrollbar.scss";
+@import "./time_select.scss";
+@import "./slider.scss";
+@import "./msg_tips.scss";
+
+$projectColor:var(--projectBackgroundColor) !default;
+
+
+
+*{
+	margin:0;
+	padding:0;
+	list-style: none;
+  	text-decoration: none;
+}
+input, button, select, textarea {
+	outline: none;
+}
+body{
+	font-family: 微软雅黑, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+}
+html{
+	height:100%;
+}
+.disabled{
+	pointer-events:none;
+}
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.notclick{
+	pointer-events: none;
+}
+body{
+	height:100%;
+	background: #fff;
+	font-family: "HelveticaNeueLTPro-Lt";
+}
+input, button, select, textarea {
+	outline: none;
+}
+.public_parent_box{
+	overflow: hidden;
+}
+#web{
+	width:100%;
+	height:100%;
+	float:left;
+}
+#page{
+	height:100%;
+}
+@media (max-width: 1108px){
+	#web{
+		width:1080px;
+	    height:100%;
+	}
+}
+
+// 日历选择器公共样式
+.ui-datepicker-header {
+    background-color: $projectColor;
+}
+
+#mipc_datepicker .mn-datepicker {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #a8abb2;
+    width: 220px;
+    padding: 0;
+}
+.ui-state-active{
+	background: $projectColor;
+}
+.ui-corner-all {
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+}//日历选择器公共样式
+
+/*delete_tips confirm框样式*/
+#delete_tips{
+	width:100%;
+	position: fixed;
+	z-index: 1000;
+}
+#delete_tips_box{
+	width:300px;
+	/*height:170px;*/
+	margin:0 auto;
+	background: #fff;
+	border-radius: 5px;
+	margin-top:200px;
+	-moz-box-shadow:2px 2px 5px #333333; 
+	-webkit-box-shadow:2px 2px 5px #333333; 
+	box-shadow:2px 2px 5px #333333;
+	z-index: 1500;
+}
+#delete_tips_content{
+	font-size: 16px;
+	text-align: center;
+	padding:18px 0 29px;
+}
+#delete_tips_title{
+	font-size: 20px;
+	text-align: center;
+	padding-top:38px;
+}
+#delete_tips_cancel{
+	float:left;
+	color:$projectColor;
+	font-size:19px;
+	cursor:pointer;
+	border-top:1px solid #ccc;
+	box-sizing: border-box;
+	text-align:center;
+	line-height: 60px;
+	width:50%;
+	height:100%;
+}
+#delete_tips_ok{
+	float:right;
+	box-sizing: border-box;
+    height:100%;
+	color:$projectColor;
+	font-size:19px;
+	cursor:pointer;
+	border-top:1px solid #ccc;
+	border-left:1px solid #ccc;
+	width:50%;
+	text-align:center;
+	line-height: 60px;
+}
+#delete_tips_btn {
+	height: 60px;
+}
+/*delete_tips confirm框样式 结束*/
+// 等待动图框样式
+#buffer_page{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:99999;
+  display:none;
+  left:0px;
+  top:0px;
+  background-color:#000000;
+  filter:alpha(opacity=50);  /*IE*/
+  opacity:0.5;               /*Mozilla*/
+  font-size:16px;
+  color:#ffffff;
+  text-align:center;
+  padding-top:23%;
+}
+#buffer_image{
+  background:url(~@/assets/mipc/buffer.gif) 0px 0px transparent no-repeat;
+  width:100px;
+  height:100px;
+  margin:0 auto;
+}
+#back_to_dev_list{
+	margin: auto;
+	margin-top: 20px;
+	padding: 20px 40px;
+	// display: none;
+	background-color: $projectColor;
+	width: max-content;
+	border-radius: 5px;
+	cursor: pointer;
+}
+// 等待动图框样式 结束
+
+input[type='range'] {
+	background: -webkit-linear-gradient($projectColor, $projectColor) no-repeat, #c0c0c0;
+	-webkit-appearance: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	/*清除系统默认样式*/
+	background: none;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	background: rgb(255, 255, 255);
+	height: 15px;
+	width: 15px;
+	border: 1px solid rgb(204, 204, 204);
+}

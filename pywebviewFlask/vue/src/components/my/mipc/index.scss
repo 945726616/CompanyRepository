@@ -1,0 +1,193 @@
+@import "../../../css/public.scss";
+
+#set_main {
+    width: 100%;
+}
+
+#set_left {
+    min-width: 254px;
+    float: left;
+    border-right: 1px solid #d6d6dc;
+    background: #e6e9f0;
+}
+
+.set_img {
+    width: 24px;
+    height: 26px;
+    float: left;
+    margin-right: 15px;
+    display: none;
+}
+
+.set_list {
+    height: 46px;
+    line-height: 46px;
+    cursor: pointer;
+    color: #a1a6b3;
+    padding-left: 40px;
+    padding-right: 10px;
+    font-size: 16px;
+}
+
+.active_list {
+    background-color: #FFF;
+    color: $projectColor;
+    border-left: 4px solid $projectColor;
+    padding-left: 36px;
+}
+
+#set_right {
+    overflow: hidden;
+    padding-top: 40px;
+}
+
+#set_right_content {
+    width: 600px;
+    margin: 0 auto;
+}
+
+#version_logo_img_vsmahome_new {
+    margin-left: 70px;
+    margin-bottom: 30px;
+    width: 148px;
+    height: 88px;
+    background: url(../../../assets/mipc/vsmahome_b.png) no-repeat;
+}
+
+#version_logo_img_ebit_new {
+    margin-left: 70px;
+    margin-bottom: 30px;
+    width: 186px;
+    height: 36px;
+    background: url(../../../assets/mipc/ebit_img.png) no-repeat -425px -284px;
+}
+
+.about_input {
+    height: 50px;
+    float: left;
+    color: #666;
+    font-size: 18px;
+    line-height: 50px;
+}
+
+.about_title {
+    float: left;
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+    color: #666;
+    line-height: 50px;
+}
+
+#set_sd_export_page {
+    width: 500px;
+    margin: 0 auto;
+    display: none;
+}
+
+#set_about_page {
+    width: 500px;
+    margin: 0 auto;
+}
+
+#export_success_icon {
+    line-height: 36px;
+    padding-left: 40px;
+    color: $projectColor;
+    height: 36px;
+    /*background:url(../assets/device/over.png) no-repeat;*/
+    margin-left: 110px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+#notice_content {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 14px;
+    width: 330px;
+}
+
+#progress_bar_div {
+    width: 340px;
+    float: left;
+    margin-bottom: 20px;
+}
+
+#progress_bar_num {
+    float: right;
+}
+
+#progress_bar_box {
+    line-height: 5px;
+    background: #ccc;
+    width: 270px;
+    height: 5px;
+    border-radius: 3px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+#progress_bar {
+    float: left;
+    line-height: 5px;
+    width: 0;
+    border-radius: 3px;
+    height: 5px;
+    background: $projectColor;
+}
+
+#sd_export_path_show {
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    float: left;
+    padding-left: 5px;
+    color: #666;
+    overflow: hidden;
+}
+
+#sd_export_path_btn {
+    float: left;
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    color: #666;
+    line-height: 30px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 14px;
+}
+
+#sd_export_submit {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background: $projectColor;
+    float: left;
+    margin-left: 220px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+#sd_export_submit_tip {
+    color: #f00;
+}
+
+#exit_btn_img {
+    /*background: url(../assets/device/exit.png) no-repeat;*/
+    margin-top: 5px;
+}
+
+#feedback_ifr {
+    width: 100%;
+    border: none;
+    height: 700px;
+    display: none;
+}
