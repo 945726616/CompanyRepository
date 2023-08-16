@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+  <title>Hello World!</title>
+  <!-- flv.js -->
+  <script src="./flv.min.js"></script>
+</head>
+
+<body>
+  <h1>Hello World!</h1>
+  <form>
+    <input style="width: 60%;" id="input" type="text" placeholder="请输入id">
+  </form>
+  <button onclick="btn()">确认</button>
+  <h1>传递信息</h1>
+  <video width="800" height="600" id="player" controls>
+    <source src="./test.mp4" type="video/mp4">
+  </video>
+  <h1>test iframe</h1>
+  <iframe width="800" height="600" src="./test.html"></iframe>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <h1>Hello World!</h1>
+  <video id="videoPlayer" width="800" height="600" controls></video>
+  <button id="play">playBtn</button>
+  <style>
+    body {
+      background-color: transparent;
+    }
+  </style>
+  <!-- 额外的页面脚本功能, 可以使用常用的JS管理工具进行管理 -->
+  <script src="./preload.js"></script>
+  <!-- 信息交互方法 -->
+  <script src="./ipcRenderer.js"></script>
+  <script src="./rtmpPlay.js"></script>
+  <!-- <script src="renderer.js"></script> -->
+  <!-- <script src="./video_ffmpeg.js"></script> -->
+  <!-- <script>
+    function btn() {
+      var x = document.getElementById('input')
+      ipcRenderer.send('AsynMsg', x.value)
+    }
+  </script> -->
+</body>
+
+</html>
