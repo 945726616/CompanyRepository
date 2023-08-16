@@ -42,14 +42,15 @@
   <!-- 信息交互方法 -->
   <script src="./ipcRenderer.js"></script>
   <script src="./rtmpPlay.js"></script>
-  <!-- <script src="renderer.js"></script> -->
+  <script src="renderer.js"></script>
   <!-- <script src="./video_ffmpeg.js"></script> -->
-  <!-- <script>
+  <script>
     function btn() {
+      console.log(window.electronAPI, 'enter')
       var x = document.getElementById('input')
       ipcRenderer.send('AsynMsg', x.value)
     }
-  </script> -->
+  </script>
 </body>
 
 </html>

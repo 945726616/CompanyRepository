@@ -68,7 +68,7 @@ function createWindow () {
     // path.join API 将多个路径段连接在一起，创建一个适用于所有平台的组合路径字符串。
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      // nodeIntegration: true,
+      nodeIntegration: true,
       // contextIsolation: false
     }
   })
@@ -85,9 +85,13 @@ function createWindow () {
   // child.setBackgroundColor(rgba(255, 255, 255, 0))
   child.hide()
 
-
-  win.loadFile('index.html')//loadURL('http://localhost:8080/vimtag/')//loadFile('index.html')
-  // win.loadFile('yuvIndex.html')
+  //const binding = require('./addons/build/Release/addon.node')
+  // console.log(process.versions.node, 'node版本')
+  // console.log(process.versions.v8, 'v8版本')
+  // console.log(process.versions.electron, 'electron版本')
+  //console.log(JSON.stringify(binding), '调用node_addons')
+  // win.loadURL('http://localhost:8080/vimtag/')//loadFile('index.html')//win.loadFile('index.html')//
+  win.loadFile('yuvIndex.html')
   // win.setBackgroundColor(rgba(255, 255, 255, 0))
   // 点击最大化按钮事件
   win.on('maximize', () => {
