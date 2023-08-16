@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+    <style>
+      canvas {
+        width: 640px;
+        height: 480px;
+        border: 1px solid black;
+      }
+    </style>
+</head>
+<body>
+    <!-- <img id="img" src=""> -->
+    <canvas id="canvas"></canvas>
+    <script>
+        // base64格式渲染视频方法
+        // function setImage(imgData) {
+        //     var img = document.getElementById('img');
+        //     img.src = imgData;
+        // }
+        // canvas方式绘制yuv视频
+        function setImage(yuvData) {
+          var canvas = document.getElementById("canvas");
+          var ctx = canvas.getContext("2d");
+          var yuvData = new Uint8Array(640 * 480 * 3 / 2);
+          var imgData = ctx.createImageData(640, 480);
+
+          // 这里假设已经获取到了yuv数据，并将其存储在yuvData中
+          // 下面是将yuv数据转换为RGBA格式，并使用canvas绘制
+          for (var i = 0; i < 640 * 480; i++) {
+            var y = yuvData[i];
+            var u = yuvData[640 * 480 + (i >> 2)];
+            var v = yuvData[640 * 480 + (i >> 2) + (640 * 480 >> 2)];
+
+            var r = Math.round(y + 1.370705 * (v - 128));
+            var g = Math.round(y - 0.698001 * (v - 128) - 0.337633 * (u - 128));
+            var b = Math.round(y + 1.732446 * (u - 128));
+
+            imgData.data[4 * i + 0] = r;
+            imgData.data[4 * i + 1] = g;
+            imgData.data[4 * i + 2] = b;
+            imgData.data[4 * i + 3] = 255;
+          }
+          ctx.putImageData(imgData, 0, 0);
+        }
+    </script>
+</body>
+</html>

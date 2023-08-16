@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AAC Player</title>
+  </head>
+  <body>
+    <input type="text" id="setPlayUrl">
+    </br>
+    <button onclick="clickBtn()">发送播放链接</button>
+    <script>
+      function clickBtn() {
+        let dom = document.getElementById('setPlayUrl')
+        let playUrl = dom.value
+        pywebview.api.getPlayUrl(playUrl)
+      }
+    </script>
+  </body>
+</html>
