@@ -222,8 +222,8 @@ function layout (obj) { // 框架加载 (包含接受入口index传递的信息)
       var android_download_url = "https://play.google.com/store/apps/details?id=com.conico.conicoa";
     }
     if (is_weixin()) {
-      // 暂时删除ebitcam/vsmahome的谷歌play下载
-      if (host_name == "Ebitcam" || host_name == "Vsmahome") {
+      // vsmahome的谷歌play下载
+      if (host_name == "Vsmahome") {
         download = "<a href='javascript:;'><div id='normal_download' style='width: 100%'>" + lang_normal_download + "</div></a>";
       } else {
         download = "<a href='javascript:;'><div id='normal_download'>" + lang_normal_download + "</div></a>"
@@ -237,8 +237,8 @@ function layout (obj) { // 框架加载 (包含接受入口index传递的信息)
         android_load_tips();
       })
     } else {
-      // 暂时删除ebitcam/vsmahome的谷歌play下载
-      if (host_name == "Ebitcam" || host_name == "Vsmahome") {
+      // 暂时删除vsmahome的谷歌play下载
+      if (host_name == "Vsmahome") {
         download = "<a href='" + obj[1].link_url + "'><div id='normal_download' style='width: 100%'>" + lang_normal_download + "</div></a>";
       } else {
         download = "<a href='" + obj[1].link_url + "'><div id='normal_download'>" + lang_normal_download + "</div></a>"
