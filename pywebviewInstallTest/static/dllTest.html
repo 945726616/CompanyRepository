@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Dll Test</title>
+  </head>
+  <body>
+    <div>测试方法: </div>
+    <!-- <div>调用插件内方法传递'world'字符串<button id="btn-send-string" type="button">发送字符串</button></div> -->
+    <div>调用插件内加法计算方法
+      <form>
+        <input type="text" id="addValue1">
+        <input type="text" id="addValue2">
+        <button id="btn-send-add" type="button">计算加法</button>
+      </form>
+    </div>
+    <!-- <div>调用插件CallBack方法
+      <input type="text" id="callBackInput">
+      <button id="btn-call-back" type="button">callBack回调</button>
+    </div> -->
+    <div>主进程返回的结果 <span id="result"></span></div>
+    <div><a href="./index.html">返回</a></div>
+    <script src="./dllTest.js"></script>
+  </body>
+</html>
