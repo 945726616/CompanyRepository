@@ -1,4 +1,3 @@
-﻿  pch.cpp
-  dllmain.cpp
-    正在创建库 E:\Git\companyrepository\Electron\dllTest\Dll1\x64\Debug\Dll1.lib 和对象 E:\Git\companyrepository\Electron\dllTest\Dll1\x64\Debug\Dll1.exp
+﻿  dllmain.cpp
+e:\git\companyrepository\electron\dlltest\dll1\dll1\dllmain.cpp(30): warning C4172: 返回局部变量或临时变量的地址: temp
   Dll1.vcxproj -> E:\Git\companyrepository\Electron\dllTest\Dll1\x64\Debug\Dll1.dll
