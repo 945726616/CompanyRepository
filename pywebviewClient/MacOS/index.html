@@ -1,0 +1,21 @@
+<html>
+	<body>
+		<div id='show_yuv_str'></div>
+	</body>
+	<script type="text/javascript">
+		let testPlayUrl = 'rtdp://45.120.103.35:5030/live/1jfiegbp2n65a_p0_LAKGTKYDYPKG'
+
+		window.addEventListener('pywebviewready', function() {
+	      console.log('判断为客户端')
+	      window.pywebview.api.getPlayUrl(testPlayUrl, 'live')
+	    })
+		
+		function setImgData(yuv_str) {
+			// alert(yuv_str)
+			let yuvData = atob(yuv_str);
+			// console.log(typeof(yuvData), 'type_yuvData')
+			console.log(yuv_str)
+			console.log(yuvData)
+		}
+	</script>
+</html>
