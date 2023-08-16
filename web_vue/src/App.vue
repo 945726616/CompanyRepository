@@ -32,7 +32,9 @@ export default {
       this.$router.push('/devlist')
     },
     handleMouse(e) { // 禁用鼠标右键点击
-      e.preventDefault();
+      if (window.fujikam === 'fujikam') {
+        e.preventDefault()
+      }
     },
   },
   async mounted () {

@@ -23,10 +23,10 @@
         <div id='topClientP2Ping' v-show="clientFlag">{{clientP2PingValue}}</div>
         <!-- 回放视频播放 -->
         <div id="playback_screen">
-        </div>
-        <!-- 暂停播放遮罩层 -->
-        <div id="play_view_box" @click="clickPlayViewBox" v-show="!is_playing">
-          <div id="play_pause_pic"></div>
+          <!-- 暂停播放遮罩层 -->
+          <div id="play_view_box" @click="clickPlayViewBox" v-show="!is_playing">
+            <div id="play_pause_pic"></div>
+          </div>
         </div>
         <!-- 回放视频播放 结束 -->
         <!-- 播放菜单控制 -->

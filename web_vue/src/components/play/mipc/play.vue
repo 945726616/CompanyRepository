@@ -295,7 +295,6 @@ export default {
           this.definitionSelect = 'NULL'
           this.support_1080p = 'NULL'
         }
-        this.readyFlag = true
       }
       // 视频播放控制区域设置
       this.$nextTick(function () {
@@ -309,6 +308,7 @@ export default {
         this.$refs.ptz_control.style.left = l_dom_play_view_left + "px"
       })
       // 视频播放控制区域设置 结束
+      this.readyFlag = true
     },
     play_speed (data) { // 播放速度回调
       this.publicFunc.mx("#play_buffer_ret").innerHTML = data;
@@ -408,9 +408,9 @@ export default {
       this.definitionSelect = this.mcs_fluent_clear
       if (this.playFlag) {
         if (this.$store.state.jumpPageData.localFlag) { // 本地内容暂缓
-          local_play_data.profile_token = "p2";
-          local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc;
-          msdk_ctrl({ type: "local_device_play", data: local_play_data });
+          local_play_data.profile_token = "p2"
+          local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
+          msdk_ctrl({ type: "local_device_play", data: local_play_data })
         } else {
           this.$api.play.play({
             dom: $("#play_screen"),

@@ -1,5 +1,5 @@
-<!-- version v9.7.2.2207071716 -->
-<!-- 版本号 v9.7.2.2207071716 -->
+<!-- version v10.5.1.2305261723 -->
+<!-- 版本号 v10.5.1.2305261723 -->
 <html>
 
 <head>
@@ -83,13 +83,13 @@
           iframeSrcHeader = iframeData.signalServer[2]
         }
         if (host_choose_item && host_choose[host_choose_item].address) { // 访问服务器固定地址文件
-          if ((iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'cn' && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'cnyd'
-          && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'th' && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'bd'
-          && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'ae')  && host_choose_item === 'www.vimtag.com') { // 除中国/泰国/孟加拉/阿拉伯联合酋长国地区跳转
-            postFatherMessageInfo.sendEvalFunc = 'window.location.href = "https://us.vimtag.com/";'
-          } else {
+          // if ((iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'cn' && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'cnyd'
+          // && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'th' && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'bd'
+          // && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'ae')  && host_choose_item === 'www.vimtag.com') { // 除中国/泰国/孟加拉/阿拉伯联合酋长国地区跳转
+          //   postFatherMessageInfo.sendEvalFunc = 'window.location.href = "https://us.vimtag.com/";'
+          // } else {
             document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + 'index.htm?m=' + m_hostname + "'></iframe>"
-          }
+          // }
           console.log('run iframe create')
           postFatherMessage(postFatherMessageInfo)
         } else { // 访问版本文件内容

@@ -9,6 +9,7 @@ import mme from '@/util/mme.js'
 import mme_hls from '@/util/mme_hls.js'
 import publicFunc from '@/util/public.js'
 import MSdk from '@/util/msdk_plug.js'
+
 let default_Play_img = "data:image/jpg;base64,/9j/4QlQaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzE0MiA3OS4xNjA5MjQsIDIwMTcvMDcvMTMtMDE6MDY6MzkgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiLz4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8P3hwYWNrZXQgZW5kPSJ3Ij8+/+0ALFBob3Rvc2hvcCAzLjAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/bAIQAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQICAgICAgICAgICAwMDAwMDAwMDAwEBAQEBAQECAQECAgIBAgIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD/90ABAA6/+4ADkFkb2JlAGTAAAAAAf/AABEIAQUB0AMAEQABEQECEQH/xABLAAEBAAAAAAAAAAAAAAAAAAAACwEBAAAAAAAAAAAAAAAAAAAAABABAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAAABEQIRAD8An/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Cf+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/0Z/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Sn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Of+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/1J/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Vn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9af+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/15/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Qn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Gf+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/0p/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Tn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Sf+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/1Z/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Wn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9ef+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/0J/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Rn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Kf+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/05/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Un/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Wf+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/1p/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Xn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Cf+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/0Z/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Sn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9Of+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/1J/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Vn/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/9af+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/15/4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z"
 const play = {
   /*
@@ -115,7 +116,44 @@ const play = {
    ** 播放总接口
    */
   async play (data) { // 播放方式选择接口
-    return this.play_flash(data)
+    // return this.play_flash(data)
+    if (window.fujikam === 'fujikam') {
+      return this.play_flash(data)
+    }
+    await axios.get('/ccm/ccm_play', {
+      params: {
+        sess: {
+          nid: login.create_nid(),
+          sn: data.sn
+        },
+        setup: {
+          stream: "RTP_Unicast",
+          trans: {
+            proto: "http"
+          }
+        },
+        token: "p1"
+      }
+    }).then(res => {
+      console.log(res, 'play(res)', data)
+      var result = new Object()
+      result.data = {
+        "sn": data.sn,
+        "url": res.data.uri.url,
+        "type": "hls",
+        "key_mme": data.key_mme,
+        "param": data
+      }
+      console.log('do this 1')
+      return callNative("livePlay", result, "callback_live_play", data)
+    })
+    // let msdk = new MSdk()
+    // let param = new Object()
+    // param.data = {token: "create"}
+    // msdk.create(param).then(res => {
+    //   console.log(res, 'msdk_create_return')
+    // })
+    // return this.play_hls(data)
     // if (window.fujikam || navigator.mimeTypes["application/x-shockwave-flash"]) { // 客户端/支持flash的浏览器使用flash播放方法
     //   console.log('use flash')
     //   return this.play_flash(data)
@@ -139,18 +177,19 @@ const play = {
     // }
   },
   async play_flash (data) {
-    let returnItem = "";
+    console.log(data, 'flash')
+    let returnItem = ""
     let flash_isplay = store.state.jumpPageData.flashIsPlay
-    let judge_enable_native_plug = true;
-    let judge_enable_flash_plug = false;
-    let ref_obj = create_play_ipc(data);
-    let playback = data.playback ? 1 : 0;
-    let l_plug_type = "";
+    let judge_enable_native_plug = true
+    let judge_enable_flash_plug = false
+    let ref_obj = create_play_ipc(data)
+    let playback = data.playback ? 1 : 0
+    let l_plug_type = ""
     if (ref_obj.isDownload) { // 下载按钮添加
       if (!$("#download_dom").length > 0) {
         $("body").append("<div id='download_dom' style='width:1px;height:1px;'></div>")
       }
-      data.dom = $("#download_dom");
+      data.dom = $("#download_dom")
     }
     let mme_params = {
       parent: data.dom,
@@ -200,7 +239,7 @@ const play = {
             // if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
             //   location.href = "https://www.adobe.com/go/getflashplayer";
             // }
-            if (flash_isplay) clearInterval(flash_isplay);
+            if (flash_isplay) clearInterval(flash_isplay)
             // publicFunc.log_upload('play', 'success') //记录日志：实时播放成功(无flash)
             flash_isplay = setInterval(function () {
               flash_play()
@@ -225,8 +264,8 @@ const play = {
               protocol: proto,
               ref: obj.ref_obj
             }, obj.ref_obj, function (msg, ref) {
-              msg.type = "playback";
-              play_ack(msg, ref);
+              msg.type = "playback"
+              play_ack(msg, ref)
             });
           } else {
             // if (store.state.jumpPageData.localFlag) {
@@ -297,7 +336,7 @@ const play = {
             "<div id='plugin_install_download'><div id='plugin_install_download_name'>" + play_oem + " " + mcs_client_new + "</div><div id='plugin_install_download_btn'></div></div>" +
             "<a name='flash' href='javascript:;' style='display:inline-block; width:210px'><div id='use_ordinary_video'>" + mcs_temporarily_installed_use_ordinary_video + "</div></a>" +
             "</div>"
-          
+
           $("#plugin_install_download").on('click',()=>{
             if(store.state.jumpPageData.projectName === 'ebitcam'){
               window.open("http://www.ebitcam.com/download")
@@ -467,7 +506,7 @@ const play = {
     // profile_token: "p0" 播放方式(插件/flash/hls/截图播放)由mme文件进行选择切换
     let macFlag = navigator.userAgent.toLowerCase().indexOf('macintosh') > -1 ? true : false // mac客户端判别标识(自动播放)
     let new_data = {
-      data: { sn: data.sn, dom: data.dom[0], stream: "major" },
+      data: { sn: data.sn, dom: data.dom, stream: "major" },
       ref: { ref: "live_play_ack" },
       obj: data.dom,
       callback: function (msg, ref) {
@@ -481,18 +520,19 @@ const play = {
     var judge_enable_native_plug = true
     var judge_enable_flash_plug = false
     var ref_obj = create_play_ipc(data)
-    var playback = data.playback ? 1 : 0;
+    var playback = data.playback ? 1 : 0
     if (playback) {
-      var token = data.data.token.split("-");
+      var token = data.data.token.split("-")
       data.data.sn = token[0];
-      data.data.token = token[0] + "_" + token[1] + "_" + token[2] + "_end.cid:" + token[3] + "_end.sid:" + token[4];
-      data.data.videoSize = data.data.duration * 1000;
+      data.data.token = token[0] + "_" + token[1] + "_" + token[2] + "_end.cid:" + token[3] + "_end.sid:" + token[4]
+      data.data.videoSize = data.data.duration * 1000
     }
     var screen = data.data.dom
-    screen.style.display = "block";
+    // screen.style.display = "block"
     console.log(screen, 'screen')
+    console.log(data, 'mme_params_data')
     var mme_params = {
-      parent: screen,
+      parent: data.data.dom,
       enable_native_plug: judge_enable_native_plug,
       enable_flash_plug: judge_enable_flash_plug,
       params: "{key:'data:application/octet-stream;base64,OenOl2/PvPX7EuqqZdvMsNf5PqEOlOJZ4sROOBtnvW8F6Fc+azokLNtti6Cb/oiuO9qhOxvDfL8cVpGY4UcCe81OIVHkbiNzuHKwiE+K6gmmWwIoHgSRn2RN4qsZO62QkqGePdR6L94n2ruSeixjqAgWFTW8AIlQptovRZSN1Dh/8M87RIRdYyVFqKqsZoZTYibPLyDFONKIqxzrFkJPtqR/wn8jnYMc1qUH/w3IYJZh/OqctPTDp8tYuQSWN3EE6+kVmDIMV9F92SZJORMnvxy+zYzpbO7Gz44fBQNQSGMelsf7yQpfTF/X8t1Qn73fu53xp3MTIGH0kklFH2tMPkO/Raelhw5A4JQbczWg0n4pcNxpRl6mCEIjFprTboJ/B2eI0qUX/zTPM7l1hBmxjxsewORsXp0y2+NnCRH0uVBGUq6fOWrdhJwotIIu5ZAZwdoDZZu6eaycol2TIS5smusoD0ODPtQ2xZoCy7djIC4MVhB5uKe0zDXbLr+Serdlq6en5HyvUN0EEmYle0fORmgNFn0DTqqTab6cx8WfFkysciJSveN4swoR66qMQUi9+TfkHTnZ/REp3kHJtSq8XJyzTe+KCXlJXGx07nAbK4svIPanx39A5o5XlpLK/ohxiMpEJZ6OhmWb9yAnL+8Bedw+epvbNQkhADh2QqB4ItsIq5KTOsNzA0aNn3FEXzyd7WLVBqcF1lUVxu1vpYRPKv01im1ORbVhDoJ9eiqkfchutpAGYOwhYzxFWOIhTMouY+m/oQhc1d8FF4T+zSx6WVmj2f+RDUdOKbQVxJdEeiGKyIDm14K34Kz+RdzF0fY50sbs/SUfMWwuKQsEPFU5KQ'}",
@@ -502,7 +542,7 @@ const play = {
       },
       ref_obj: ref_obj,
       debug: 0
-    };
+    }
     console.log(mme_params, 'screen_mme_params')
     var me1 = new mme_hls(mme_params);
 
@@ -511,11 +551,6 @@ const play = {
       console.log(data, ref_obj, 'data.data.key_mme')
       switch (obj.type) {
         case "missing": {
-          // if (!playback) {
-          //   if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
-          //     location.href = "https://www.adobe.com/go/getflashplayer";
-          //   }
-          // }
           var resolution = "p3"
           if (data.data.stream === "major") {
             resolution = "p1"
@@ -524,14 +559,10 @@ const play = {
             var result = new Object();
             result.data = {
               "result": "param err"
-            };
-            result.ref = data.ref;
-            // onEvent(JSON.stringify(result))
+            }
+            result.ref = data.ref
           }
-          // let var_protocol = "rtdp"
-          // if (g_browser == "web") {
-          let var_protocol = "http";
-          // }
+          let var_protocol = "http"
           console.log('do this func')
           if (!playback) {
             console.log('enter this func')
@@ -586,7 +617,7 @@ const play = {
             });
           }
           console.log('do break')
-          break;
+          break
         }
         case "ready": {
           var proto = obj.ref_obj.protocol;
@@ -704,15 +735,15 @@ const play = {
     }
 
     function play_ipc (obj) {
-      me1.ctrl(me1.video_chls, "play", "");
-      me1.playback_state = "play";
-      return 0;
+      me1.ctrl(me1.video_chls, "play", "")
+      me1.playback_state = "play"
+      return 0
     }
 
     function create_play_ipc (obj) {
-      obj.protocol = "auto";
-      obj.videoSize = obj.videoSize ? obj.videoSize : 0;
-      obj.localPath = obj.download_path ? obj.download_path : null;
+      obj.protocol = "auto"
+      obj.videoSize = obj.videoSize ? obj.videoSize : 0
+      obj.localPath = obj.download_path ? obj.download_path : null
       obj.inner_window_info = {
         dom_id: ("play_screen"),
         index: 1,
@@ -722,8 +753,8 @@ const play = {
         ipc_state: "",
         node_sn: obj.sn,
         profile_token: 'p0'
-      };
-      return obj;
+      }
+      return obj
     }
 
     // msdk调用函数
@@ -738,17 +769,16 @@ const play = {
     }
     function callback_live_play (param) {
       console.log(param, 'callback_live_play_param')
-      var obj;
+      var obj
       if (typeof param === "string") {
-        obj = eval("(" + param + ")");
+        obj = eval("(" + param + ")")
       } else {
-        obj = param;
+        obj = param
       }
-      var result = new Object();
-      result.data = { "ref": obj.param.ref, "result": obj.result };
-      result.ref = obj.param.ref;
+      var result = new Object()
+      result.data = { "ref": obj.param.ref, "result": obj.result }
+      result.ref = obj.param.ref
       console.log(result, 'use onEvent1')
-      // onEvent(JSON.stringify(result), data)
     }
     return returnItem
 
@@ -1474,6 +1504,29 @@ function msdk_create (param, data) {
   // result.ref = obj.ref;
   // onEvent(JSON.stringify(result), data);
   play.play_hls(data)
+}
+// msdk调用函数
+function callNative (func, param, callback, data) {
+  var msdk = new MSdk(param)
+  console.log(func, param, callback, 'callNative_')
+  msdk.sdk_callNative(func, param).then(res => {
+    if (callback === "callback_live_play") {
+      callback_live_play(res)
+    }
+  })
+}
+function callback_live_play (param) {
+  console.log(param, 'callback_live_play_param')
+  var obj
+  if (typeof param === "string") {
+    obj = eval("(" + param + ")")
+  } else {
+    obj = param
+  }
+  var result = new Object()
+  result.data = { "ref": obj.param.ref, "result": obj.result }
+  result.ref = obj.param.ref
+  console.log(result, 'use onEvent1')
 }
 // function onEvent (param, data) {
 //   console.log(param, data, 'param, data, onEvent')

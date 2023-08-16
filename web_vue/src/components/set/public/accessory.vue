@@ -7,7 +7,7 @@
                     <div class='option_scene_list_right'>
                         <div class='option_scene_list_text'>
                             <div class='option_scene_list_text_left'> {{item.dev_type_name}} </div>
-                            <div class='option_scene_list_text_right'> {{item.id_nick}} </div>
+                            <!-- <div class='option_scene_list_text_right'> {{item.id_nick}} </div> -->
                         </div>
                     </div>
                 </div>

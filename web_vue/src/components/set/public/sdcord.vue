@@ -30,7 +30,7 @@
                 </div>
                 <!-- 如何导出sd卡 -->
                 <div id='sd_export_link' @click='sd_export_link_content_sign = true' v-if='sd_export_link_sign'> {{mcs_how_to_export_sd}} </div>
-                <div id='sd_export_link_content' v-if='sd_export_link_content_sign'> {{mrs_login_please}} www.{{project_name}}.com, {{mrs_sd_export_tips}} </div>
+                <div id='sd_export_link_content' v-if='sd_export_link_content_sign'> {{mrs_login_please}} www.{{project_name}}.com, {{(project_name === 'vimtag' || project_name === 'ebitcam') ? mrs_sd_export_tips_vimtag : mrs_sd_export_tips}} </div>
                 <!-- 硬盘描述 -->
                 <div id='disk_describe' v-if="disk_describe_sign"> {{mcs_hard_disk_title_1}} </div>
 
@@ -86,6 +86,7 @@
                 mrs_login_please: mrs_login_please, //请登录
                 mcs_hard_disk_title_1: mcs_hard_disk_title_1, //当硬盘没有可使用空间时，会对最早空间进行覆盖
                 mrs_sd_export_tips: mrs_sd_export_tips, //在【下载】页面中下载sdtool电脑客户端,导出SD卡数据
+                mrs_sd_export_tips_vimtag: mrs_sd_export_tips_vimtag, //在服务下载页面中下载sdtool电脑客户端,导出SD卡数据
                 mcs_format: mcs_format, //格式化
                 mcs_action_apply: mcs_action_apply, //应用
 

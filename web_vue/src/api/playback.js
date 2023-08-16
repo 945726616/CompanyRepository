@@ -49,6 +49,35 @@ const playback = {
   /*
   ** 播放总接口(不包含回放下载功能)
   */
+  async play_old (data) {
+    await axios.get('/ccm/ccm_replay', {
+      params: {
+        sess: {
+          nid: login.create_nid(),
+          sn: data.sn
+        },
+        setup: {
+          stream: "RTP_Unicast",
+          trans: {
+            proto: "http"
+          }
+        },
+        token: "p1"
+      }
+    }).then(res => {
+      console.log(res, 'play(res)', data)
+      var result = new Object()
+      result.data = {
+        "sn": data.sn,
+        "url": res.data.uri.url,
+        "type": "hls",
+        "key_mme": data.key_mme,
+        "param": data
+      }
+      console.log('do this 1')
+      return callNative("livePlay", result, "callback_live_play", data)
+    })
+  },
   async play (data) {
     let _this = this
     let returnItem

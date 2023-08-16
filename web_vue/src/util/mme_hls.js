@@ -4,7 +4,6 @@
     depends :
         mlib.core.json.js
         mlib.core.evt.js
-    
     author : chengzhiyong   date : 2014-08-13   action : add denpends info
 */
 /*-----------------media_engine-------------------------------------------------*/
@@ -506,6 +505,7 @@ create: function (obj) {
 },
 destroy: function () {
   this.clear_install();
+  console.log(this.chls, 'chls')
   window["plug_" + this.id + "_on_event"] = null;
   for (var chl, i = this.chls.length - 1; 0 <= i; --i) {
     if (chl = this.chls[i]) { this.chl_destroy(chl); }

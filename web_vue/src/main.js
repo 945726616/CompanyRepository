@@ -7,10 +7,15 @@ import $ from 'jquery'
 import Public from './util/public.js'
 import './util/msdk.min.js'
 import './css/public.scss'
-
 // 引入多国语言切换插件
 import chooseLanguage from './lib/exportModule/languageExport'
+
+Vue.prototype.$ = $
+Vue.prototype.$api = Api
+Vue.config.productionTip = false
+Vue.prototype.publicFunc = Public
 Vue.prototype.$chooseLanguage = chooseLanguage
+
 if (!store.state.user.userLanguage) {
   let chromeLang = (navigator.language || navigator.userLanguage).substr(0, 2)
   if (chromeLang === 'zh') {
@@ -58,7 +63,7 @@ if (store.state.jumpPageData.projectName === 'vimtag') {
   document.getElementsByTagName('body')[0].style.setProperty('--projectBackgroundColor', '#2988cc')
   // project_color = '#2988cc'
 }
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (store.state.user.loginFlag === 1) { // 如果已经登录的话
     next()
   } else {
@@ -68,15 +73,21 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
     }
   }
+  if (window.fujikam !== 'fujikam') {
+    if (from.path === '/play' || from.path === '/playback') {
+      let player
+      player = videojs('hls-video')
+      console.log(player, '获取到的播放器实例')
+      if (player) {
+        player.dispose()
+        console.log('执行hls播放器销毁')
+      }
+    }
+  }
   // next()
   // 	console.log(to,"router to")
   // 	console.log(from,"router from")
 })
-
-Vue.prototype.$ = $
-Vue.prototype.$api = Api
-Vue.config.productionTip = false
-Vue.prototype.publicFunc = Public
 
 if (window.fujikam === 'fujikam') {
   Public.importCss('Public.scss')
