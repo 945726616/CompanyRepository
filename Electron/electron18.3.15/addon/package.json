@@ -1,0 +1,18 @@
+{
+  "name": "useDll",
+  "version": "0.0.0",
+  "description": "Node.js Addons Example #1",
+  "main": "useDll.js",
+  "private": true,
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-gyp": "^9.3.0"
+  },
+  "scripts": {
+    "test": "node useDll.js"
+  },
+  "gypfile": true,
+  "devDependencies": {
+    "electron-rebuild": "^3.2.9"
+  }
+}

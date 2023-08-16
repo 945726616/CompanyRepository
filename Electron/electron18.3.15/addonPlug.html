@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Addon Plug</title>
+  </head>
+  <body>
+    <div>addon作为c++插件编译的工具 使用node-gyp编译成.node文件 再使用bindings插件引入项目中</div>
+    <div>在项目中由主进程调用封装的方法, 并将相关的结果传递给主进程</div>
+    <div>在渲染进程(页面)中显示流程:</div>
+    <ul>
+      <li>1. 渲染进程提出请求并将相关参数传递给主进程</li>
+      <li>2. 主进程获得传递过来的参数和对应的方法名向插件发送请求</li>
+      <li>3. 插件返回计算结果至主进程</li>
+      <li>4. 主进程将结果传递给渲染进程(页面)并展示</li>
+    </ul>
+    <div>测试方法: </div>
+    <!-- <div>调用插件内方法传递'world'字符串<button id="btn-send-string" type="button">发送字符串</button></div> -->
+    <div>调用插件内加法计算方法
+      <form>
+        <input type="text" id="addValue1">
+        <input type="text" id="addValue2">
+        <button id="btn-send-add" type="button">计算加法</button>
+      </form>
+    </div>
+    <!-- <div>调用插件CallBack方法
+      <input type="text" id="callBackInput">
+      <button id="btn-call-back" type="button">callBack回调</button>
+    </div> -->
+    <div>主进程返回的结果 <span id="result"></span></div>
+    <div><a href="./index.html">返回</a></div>
+    <script src="./addonPlug.js"></script>
+  </body>
+</html>

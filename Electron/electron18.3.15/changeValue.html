@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Change Value</title>
+  </head>
+  <body>
+    <form>
+      <input id="inputData" type="text" placeholder="请输入id">
+    </form>
+    <button id="btn" type="button">确认</button>
+    <div>主进程修改后的值: <span id="changeValue"></span></div>
+    <div><a href="./index.html">返回</a></div>
+    <script src="./changeValue.js"></script>
+  </body>
+</html>
