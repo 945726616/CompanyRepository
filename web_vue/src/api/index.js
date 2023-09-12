@@ -9,6 +9,8 @@ import play from '@/api/play'
 import playback from '@/api/playback'
 import set from '@/api/set'
 import local from '@/api/local'
+import play_mac from '@/api/play_mac'
+import playback_mac from '@/api/playback_mac'
 // import test2 from '@/api/test2'
 
 export default {
@@ -20,5 +22,7 @@ export default {
     play,
     playback,
     set,
-    local
+    local,
+    play_mac,
+    playback_mac
 }

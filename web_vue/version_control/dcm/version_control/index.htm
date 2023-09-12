@@ -1,5 +1,5 @@
-<!-- version v10.5.1.2305261723 -->
-<!-- 版本号 v10.5.1.2305261723 -->
+<!-- version v10.9.1.2309121432 -->
+<!-- 版本号 v10.9.1.2309121432 -->
 <html>
 
 <head>
@@ -21,6 +21,7 @@
     var iframeData // 从iframe中获取的传递值 传递的内容示例: {signalServer: "http://45.113.201.4:7080", host: "www.vimtag.com"}
     var postFatherMessageInfo = {} // 向上级传递的信息内容
     var iframeSrcHeader // iframe访问的链接地址域名及协议
+    var MacClientFlag // Mac客户端标识
     function GetUrlParms () { // 参数截取函数
       var args, query, pairs
       args = new Object()
@@ -40,12 +41,14 @@
 
     function start () { // 主进程执行函数
       var s, pageTitle, tp = null, request, oem_domain
+
       window.addEventListener("message", function (e) { // 获取入口文件处取得的信令服务器地址
         iframeData = e.data
         console.log(iframeData, 'childPage get parentPage data') // 在子页面中获取到父页面发送的数据信息
         m_hostname = iframeData.host // 赋值m_hostname
         browserHref = iframeData.browserHref // 赋值获取到的浏览器显示的地址
         cmipcgwGetData = iframeData.cmipcgwGetData // 赋值获取到的cmipcgw信息
+
         // 地址链接中是否包含device
         if (browserHref.indexOf('device') > 0) {
           m_hostname += '/device'
@@ -123,6 +126,8 @@
           }
           console.log(version_number, 'final choice the version number') // 最终选择的版本号信息
           document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + "/dcm/version/repo/website/pkg-website-" + version_number + "/index.html?m=" + host_choose[host_choose_item].brand + "'></iframe>"
+          postFatherMessageInfo.loadUrl = iframeSrcHeader + "/dcm/version/repo/website/pkg-website-" + version_number + "/index.html?m=" + host_choose[host_choose_item].brand
+          postFatherMessage(postFatherMessageInfo)
         }
       }
     }

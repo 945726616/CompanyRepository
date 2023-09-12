@@ -63,9 +63,40 @@ if (store.state.jumpPageData.projectName === 'vimtag') {
   document.getElementsByTagName('body')[0].style.setProperty('--projectBackgroundColor', '#2988cc')
   // project_color = '#2988cc'
 }
+
+// 定义pywebview客户端传递图片数据方法
+window.setImgData = (imgData, width, height) => {
+  // console.log('获取图片数据', width, height)
+  store.dispatch('setPywebviewImgData', imgData)
+  store.dispatch('setPywebviewImgWidth', width)
+  store.dispatch('setPywebviewImgHeight', height)
+}
+// 定义播放回放视频方法
+window.playRecord = () => {
+  window.pywebview.api.getRecordPlay()
+}
+// 定义视频下载功能
+window.downloadVideo = () => {
+  window.pywebview.api.downloadVideo()
+}
+// 定义查询进度功能
+window.queryVideo = () => {
+  window.pywebview.api.queryVideo()
+}
+
 router.beforeEach(async (to, from, next) => {
   if (store.state.user.loginFlag === 1) { // 如果已经登录的话
-    next()
+    if (window.pywebview) {
+      store.dispatch('setClientFlag', true)
+      console.log('enter pywebview')
+      if (to.path === '/play') {
+        next({ path: '/play_mac' })
+      } else {
+        next()
+      }
+    }else {
+      next()
+    }
   } else {
     if (to.path === '/' || to.path === '/download' || to.path === '/my' || store.state.jumpPageData.experienceFlag) { // 如果是login/my/download页面的话，直接next()
       next()
@@ -73,17 +104,17 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' })
     }
   }
-  if (window.fujikam !== 'fujikam') {
-    if (from.path === '/play' || from.path === '/playback') {
-      let player
-      player = videojs('hls-video')
-      console.log(player, '获取到的播放器实例')
-      if (player) {
-        player.dispose()
-        console.log('执行hls播放器销毁')
-      }
-    }
-  }
+  // if (window.fujikam !== 'fujikam') {
+  //   if (from.path === '/play' || from.path === '/playback') {
+  //     let player
+  //     player = videojs('hls-video')
+  //     console.log(player, '获取到的播放器实例')
+  //     if (player) {
+  //       player.dispose()
+  //       console.log('执行hls播放器销毁')
+  //     }
+  //   }
+  // }
   // next()
   // 	console.log(to,"router to")
   // 	console.log(from,"router from")

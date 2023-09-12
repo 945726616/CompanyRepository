@@ -33,7 +33,10 @@ const jumpPageData = {
     playBackObj: null, // 回放页面obj内容
     playBackSavePercent: 0, // 回放点击进度条时存储百分比
     clientP2Ping: 0, // 客户端播放时展示的KB数值
-    historyFilterData: {} //历史数据的筛选条件和筛选日期
+    historyFilterData: {}, //历史数据的筛选条件和筛选日期
+    pywebviewImgData: null, // 从pywebview中传递过来的img图像数据
+    pywebviewImgWidth: null, // 从pywebview中传递过来的img图像width
+    pywebviewImgHeight: null, // 从pywebview中传递过来的img图像height
   },
   mutations: {
     SET_PAGE_DOM: (state, pageDom) => {
@@ -129,7 +132,16 @@ const jumpPageData = {
     },
     SET_HISTORY_FILTER_DATA: (state, historyFilterData) => {
       state.historyFilterData = historyFilterData
-    }
+    },
+    SET_PYWEBVIEW_IMG_DATA: (state, pywebviewImgData) => {
+      state.pywebviewImgData = pywebviewImgData
+    },
+    SET_PYWEBVIEW_IMG_WIDTH: (state, pywebviewImgWidth) => {
+      state.pywebviewImgWidth = pywebviewImgWidth
+    },
+    SET_PYWEBVIEW_IMG_HEIGHT: (state, pywebviewImgHeight) => {
+      state.pywebviewImgHeight = pywebviewImgHeight
+    },
   },
   actions: {
     setPageDom: ({ commit }, pageDom) => commit('SET_PAGE_DOM', pageDom),
@@ -167,6 +179,9 @@ const jumpPageData = {
     setPlayBackSavePercent: ({ commit }, playBackSavePercent) => commit('SET_PLAYBACK_SAVE_PERCENT', playBackSavePercent),
     setClientP2Ping: ({ commit }, clientP2Ping) => commit('SET_CLIENT_P2PING', clientP2Ping),
     setHistoryFilterData: ({ commit }, historyFilterData) => commit('SET_HISTORY_FILTER_DATA', historyFilterData),
+    setPywebviewImgData: ({ commit }, pywebviewImgData) => commit('SET_PYWEBVIEW_IMG_DATA', pywebviewImgData),
+    setPywebviewImgWidth: ({ commit }, pywebviewImgWidth) => commit('SET_PYWEBVIEW_IMG_WIDTH', pywebviewImgWidth),
+    setPywebviewImgHeight: ({ commit }, pywebviewImgHeight) => commit('SET_PYWEBVIEW_IMG_HEIGHT', pywebviewImgHeight),
   }
 }
 

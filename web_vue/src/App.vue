@@ -42,6 +42,11 @@ export default {
     let userLanguage = localStorage.getItem('language_choice_info') ? localStorage.getItem('language_choice_info') : this.$store.state.user.userLanguage
     await this.$chooseLanguage.lang(userLanguage)
     this.$api.login.dev_msg_listener_add()
+    console.log('enter App.vue pywebview')
+    window.addEventListener('pywebviewready', function() {
+      console.log('判断为客户端')
+      this.$store.dispatch('setClientFlag', true)
+    })
   },
   destroyed () {
     if (this.$store.state.user.setMmqPickTimeFlag1) {

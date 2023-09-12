@@ -39,6 +39,9 @@ const user = {
     localSid: 0,
     localSeq: 0,
     localShareKey: '',
+
+    // 是否为客户端标识
+    clientFlag: localStorage.getItem('clientFlag') ? true : false//false
   },
 
   mutations: {
@@ -149,6 +152,12 @@ const user = {
     SET_LOCAL_SHARE_KEY: (state, localShareKey) => {
       state.localShareKey = localShareKey
     },
+    SET_CLIENT_FLAG: (state, clientFlag) => {
+      if (clientFlag) {
+        localStorage.setItem('clientFlag', true)
+        state.clientFlag = clientFlag
+      }
+    },
   },
 
   actions: {
@@ -176,6 +185,7 @@ const user = {
     setLocalSid: ({commit}, localSid) => commit('SET_LOCAL_SID', localSid),
     setLocalSeq: ({commit}, localSeq) => commit('SET_LOCAL_SEQ', localSeq),
     setLocalShareKey: ({commit}, localShareKey) => commit('SET_LOCAL_SHARE_KEY', localShareKey),
+    setClientFlag: ({commit}, clientFlag) => commit('SET_CLIENT_FLAG', clientFlag),
   }
 }
 

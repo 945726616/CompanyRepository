@@ -223,7 +223,11 @@ export const historyMixin = {
             historyFilterData.data_end_time = this.choose_end_time;
             historyFilterData.now_page = this.now_page;
             this.$store.dispatch('setHistoryFilterData', historyFilterData) //保存进入历史播放前的历史筛选数据
-            this.$router.push({ name: 'playback', params: jumpData })
+            if (window.pywebview) {
+              this.$router.push({ name: 'playbackMac', params: jumpData })
+            } else {
+              this.$router.push({ name: 'playback', params: jumpData })
+            }
         },
         photo_sign_picture_btn(e) { //点击照片
             let token = e.currentTarget.getAttribute("pic_token");

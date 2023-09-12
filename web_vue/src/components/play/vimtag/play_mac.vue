@@ -1,6 +1,6 @@
 <template>
   <div id="play">
-    <div id='play_box' class='noselect'>
+    <div id='play_box' class='noselect' v-if="!fullScreenFlag">
       <div id='play_content_box'>
         <!-- 顶部返回 -->
         <div id='page_top_menu'>
@@ -10,7 +10,8 @@
         </div>
         <!-- 顶部返回 结束 -->
         <!-- 视频播放区 -->
-        <div id='play_view' class='noselect' :style="playViewStyle">
+        <!-- 非全屏 -->
+        <div id='play_view' ref="play_view" class='noselect' :style="playViewStyle" :v-show="!fullScreenFlag">
           <div id='play_buffer_ret'></div>
           <div style="position: relative;">
             <!-- 设备时区与设置时区不同提示 -->
@@ -24,9 +25,13 @@
               <div>{{mrs_audio_alarm}}</div>
               <div>{{alarm_countdown_code}}</div>
             </div>
-            <div id='play_screen' class='noselect' :style="{height: (playViewHeight - 44) + 'px'}">
+            <div id='play_screen' class='noselect'>
+              <!-- 客户端部分视频播放区域 -->
+              <div v-show="playFlag" id="play_img">
+                <canvas id="video" ref="video" @click="clickFullScreen"></canvas>
+              </div>
               <!-- 暂停播放遮罩层 -->
-              <div id='play_view_box'>
+              <div v-show="!playFlag" id='play_view_box' @click="clickPreview">
                 <div id='play_pause_pic'></div>
               </div>
               <!-- 暂停播放遮罩 -->
@@ -35,8 +40,8 @@
           <!-- 播放底部菜单栏 -->
           <div id='play_menu_box'>
             <div id='play_menu_left'>
-              <div id='video_play' class='video_play_stop' @click="clickPlay($event)"></div>
-              <div id='voice_close' class='voice_close_close' v-show="clientFlag" @click="clickVoice($event)"></div>
+              <div id='video_play' :class="playFlag ? 'video_play_start' : 'video_play_stop'" @click="clickPlay()"></div>
+              <div id='voice_close' :class="voiceFlag ? 'voice_close_open' : 'voice_close_close'" v-show="clientFlag" @click="clickVoice()"></div>
             </div>
             <div id='play_menu_right'>
               <div id='enter_history_img' @click="clickEnterHistory">
@@ -68,9 +73,13 @@
             </div>
           </div>
           <!-- 播放底部菜单栏 结束 -->
-          <div id='play_view_control' class='noselect' v-show="cameraControlDivFlag">
+          <div id='play_view_control' class='noselect' v-show="Boolean(cameraControlDivFlag)">
+            <!--:style="{
+            'width': (document.documentElement.clientWidth - 17 - 100) - ($refs.play_dev_list.width + 20) + 'px',
+            'height': playViewHeight - 44 + 'px',
+            'left': $refs.play_view.offsetLeft + 'px',
+            'top': playViewTop + "px"}"-->
             <!-- 顶部数据传输kb值暂时条(放在这里与控制菜单置于同一层避免影响播放界面效果) -->
-            <div id='topClientP2Ping' v-show="clientFlag">{{clientP2PingValue}}</div>
             <div id='vimtag_ptz_control'>
               <div id='ptz_control_left' @mouseover="leftControl = true" @mouseout="leftControl = false">
                 <div id='turn_left' class='left_key' v-show="leftControl" @mousedown="turnCamera('move', 'left')"
@@ -83,7 +92,7 @@
                     @mouseup="turnCamera('stop', 'up')"></div>
                   <div id='ptz_click_up'>{{mcs_bottom_left}}</div>
                 </div>
-                <div id='ptz_control_bottom_center' @dblclick="$api.play.fullscreen()"></div>
+                <div id='ptz_control_bottom_center' @dblclick="$api.play_mac.fullscreen()"></div>
                 <div id='ptz_control_bottom'>
                   <!-- 弹出控制选项按钮 -->
                   <div id='control_menu'>
@@ -132,7 +141,7 @@
                     </label>
                   </div>
                 </div>
-                <!-- 白光时设置框内容  v-if="whiteLight"-->
+                <!-- 白光时设置框内容 -->
                 <div class='adjust_line' v-if="whiteLight">
                   <div class='adjust_cha'>{{mcs_light_mode}}</div>
                   <div class='adjust_mode_cha'>
@@ -181,12 +190,25 @@
             </div>
           </div>
         </div>
+        <!-- 全屏 -->
+        <!-- <canvas id="fullScreenCanvas" :v-show="fullScreenFlag"></canvas> -->
         <!-- 视频播放区 结束 -->
         <!-- 侧边播放列表 -->
-        <div id='play_dev_list' v-show="!this.$store.state.jumpPageData.localFlag"
+        <div id='play_dev_list' ref="play_dev_list" v-show="!this.$store.state.jumpPageData.localFlag"
           :style="{height: playViewHeight + 'px'}">
           <div id='device_list_sidebar_up'>{{mcs_device_list}}</div>
-          <div id='device_list_sidebar_center' :style="{height: playListHeight + 'px'}"></div>
+          <div id='device_list_sidebar_center' :style="{height: playListHeight + 'px'}">
+            <div class='device_list_sidebar_img' v-for="data in device_list_data" :key="data.sn" :stat="data.stat === 'Online' ? 'Online' : 'offline'" :sn="data.box_sn" :ipc_sn="data.sn" @click="clickPlayDevice(data)">
+              <div class='sidebar_camera_sign_picture' :style="{ 'background-image': data.stat === 'Online' ? data.picSrc : data.def_img, 'background-size': '100% 100%' }">
+                <!-- :style="{backgroundImage: 'url(' + data.picSrc + ')'}" -->
+                <!-- <img :src="data.stat === 'Online' ? data.picSrc : data.def_img" width="100%" height="100%"> -->
+              </div>
+              <div class='device_sidebar_nick' :class="data.selectFlag ? 'selected_style' : ''" >
+                <span>&bull; {{data.nick}}</span>
+              </div>
+            </div>
+            <div id="active_dev" :style="{top: selectDeviceTop}"></div>
+          </div>
         </div>
         <!-- 侧边播放列表 结束 -->
       </div>
@@ -194,7 +216,9 @@
       <div id='snapshot_preview_div' v-show="snapshotFlag">
         <div id='snapshot_preview_inner'>
           <img id='snapshot_preview_content' :src="snapshotUrl">
-          <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl">
+          <!-- 注释部分为web端使用的截图下载功能 -->
+          <!-- <a id='snapshot_preview_url' :download="snapshotDownloadName" :href="snapshotUrl"> -->
+          <a id='snapshot_preview_url' @click="clickSnapshotDownload">
             <div id='snapshot_img_page_download'></div>
           </a>
         </div>
@@ -208,6 +232,8 @@
 @import './index.scss';
 </style>
 <script>
+import store from '../../../store'
+import WebglScreen from '../../../lib/plugins/WebglScreen.js'
 export default {
   data () {
     return {
@@ -246,11 +272,7 @@ export default {
       definitionSelect: null, // 最终选择的清晰度
       support_1080p: '', // 1080p分辨率内容展示
       clientP2PingValue: '0kB', // 客户端视频播放流数据值显示
-      clientFlag: window.fujikam === 'fujikam' ? true : false, // 客户端标识控制以下功能的显隐: 声音控制图标标识(在客户端中展示,浏览器端隐藏)、全屏控制图标标识(在客户端中展示,浏览器端隐藏)、客户端视频播放展示KB值。对讲控制图标标识(在客户端中展示,浏览器端隐藏)
-      // voiceFlag: window.fujikam ? true : false, // 声音控制图标标识(在客户端中展示,浏览器端隐藏)
-      // fullScreenFlag: window.fujikam ? true : false, // 全屏控制图标标识(在客户端中展示,浏览器端隐藏)
-      // clientP2PingFlag: window.fujikam ? true : false, // 客户端视频播放展示KB值
-      // talkbackFlag: window.fujikam ? true : false, // 对讲控制图标标识(在客户端中展示,浏览器端隐藏)
+      clientFlag: store.state.user.clientFlag, // 客户端标识控制以下功能的显隐: 声音控制图标标识(在客户端中展示,浏览器端隐藏)、全屏控制图标标识(在客户端中展示,浏览器端隐藏)、客户端视频播放展示KB值。对讲控制图标标识(在客户端中展示,浏览器端隐藏)
       recordFlag: false, // 隐藏控制菜单中录像按钮
       snapshotFlag: false, // 截图弹窗展示标识
       snapshotUrl: null, // 截图图片url
@@ -283,159 +305,74 @@ export default {
       alarm_sign: false, //是否手动报警
       audio_alarm_manually: '', //设备是否能手动报警
       alarm_countdown_code: 60, //报警60s倒计时
+      scheduled: false, // canvas标识
+      queue: [], // 队列
+      renderer: null,
+      video: document.getElementById('video'),
+      canvasInitFlag: false, // canvas初始化标识
+      fullScreenFlag: false, // 是否为全屏播放标识
+      device_list_data: null, // 设备列表数据
+      selectDeviceTop: null, // 设备列表选中框top值
+      voiceFlag: 0, // 播放页声音开关标识
+      nowCanvasWidth: 0, // 当前canvas渲染的宽度
+      nowCanvasHeight: 0, // 当前canvas渲染的高度
     }
   },
   methods: {
     vimtagPlay (obj) {
       let _this = this
       this.vimtagPlayObj = obj // 暂存调用的obj内容
-      // console.log("传递过来的数据", obj)
-      let l_dom_ptz_control_bottom_center,
-        l_dom_ptz_control_left,
-        l_dom_ptz_control_right,
-        l_dom_ptz_control_up,
-        l_dom_ptz_control_down,
-        l_dom_turn_left,
-        l_dom_turn_right,
-        l_dom_turn_up,
-        l_dom_turn_down,
-        l_dom_video_off_pic,
-        l_dom_camera_off_pic,
-        l_dom_talkback_off_pic,
-        l_dom_adjust_off_pic,
-        l_dom_control_menu,
-        l_dom_play_view_box,
-        inner_window_info,
-        support_1080p = "",
-        playFlag = 0;
+      console.log("传递过来的数据", obj)
       this.local_play_data.addr = obj.addr
       this.local_play_data.dom = _this.publicFunc.mx("#play_screen")
       this.local_play_data.profile_token = "p0"
 
-      let l_dom_play_box = _this.publicFunc.mx("#play_box");
-      let l_dom_device_list_sidebar_up = _this.publicFunc.mx("#device_list_sidebar_up");
       let l_dom_play_menu_box = _this.publicFunc.mx("#play_menu_box");
-      let l_dom_play_view = _this.publicFunc.mx("#play_view");
       let l_dom_play_buffer_ret = _this.publicFunc.mx("#play_buffer_ret");
-      let l_dom_play_view_control = _this.publicFunc.mx("#play_view_control");
       let l_play_box_width = document.documentElement.clientWidth - 17 - 100;
       $("#play_box").css("width", l_play_box_width + 'px');
 
       _this.publicFunc.mx("#play_dev_list").setAttribute("style", "width:234px;float:left;background:#ebebeb;display:block;overflow:hidden;position: relative;");
       l_dom_play_buffer_ret.style.display = "none";
-      // if (window.fujikam == "fujikam") {
-      //   l_dom_play_buffer_ret.style.display = "block";
-      //   l_dom_play_box.style.width = "1200px";
-      //   this.publicFunc.mx("#page_top_menu").setAttribute("style", "margin-top:10px;padding-left:0px;margin-bottom:0px;");
-      //   l_dom_play_view.style.width = (1200 - (parseInt($("#play_dev_list").css("width")) + 20)) + "px";
-      //   console.log(1200 - (parseInt($("#play_dev_list").css("width")) + 20), '播放框大小')
-      //   // l_dom_play_view.style.width ="1042px";
-      //   // play_content_box    width=1276px; margin:0 auto; overflow :hidden
-      //   // play_screen         background:black
-
-      //   l_dom_play_view.style.height = "586px";
-      //   this.publicFunc.mx("#device_list_sidebar_center").style.height = "586px";
-      //   l_dom_play_view.style.marginLeft = "0px";
-      //   $("#play_screen").css('height', '100%')
-      //   $("#play_screen").css('width', '100%')
-      //   l_dom_play_buffer_ret.style.width = '934px';
-      //   this.publicFunc.mx("#play_dev_list").setAttribute("style", "width:234px;float:left;background:#ebebeb;display:block;");
-      //   // if (pc_is_offline == 1) {
-      //   //   _this.publicFunc.mx("#play_dev_list").setAttribute("style", "display:none;");
-      //   // }
-      // }
       // 动态设置播放器大小
       this.playViewWidth = (document.documentElement.clientWidth - 17 - 100) - (parseInt($("#play_dev_list").css("width")) + 20)
       this.playViewHeight = this.playViewWidth / 16 * 9 + 44
       this.playViewStyle = { width: this.playViewWidth + 'px', height: this.playViewHeight + 'px' }
+
+      // 添加占位div高度
+      document.getElementById('play_screen').style.height = this.playViewHeight - 44 + 'px'
+
       document.getElementById('timezone_err_tip').style.width = this.playViewWidth + 'px';
       this.playListHeight = this.playViewHeight - document.getElementById('device_list_sidebar_up').offsetHeight
       this.playViewTop = document.getElementById('play_view').offsetTop
       // 动态设置播放器大小 结束
       if (_this.$store.state.jumpPageData.localFlag) {
-        $("#enter_history_img").hide();
-        $("#enter_set_img").hide();
+        // 本地搜索模式禁用回放/设置
+        $("#enter_history_img").hide()
+        $("#enter_set_img").hide()
       } else if (_this.$store.state.jumpPageData.experienceFlag) {
-        $("#enter_set_img").hide();
-      } else if (obj.box_ipc == 1) { // obj.box_ipc==1如果云盒子实时视频播放
-        $("#enter_set_img").hide();
-        $("#enter_set_img").next().hide(); //竖线
+        // 体验模式禁用设置
+        $("#enter_set_img").hide()
+      } else if (obj.box_ipc == 1) {
+        // obj.box_ipc==1 代表云盒子  隐藏设置
+        $("#enter_set_img").hide()
+        $("#enter_set_img").next().hide() // 竖线
       }
       this.play_menu_control({ parent: l_dom_play_menu_box })
       if (!_this.$store.state.jumpPageData.localFlag) {
-        // if (_this.$store.state.jumpPageData.localFlag) {//本地
-        this.device_list_box_sidebar({ parent: this.publicFunc.mx("#device_list_sidebar_center") })
-        this.play_view_control({ parent: l_dom_play_view_control })
+        this.device_list_box_sidebar()
+        this.play_view_control()
       }
-      setTimeout(() => { //设定时器是为了ccm_date_get接口不能及时获取当前时区的时间
+      setTimeout(() => { // 设定时器是为了ccm_date_get接口不能及时获取当前时区的时间
         this.time_zone_alert();
       }, 2000)
       // ********** 设置设备的时区是校验时间是否与当前系统时间相符 ********** //
-      function time_alert () {
-        let nowDate = new Date()
-        _this.$api.devlist.time_get({ // 获取选中时区的时间
-          sn: _this.$store.state.jumpPageData.selectDeviceIpc
-        }).then(res => {
-          l_dev_time_get_ack(res)
-        })
-
-        function l_dev_time_get_ack (data) {
-          if (data.day === nowDate.getDate() && data.hour === nowDate.getHours() && data.min === nowDate.getMinutes()) {
-            _this.$api.play.set_date_time({ // 调用设置时间
-              sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-              type: _this.publicFunc.mx("#checkbox_auto_sync").checked ? "NTP" : "manually",
-              timezone: l_dom_time_zone_selevt.value,
-              hour: l_dom_input_hour.value,
-              min: l_dom_input_minute.value,
-              sec: l_dom_input_second.value,
-              year: l_dom_input_year.value,
-              mon: l_dom_input_month.value,
-              day: l_dom_input_day.value,
-              auto_sync: Number(_this.publicFunc.mx("#checkbox_auto_sync").checked),
-              ntp_addr: l_dom_ntp.value
-            }).then(res => {
-              set_result(res)
-            })
-          } else {
-            _this.publicFunc.delete_tips({ content: "您当前的时间与设置的时间不符确定要设置吗?", func: device_set_time }); // 时间设定询问窗
-          }
-
-          function device_set_time () { // 设置时间询问框回调
-            _this.$api.play.set_date_time({ // 调用设置时间
-              sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-              type: _this.publicFunc.mx("#checkbox_auto_sync").checked ? "NTP" : "manually",
-              timezone: l_dom_time_zone_selevt.value,
-              hour: l_dom_input_hour.value,
-              min: l_dom_input_minute.value,
-              sec: l_dom_input_second.value,
-              year: l_dom_input_year.value,
-              mon: l_dom_input_month.value,
-              day: l_dom_input_day.value,
-              auto_sync: Number(_this.publicFunc.mx("#checkbox_auto_sync").checked),
-              ntp_addr: l_dom_ntp.value,
-            }).then(res => {
-              set_result(res)
-            })
-          }
-        }
-      }
-      // 调用时区提示功能 后续添加修改暂时注释不做调用
-      // time_alert()
-      // ********** 设置设备的时区是校验时间是否与当前系统时间相符 ********** //
-      // window.addEventListener('resize', () => { // 动态调解尺寸过于卡慢注释
-      //   console.log('enter onresize')
-      //   this.vimtagPlay(obj)
-      //   let l_dom_play_view = _this.publicFunc.mx("#play_view")
-      //   l_dom_play_view_control.style.left = l_dom_play_view.offsetLeft + "px";
-      //   l_dom_play_view_control.style.top = _this.playViewTop + "px";
-      // })
     },
     // 播放回调 播放速度
     play_speed (data) {
       console.log(data, 'play_speed')
-      let l_dom_play_view = this.publicFunc.mx("#play_view")
-      let l_dom_play_view_control = this.publicFunc.mx("#play_view_control");
-      this.publicFunc.mx("#play_buffer_ret").innerHTML = data;
+      window.pywebview.api.getPlayUrl(data.data.url, 'live')
+      // this.publicFunc.mx("#play_buffer_ret").innerHTML = data
     },
     // 播放回调 播放速度 结束
     // 播放器菜单栏控制
@@ -449,9 +386,10 @@ export default {
 
         function dev_info_get_ack (msg) {
           // console.log(msg, 'dev_info_get_ack_msg')
-          if (msg && msg.white_light)
+          if (msg && msg.white_light) {
             _this.whiteLight = msg.white_light;
-          _this.play_view_control({ parent: _this.publicFunc.mx("#play_view_control") })
+          }
+          _this.play_view_control()
           if (obj.box_ipc === 1) { //如果云盒子实时播放页面
             _this.definitionSelect = mcs_new_hd //云盒子实时播放不能切换分辩率，显示高清
           } else {
@@ -467,10 +405,10 @@ export default {
           }
           // 迁移接口请求顺序将播放接口放入设备信息请求接口后
           if (_this.$store.state.jumpPageData.localFlag) {
-            let local_play_sign = {};
+            let local_play_sign = {}
             local_play_sign.sn = _this.$store.state.jumpPageData.selectDeviceIpc;
-            local_play_sign.addr = obj.addr;
-            local_play_sign.password = sessionStorage.getItem("pass_" + _this.$store.state.jumpPageData.selectDeviceIpc);
+            local_play_sign.addr = obj.addr
+            local_play_sign.password = sessionStorage.getItem("pass_" + _this.$store.state.jumpPageData.selectDeviceIpc)
             _this.$api.local.local_sign_in({
               data: local_play_sign
             }).then(res => {
@@ -479,14 +417,14 @@ export default {
                 _this.$store.dispatch('setLocalSid', res.sid)
                 _this.$store.dispatch('setLocalSeq', res.seq)
               }
-              _this.local_play_data.agent = _this.$store.state.jumpPageData.localFlag_agent;
-              _this.create_preview({ parent: $("#play_screen") });
+              _this.local_play_data.agent = _this.$store.state.jumpPageData.localFlag_agent
+              _this.create_preview({ parent: $("#play_screen") })
             })
           } else {
             if (obj.box_ipc === 1) { //如果是云盒子实时视频播放 参数token
               if (obj.ipc_stat === 0) { //页面一进来，标记云盒子设备是否在线
                 // 调用播放接口
-                _this.$api.play.play({
+                _this.$api.play_mac.play({
                   dom: $("#play_screen"),
                   sn: _this.$store.state.jumpPageData.selectDeviceIpc,
                   profile_token: "p0_" + obj.ipc_sn + "",
@@ -494,16 +432,16 @@ export default {
                 }).then(res => {
                   _this.play_speed(res)
                 })
-                $("#play_screen").style.background = 'black';
+                $("#play_screen").style.background = 'black'
                 _this.publicFunc.msg_tips({ msg: mcs_video_play_offline, type: "error", timeout: 3000 })
-                $("#enter_history_img_box_tip").show();
+                $("#enter_history_img_box_tip").show()
                 setTimeout(function () {
-                  $("#enter_history_img_box_tip").hide();
+                  $("#enter_history_img_box_tip").hide()
                 }, 6000);
 
               } else {
                 // 调用播放接口
-                _this.$api.play.play({
+                _this.$api.play_mac.play({
                   dom: $("#play_screen"),
                   sn: _this.$store.state.jumpPageData.selectDeviceIpc,
                   profile_token: "p0_" + obj.ipc_sn + ""
@@ -512,8 +450,9 @@ export default {
                 })
               }
             } else {
+              // 此处为非云盒子, 设备ipc进入后执行的播放接口
               // 调用播放接口
-              _this.$api.play.play({
+              _this.$api.play_mac.play({
                 dom: $("#play_screen"),
                 sn: _this.$store.state.jumpPageData.selectDeviceIpc,
                 profile_token: "p0"
@@ -521,412 +460,158 @@ export default {
                 _this.play_speed(res)
               })
             }
-            _this.publicFunc.mx("#video_play").className = 'video_play_start'
-            _this.playFlag = 1;
-            $("#play_view_control").show();
+            _this.playFlag = 1
+            _this.cameraControlDivFlag = true
           }
           _this.audio_alarm_manually = msg.audio_alarm_manually //判断设备是否能手动报警
         }
       })
     },
     create_preview (data) {
-      let _this = this;
-      let obj = _this.vimtagPlayObj;
-      let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
+      let _this = this
+      let obj = this.vimtagPlayObj
+      let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0"
+      this.cameraControlDivFlag = false
       if (_this.$store.state.jumpPageData.localFlag) {
-        _this.$api.play.play_preview_img({ addr: obj.addr, dom: $("#play_screen"), sn: _this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
+        _this.$api.play_mac.play_preview_img({ addr: obj.addr, sn: _this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
       } else {
         if (obj.box_ipc == 1) {
-          let pic_token = obj.ipc_sn + "_p3_" + Math.pow(2, 31) + "_" + Math.pow(2, 31);
-          _this.$api.play.play_preview_img({ dom: $("#play_screen"), sn: _this.$store.state.jumpPageData.selectDeviceIpc, pic_token: pic_token })
+          let pic_token = obj.ipc_sn + "_p3_" + Math.pow(2, 31) + "_" + Math.pow(2, 31)
+          _this.$api.play_mac.play_preview_img({ sn: _this.$store.state.jumpPageData.selectDeviceIpc, pic_token: pic_token })
         } else {
-          _this.$api.play.play_preview_img({ dom: $("#play_screen"), sn: _this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
+          _this.$api.play_mac.play_preview_img({ sn: _this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
         }
       }
-      let l_dom_play_view_box = _this.publicFunc.mx("#play_view_box");
       l_dom_play_view_box.onclick = function () {
-        profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
-        _this.playFlag = 1;
-        if (_this.$store.state.jumpPageData.localFlag) {
-          _this.local_play_data.profile_token = profile_token;
-          _this.local_play_data.sn = _this.$store.state.jumpPageData.selectDeviceIpc;
-          _this.$api.local.local_play({ data: _this.local_play_data })
+        profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0"
+        _this.playFlag = 1
+        if (obj.box_ipc === 1) {
+          // 调用播放接口
+          _this.$api.play_mac.play({
+            sn: _this.$store.state.jumpPageData.selectDeviceIpc,
+            profile_token: "p0_" + obj.ipc_sn
+          }).then(res => {
+            _this.play_speed(res)
+          })
         } else {
-          if (obj.box_ipc === 1) {
-            // 调用播放接口
-            _this.$api.play.play({
-              dom: $("#play_screen"),
-              sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-              profile_token: "p0_" + obj.ipc_sn
-            }).then(res => {
-              _this.play_speed(res)
-            })
-          } else {
-            // 调用播放接口
-            _this.$api.play.play({
-              dom: $("#play_screen"),
-              sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-              profile_token: profile_token
-            }).then(res => {
-              _this.play_speed(res)
-            })
-          }
+          // 调用播放接口
+          _this.$api.play_mac.play({
+            sn: _this.$store.state.jumpPageData.selectDeviceIpc,
+            profile_token: profile_token
+          }).then(res => {
+            _this.play_speed(res)
+          })
         }
-        $("#video_play").attr("class", "video_play_start");
-        $("#play_view_control").show();
+        _this.cameraControlDivFlag = true
       }
     },
     // 获取设备列表信息
-    device_list_box_sidebar (data) {
+    async device_list_box_sidebar () {
       let obj = this.vimtagPlayObj
       if (this.$store.state.jumpPageData.localFlag) {
-        this.$api.local.local_devlist_get().then(res => {
-          console.log(res, "list res")
-          this.device_list(res, data);
-        })
+        // 在本地模式下获取设备列表信息
+        window.pywebview.api.local_search()
       } else {
+        // 从设备列表中取出存留的设备列表信息
         if (obj.box_ipc) {
-          this.device_list(this.$store.state.jumpPageData.boxDeviceData, data)
+          // 盒子设备信息
+          this.$api.play_mac.load_imgs({ dom: l_dom_device_list_img, box_ipc: 1 }) // 请求图片
+          // this.device_list(this.$store.state.jumpPageData.boxDeviceData)
         } else {
-          this.device_list(this.$store.state.jumpPageData.deviceData, data)
-        }
-      }
-    },
-    device_list (msg, data) {
-      let obj = this.vimtagPlayObj
-      data.parent.innerHTML = "<div id='vimtag_device_list'>"
-      let selectNickArr
-      let screen_token // 标记设备分辨率
-      if (this.$store.state.user.supportTreeFlag) { // 如果支持树状结构, 将选中设备的nick分割成数组用于比较使用
-        selectNickArr = this.$store.state.jumpPageData.selectNick.split('.')
-      }
-      for (let length = msg.length, i = 0; i < length; i++) {
-        let dev_data = msg[i];
-        if (dev_data.type !== "socket") {
-          let white_light = "";
-          if (dev_data.p) {
-            for (let j = 0; j < dev_data.p.length; j++) {
-              if (dev_data.p[j].n === "s.white_light") {
-                white_light = dev_data.p[j].v;
-              }
-            }
-          }
-          if (!dev_data) continue;
-          if (dev_data && dev_data.p) {
-            for (let w = 0; w < dev_data.p.length; w++) {
-              if (dev_data.p[w].n == "p0") {
-                screen_token = dev_data.p[w].v;
-              }
-            } //标记设备分辨率
-          }
-          let sn = dev_data.nick ? dev_data.nick : dev_data.sn;
-          // console.log(sn, '获取sn即昵称')
-          if (this.$store.state.user.supportTreeFlag) { // 如果支持树状结构
-            let sn_nick_arr = sn.split('.')
-            let flag_continue = 0
-            // 如果分割后的nick数组比较 只展示数组最后一项不同的设备
-            for (let index = 0; index < selectNickArr.length - 1; index++) {
-              if (selectNickArr[index] !== sn_nick_arr[index]) {
-                flag_continue = 1
-              }
-            }
-            if (flag_continue) {
-              continue
-            }
-
-            // if (selectNickArr[0] !== sn_nick_arr[0] || selectNickArr[1] !== sn_nick_arr[1] || selectNickArr[2] !== sn_nick_arr[2]) continue
-          }
-          if (this.$store.state.jumpPageData.localFlag && dev_data.stat != "Online") continue;
-          if (obj.box_ipc == 1) { //如果云盒子列表
-            if (dev_data.online == 1) {
-              data.parent.innerHTML += "<div class='device_list_sidebar_img' state='online' sn=" + dev_data.box_sn + " ipc_sn=" + dev_data.sn + "><div class='sidebar_camera_sign_picture'></div><div class='device_sidebar_nick'><span>&bull; " + sn + "</span></div></div>";
+          this.device_list_data = this.$store.state.jumpPageData.deviceData
+          for(let i = 0; i < this.device_list_data.length; i++) {
+            let picSrc = this.$api.play_mac.load_list_imgs(this.device_list_data[i]) // 请求图片
+            // let picSrc = await this.$api.devlist.pic_url_get(this.device_list_data[i].sn) // 请求图片
+            if (this.device_list_data[i].sn === this.$store.state.jumpPageData.selectDeviceIpc) {
+              this.$set(this.device_list_data[i], 'selectFlag', 1)
+              this.selectDeviceTop = (10 * (i + 1) + 145 * i) + "px"
             } else {
-              data.parent.innerHTML += "<div class='device_list_sidebar_img' state='offline' sn=" + dev_data.box_sn + " ipc_sn=" + dev_data.sn + "><div class='device_sidebar_list_offline_img'></div><div class='device_sidebar_nick'><span>&bull; " + sn + "</span></div></div>"; //device_sidebar_list_offline_img 在云盒子中设备不在线时
+              this.$set(this.device_list_data[i], 'selectFlag', 0)
             }
-          } else {
-            if ((dev_data.stat == "Online") && (dev_data.type == "BOX")) { //实时视频播放
-              continue;
-            } else if (dev_data.stat == "Online") {
-              data.parent.innerHTML += "<div class='device_list_sidebar_img' addr='" + dev_data.addr + "' state='online' sn='" + dev_data.sn + "' white_light='" + white_light + "' screen_token=" + screen_token + "><div class='sidebar_camera_sign_picture'></div><div class='device_sidebar_nick'><span>&bull; " + sn + "</span></div></div>";
-              continue;
-            } else if (dev_data.stat == "Offline") {
-              data.parent.innerHTML += "<div class='device_list_sidebar_img' addr='" + dev_data.addr + "' state='offline' sn=" + dev_data.sn + " screen_token=" + screen_token + "><div class='device_sidebar_list_offline_img'></div><div class='device_sidebar_nick'><span>&bull; " + sn + "</span></div></div>"
-            }
+            this.$set(this.device_list_data[i], 'picSrc', picSrc)
           }
+          // this.device_list(this.$store.state.jumpPageData.deviceData)
         }
       }
-      data.parent.innerHTML += "<div id='active_dev'></div></div>"
-      this.device_list_event(data)
     },
-    device_list_event (data) {
-      let _this = this
-      let obj = this.vimtagPlayObj
-      // $(data.parent).mCustomScrollbar({
-      //   callbacks: {
-      //     onScroll: function () {
-      //       let arr1 = $(".device_list_sidebar_img:not([data-send])");
-      //       let arr2 = [];
-      //       arr2 = arr1.slice(0, 3)
-      //       $.each(arr2, function (index, item) { //滚动停止的时候发送请求
-      //         item.setAttribute("data-send", "true");
-      //       });
-      //       this.$api.play.load_imgs({ dom: arr2 }) // 请求图片
-      //     }
-      //   }
-      // });
-      let l_dom_device_list_img = this.publicFunc.mx(".device_list_sidebar_img")
-      if (obj.box_ipc == 1) { //如果是云盒子播放列表
-        this.$api.play.load_imgs({ dom: l_dom_device_list_img, box_ipc: 1 }) // 请求图片
-      } else {
-        sendAsk()
-      }
-
-      function sendAsk () {
-        let lis = $('#device_list_sidebar_center').find(".device_list_sidebar_img");
-        //swHeight=滚动的高度+窗体的高度；当li的offset高度<=swHeight,那么说明当前li显示在可视区域了
-        let swHeight = $(window).scrollTop() + $(window).height();
-        $.each(lis, function (index, item) {
-
-          let mTop = item.offsetTop;
-          if (mTop < swHeight && !item.getAttribute("data-send")) {
-            item.setAttribute("data-send", "true");
-          }
-        });
-        let arr = $(".device_list_sidebar_img[data-send='true']");
-        _this.$api.play.load_imgs({ dom: arr }) // 请求图片
-      }
-      for (let length = l_dom_device_list_img.length, i = 0; i < length; ++i) {
-        if (obj.box_ipc == 1) { //页面一进来选择框显示，如果云盒子播放页面，对比ipc_sn 
-          if (l_dom_device_list_img[i].getAttribute("ipc_sn") == obj.ipc_sn) {
-            _this.publicFunc.mx("#active_dev").style.top = (10 * (i + 1) + 145 * i) + "px";
-            $(".device_sidebar_nick").eq(i).addClass("selected_style");
-          }
+    // 点击播放页播放列表
+    clickPlayDevice (data) {
+      this.publicFunc.showBufferPage()
+      let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0"
+      // 重新设置设备列表的数据
+      for(let i = 0; i < this.device_list_data.length; i++) {
+        if (this.device_list_data[i].sn === data.sn) {
+          this.$set(this.device_list_data[i], 'selectFlag', 1)
+          this.selectDeviceTop = (10 * (i + 1) + 145 * i) + "px"
         } else {
-          if (l_dom_device_list_img[i].getAttribute("sn") == _this.$store.state.jumpPageData.selectDeviceIpc) {
-            _this.publicFunc.mx("#active_dev").style.top = (10 * (i + 1) + 145 * i) + "px"
-            $(".device_sidebar_nick").eq(i).addClass("selected_style");
-          }
+          this.$set(this.device_list_data[i], 'selectFlag', 0)
         }
-        l_dom_device_list_img[i].onclick = function () {
-          // console.log(l_dom_device_list_img[i], 'this.click')
-          $(".device_sidebar_nick").removeClass("selected_style");
-          let active_dev_top = this.offsetTop - 44
-          console.log(active_dev_top, 'active_dev_top', this)
-          let screen_token = this.getAttribute("screen_token"); //点击列表中的设备，屏幕分辩率跟着变
-          let ipc_sn = this.getAttribute("ipc_sn"); //点击列表中的设备，获取云盒子中设备id
-          let box_ipc_stat = this.getAttribute("state"); //获取云盒子设备状态
+      }
+      let ipc_sn = data.sn // 点击列表中的设备，获取云盒子中设备id
+      let box_ipc_stat = data.stat // 获取云盒子设备状态
 
-          // if (this.getAttribute("white_light")) {
-          //   white_light = this.getAttribute("white_light");
-          // }
-          // l_white_light = white_light;
-          _this.play_view_control({ parent: _this.publicFunc.mx("#play_view_control") })
-          obj.ipc_sn = ipc_sn; //给obj.ipc_sn重新赋值 解决回放bug
-          $("#active_dev").animate({ "top": active_dev_top + "px" })
-          $(_this).find(".device_sidebar_nick").addClass("selected_style")
-          _this.$store.dispatch('setSelectDeviceIpc', this.getAttribute("sn")) // 点击时存储sn
-          if (this.getAttribute('state') === 'online') {
-            _this.time_zone_alert();
-          } else if (this.getAttribute('state') === 'offline') { //设备不在线不显示时区错误提示
-            _this.timezone_err_sign = false;
-          }
-          _this.$api.set.dev_info({
-            sn: _this.$store.state.jumpPageData.selectDeviceIpc
+      this.play_view_control()
+      this.vimtagPlayObj.ipc_sn = ipc_sn //给this.vimtagPlayObj.ipc_sn重新赋值 解决回放bug
+      this.$store.dispatch('setSelectDeviceIpc', data.sn) // 点击时存储sn
+      if (data.stat === 'online') {
+        this.time_zone_alert()
+      } else if (data.stat === 'offline') { //设备不在线不显示时区错误提示
+        this.timezone_err_sign = false
+      }
+      this.$api.set.dev_info({
+        sn: this.$store.state.jumpPageData.selectDeviceIpc
+      }).then(res => {
+        this.audio_alarm_manually = res.audio_alarm_manually //判断设备是否能手动报警
+      })
+      console.log(this.playFlag, '播放状态')
+      if (this.playFlag) {
+        window.pywebview.api.destroyPlay()
+        // this.queue = []
+        console.log('queue', this.queue)
+      }
+      if (this.vimtagPlayObj.box_ipc == 1) {
+        // 云盒子离线
+        if (box_ipc_stat == 'offline') {
+          $("#play_screen").style.background = 'black'
+          _this.publicFunc.msg_tips({ msg: mcs_video_play_offline, type: "error", timeout: 3000 })
+          $("#enter_history_img_box_tip").show()
+          setTimeout(function () {
+            $("#enter_history_img_box_tip").hide()
+          }, 6000)
+        } else {
+          // 云盒子在线
+          // 调用播放接口
+          window.pywebview.api.destroyPlay()
+          this.$api.play_mac.play({
+            dom: $("#play_screen"),
+            sn: this.$store.state.jumpPageData.selectDeviceIpc,
+            profile_token: "p0_" + ipc_sn + ""
           }).then(res => {
-            _this.audio_alarm_manually = res.audio_alarm_manually; //判断设备是否能手动报警
+            this.play_speed(res)
           })
-          if (_this.playFlag) {
-            _this.$api.play.video_stop({
-              dom: $("#play_screen")
-            }).then(() => {
-              let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
-              if (_this.$store.state.jumpPageData.localFlag) { // 本地方法暂不考虑
-                _this.local_play_data.profile_token = profile_token;
-                _this.local_play_data.sn = _this.$store.state.jumpPageData.selectDeviceIpc;
-                this.$api.local.local_play({ data: _this.local_play_data })
-              } else {
-                if (obj.box_ipc == 1) { //点击右侧设备列表的设备，如果是云盒子
-                  if (box_ipc_stat === 'offline') {
-                    $("#play_screen").css('background', 'black')
-                    _this.publicFunc.msg_tips({ msg: mcs_video_play_offline, type: "error", timeout: 3000 });
-                    $("#enter_history_img_box_tip").show();
-                    setTimeout(function () {
-                      $("#enter_history_img_box_tip").hide();
-                    }, 6000);
-                  } else {
-                    // 调用播放接口
-                    _this.$api.play.play({
-                      dom: $("#play_screen"),
-                      sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-                      profile_token: "p0_" + ipc_sn + ""
-                    }).then(res => {
-                      _this.play_speed(res)
-                    })
-                  }
-                } else {
-                  $("#resolute_choice").text(screen_token);
-                  $("#high_definition").text(screen_token);
-                  // 调用播放接口
-                  _this.$api.play.play({
-                    dom: $("#play_screen"),
-                    sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-                    profile_token: profile_token
-                  }).then(res => {
-                    _this.play_speed(res)
-                  })
-                }
-              }
-            })
-          } else {
-            let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
-            if (_this.$store.state.jumpPageData.localFlag) {
-              _this.local_play_data.profile_token = profile_token;
-              _this.local_play_data.sn = _this.$store.state.jumpPageData.selectDeviceIpc;
-              this.$api.local.local_play({ data: _this.local_play_data })
-            } else {
-              if (obj.box_ipc == 1) {
-                if (box_ipc_stat == 'offline') {
-                  $("#play_screen").style.background = 'black';
-                  _this.publicFunc.msg_tips({ msg: mcs_video_play_offline, type: "error", timeout: 3000 });
-                  $("#enter_history_img_box_tip").show();
-                  setTimeout(function () {
-                    $("#enter_history_img_box_tip").hide();
-                  }, 6000);
-                } else {
-                  // 调用播放接口
-                  _this.$api.play.play({
-                    dom: $("#play_screen"),
-                    sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-                    profile_token: "p0_" + ipc_sn + ""
-                  }).then(res => {
-                    _this.play_speed(res)
-                  })
-                }
-              } else {
-                $("#resolute_choice").text(screen_token);
-                $("#high_definition").text(screen_token);
-                // 调用播放接口
-                _this.$api.play.play({
-                  dom: $("#play_screen"),
-                  sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-                  profile_token: profile_token
-                }).then(res => {
-                  _this.play_speed(res)
-                })
-              }
-            }
-            _this.playFlag = 1;
-            $("#play_view_control").show();
-            _this.publicFunc.mx("#video_play").className = "video_play_start";
-          }
         }
-        l_dom_device_list_img[i].ondblclick = function () {
-          let screen_token = this.getAttribute("screen_token"); //点击列表中的设备，屏幕分辩率跟着变
-          let ipc_sn = this.getAttribute("ipc_sn"); //点击列表中的设备，获取云盒子中设备id
-          obj.ipc_sn = ipc_sn; //给obj.ipc_sn重新赋值 解决回放bug
-          _this.$store.dispatch('setSelectDeviceIpc', this.getAttribute("sn")) // 点击时存储sn
-          if (_this.playFlag) {
-            _this.$api.play.video_stop({
-              dom: $("#play_screen")
-            }).then(() => {
-              let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
-              if (_this.$store.state.jumpPageData.localFlag) {
-                _this.local_play_data.profile_token = profile_token;
-                _this.local_play_data.sn = _this.$store.state.jumpPageData.selectDeviceIpc;
-                this.$api.local.local_play({ data: _this.local_play_data })
-              } else {
-                if (obj.box_ipc == 1) {
-                  if (box_ipc_stat == 'offline') {
-                    $("#play_screen").style.background = 'black';
-                    _this.publicFunc.msg_tips({ msg: mcs_video_play_offline, type: "error", timeout: 3000 });
-                    $("#enter_history_img_box_tip").show();
-                    setTimeout(function () {
-                      $("#enter_history_img_box_tip").hide();
-                    }, 6000);
-                  } else {
-                    // 调用播放接口
-                    _this.$api.play.play({
-                      dom: $("#play_screen"),
-                      sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-                      profile_token: "p0_" + ipc_sn + ""
-                    }).then(res => {
-                      _this.play_speed(res)
-                    })
-                  }
-                } else {
-                  $("#resolute_choice").text(screen_token);
-                  $("#high_definition").text(screen_token);
-                  // 调用播放接口
-                  _this.$api.play.play({
-                    dom: $("#play_screen"),
-                    sn: _this.$store.state.jumpPageData.selectDeviceIpc,
-                    profile_token: profile_token
-                  }).then(res => {
-                    _this.play_speed(res)
-                  })
-                }
-              }
-            })
-          } else {
-            let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
-            if (this.$store.state.jumpPageData.localFlag) {
-              this.local_play_data.profile_token = profile_token;
-              this.local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc;
-              this.$api.local.local_play({ data: this.local_play_data })
-            } else {
-              if (obj.box_ipc == 1) {
-                if (box_ipc_stat == 'offline') {
-                  $("#play_screen").style.background = 'black';
-                  this.publicFunc.msg_tips({ msg: mcs_video_play_offline, type: "error", timeout: 3000 });
-                  $("#enter_history_img_box_tip").show();
-                  setTimeout(function () {
-                    $("#enter_history_img_box_tip").hide();
-                  }, 6000);
-                } else {
-                  // 调用播放接口
-                  this.$api.play.play({
-                    dom: $("#play_screen"),
-                    sn: this.$store.state.jumpPageData.selectDeviceIpc,
-                    profile_token: "p0_" + ipc_sn + ""
-                  }).then(res => {
-                    this.play_speed(res)
-                  })
-                }
-              } else {
-                $("#resolute_choice").text(screen_token);
-                $("#high_definition").text(screen_token);
-                // 调用播放接口
-                this.$api.play.play({
-                  dom: $("#play_screen"),
-                  sn: this.$store.state.jumpPageData.selectDeviceIpc,
-                  profile_token: profile_token
-                }).then(res => {
-                  this.play_speed(res)
-                })
-              }
-            }
-            _this.playFlag = 1;
-            $("#play_view_control").show();
-            l_dom_video_play.className = "video_play_start";
-          }
-        }
+      } else {
+        // 设备在线
+        // 调用播放接口
+        this.$api.play_mac.play({
+          dom: $("#play_screen"),
+          sn: this.$store.state.jumpPageData.selectDeviceIpc,
+          profile_token: profile_token
+        }).then(res => {
+          this.play_speed(res)
+        })
       }
+      this.playFlag = 1
+      this.cameraControlDivFlag = true
+      // $("#play_view_control").show()
+      this.publicFunc.mx("#video_play").className = "video_play_start"
     },
     // 摇头机镜头控制
     play_view_control (data) {
-      let l_dom_ptz_control_left = this.publicFunc.mx("#ptz_control_left");
-      let l_dom_ptz_control_right = this.publicFunc.mx("#ptz_control_right");
-      let l_dom_ptz_control_up = this.publicFunc.mx("#ptz_control_up");
-      let l_dom_ptz_control_down = this.publicFunc.mx("#ptz_control_down");
       let l_dom_turn_left = this.publicFunc.mx("#turn_left");
       let l_dom_turn_right = this.publicFunc.mx("#turn_right");
       let l_dom_turn_up = this.publicFunc.mx("#turn_up");
       let l_dom_turn_down = this.publicFunc.mx("#turn_down");
-      let l_dom_video_off_pic = this.publicFunc.mx("#video_off_pic");
-      let l_dom_camera_off_pic = this.publicFunc.mx("#camera_off_pic");
-      let l_dom_talkback_off_pic = $("#talkback_off_pic");
-      let l_dom_adjust_off_pic = this.publicFunc.mx("#adjust_off_pic");
-      let l_dom_control_menu = this.publicFunc.mx("#control_menu");
       let l_dom_ptz_control_bottom_center = this.publicFunc.mx("#ptz_control_bottom_center");
       let l_dom_play_view_control = this.publicFunc.mx("#play_view_control")
       l_dom_play_view_control.style.width = (document.documentElement.clientWidth - 17 - 100) - (parseInt($("#play_dev_list").css("width")) + 20) + 'px';
@@ -937,26 +622,13 @@ export default {
       l_dom_turn_down.className = "down_key";
       l_dom_turn_left.className = "left_key";
       l_dom_turn_right.className = "right_key";
-      // if (window.fujikam == "fujikam") {
-      //     l_dom_play_view_control.style.width = "946px";
-      //     l_dom_play_view_control.style.height = "586px";
-      //     l_dom_turn_up.className = "window_up_key";
-      //     // l_dom_turn_down.className = "window_down_key";
-      //     // l_dom_turn_left.className = "window_left_key";
-      //     // l_dom_turn_right.className = "window_right_key";
-      //     l_dom_control_menu.style.left = "239px";
-      //     l_dom_control_menu.style.top = "393px";
-      // }
-      let dom_left = $(".left_button")[0],
-        dom_center = $(".center_button")[0],
-        dom_right = $(".right_button")[0],
-        l_cam_conf, outX, left, top, mouseX, i, evt;
 
       // 鼠标点击视频中间窗口弹出菜单
       l_dom_ptz_control_bottom_center.onclick = function () {
         let is_display = 0;
         // let is_innerhtml = this.publicFunc.mx("#play_buffer_ret").innerHTML;
-        $("#play_view_control").show();
+        this.cameraControlDivFlag = true
+        // $("#play_view_control").show();
         // if (is_innerhtml) {
         is_display = $("#ptz_control_bottom").css("display") == "none" ? 0 : 1;
         if (is_display) {
@@ -966,52 +638,62 @@ export default {
         }
         // }
       }
-      let _timerflag = {}; //Resolve multiple clicks
+      // let _timerflag = {}; //Resolve multiple clicks
     },
     // 获取设备列表信息 结束
     // 按钮点击事件
-    clickPlay (event) { // 点击播放按钮
-      let class_name = event.target.className
-      console.log(class_name, 'event class_name')
-      if (class_name === "video_play_stop") {
-        console.log(11111)
-        this.playFlag = 1 // 更改播放状态
-        let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
-        if (this.$store.state.jumpPageData.localFlag) { // 本地功能暂缓调试
-          this.local_play_data.profile_token = profile_token
-          this.local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
-          // this.$api.local.local_device_play({ data: this.local_play_data })
-          this.$api.local.local_play({ data: this.local_play_data })
-        } else {
-          this.$api.play.play({ // 调用播放接口进行视频播放
-            dom: $("#play_screen"),
-            sn: this.$store.state.jumpPageData.selectDeviceIpc,
-            profile_token: profile_token
-          }).then(res => {
-            this.play_speed(res) // 调用播放速度回调函数
-          })
-        }
-        this.cameraControlDivFlag = true // 摄像头方向控制按钮展示
-        event.target.className = "video_play_start" // 更改播放按钮的className
-      } else if (class_name === "video_play_start") {
-        console.log(2222)
-        this.playFlag = 0 // 更改播放状态
-        this.$api.play.video_stop({
-          dom: $("#play_screen")
+    clickPreview () {
+      let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
+      this.playFlag = 1
+      if (this.vimtagPlayObj.box_ipc === 1) {
+        // 调用播放接口
+        this.$api.play_mac.play({
+          sn: this.$store.state.jumpPageData.selectDeviceIpc,
+          profile_token: "p0_" + this.vimtagPlayObj.ipc_sn
         }).then(res => {
-          if (!res) { // 如果没有返回值则直接返回退出
-            return
-          }
-          this.create_preview(res) // 绘制暂停封面以及按钮
-          if (this.$store.state.jumpPageData.localFlag) {
-            this.$api.play.play_preview_img({ addr: obj.addr, dom: $("#play_screen"), sn: this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
-          } else {
-            this.$api.play.play_preview_img({ dom: $("#play_screen"), sn: this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
-          }
+          this.play_speed(res)
         })
+      } else {
+        // 调用播放接口
+        this.$api.play_mac.play({
+          sn: this.$store.state.jumpPageData.selectDeviceIpc,
+          profile_token: profile_token
+        }).then(res => {
+          this.play_speed(res)
+        })
+      }
+      this.cameraControlDivFlag = true
+    },
+    clickPlay () { // 点击播放按钮
+      if (!this.playFlag) { // 当前处于暂停状态
+        this.playFlag = 1 // 更改播放状态至播放
+        let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
+        this.$api.play_mac.play({ // 调用播放接口进行视频播放
+          dom: $("#play_screen"),
+          sn: this.$store.state.jumpPageData.selectDeviceIpc,
+          profile_token: profile_token
+        }).then(res => {
+          this.play_speed(res) // 调用播放速度回调函数
+        })
+        this.cameraControlDivFlag = true // 摄像头方向控制按钮展示
+      } else { // 当前处于播放状态
+        this.playFlag = 0 // 更改播放状态至暂停
+        // 注销视频线程
+        window.pywebview.api.destroyPlay()
+        // 如果当前处于音频线程开启状态则关闭音频
+        if (this.voiceFlag) {
+          window.pywebview.api.voice_close()
+          this.voiceFlag = 0
+        }
+        this.create_preview({ parent: $("#play_screen") }) // 绘制暂停封面以及按钮
+        if (this.$store.state.jumpPageData.localFlag) {
+          this.$api.play_mac.play_preview_img({ addr: obj.addr, dom: $("#play_screen"), sn: this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
+        } else {
+          this.$api.play_mac.play_preview_img({ dom: $("#play_screen"), sn: this.$store.state.jumpPageData.selectDeviceIpc, pic_token: "p1_xxxxxxxxxx" })
+        }
         event.target.className = "video_play_stop" // 更改播放按钮的className
-        // this.cameraControlDivFlag = false // 摄像头方向控制按钮展示
-        $("#play_view_control").hide()
+        this.cameraControlDivFlag = false // 摄像头方向控制按钮展示
+        // $("#play_view_control").hide()
         console.log(this.cameraControlDivFlag, '隐藏控制')
       }
     },
@@ -1024,34 +706,28 @@ export default {
         this.definitionSelect = this.support_1080p
       }
       if (this.playFlag) {
-        if (this.$store.state.jumpPageData.localFlag) {
-          this.local_play_data.profile_token = "p0"
-          this.local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
-          // this.$api.local.local_device_play({ data: this.local_play_data })
-          this.$api.local.local_play({ data: this.local_play_data })
-        } else {
-          this.$api.play.play({
-            dom: $("#play_screen"),
-            sn: this.$store.state.jumpPageData.selectDeviceIpc,
-            profile_token: "p0"
-          }).then(res => {
-            this.play_speed(res)
-          })
-        }
+        this.$api.play_mac.play({
+          dom: $("#play_screen"),
+          sn: this.$store.state.jumpPageData.selectDeviceIpc,
+          profile_token: "p0"
+        }).then(res => {
+          this.play_speed(res)
+        })
       }
     },
     clickStandard () { // 点击标准清晰度
+      window.pywebview.api.destroyPlay() // 注销当前视频通道
       this.definitionListFlag = false // 隐藏清晰度选择弹窗
       sessionStorage.setItem("PlayProfile", "p1")
       this.definitionSelect = this.mcs_standard_clear
       if (this.playFlag) {
         if (this.$store.state.jumpPageData.localFlag) { // 本地内容暂缓
-          this.local_play_data.profile_token = "p1";
-          this.local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc;
+          this.local_play_data.profile_token = "p1"
+          this.local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
           // this.$api.local.local_device_play({ data: this.local_play_data })
           this.$api.local.local_play({ data: this.local_play_data })
         } else {
-          this.$api.play.play({
+          this.$api.play_mac.play({
             dom: $("#play_screen"),
             sn: this.$store.state.jumpPageData.selectDeviceIpc,
             profile_token: "p1"
@@ -1062,6 +738,7 @@ export default {
       }
     },
     clickFluency () { // 点击流畅清晰度
+      window.pywebview.api.destroyPlay() // 注销当前视频通道
       this.definitionListFlag = false // 隐藏清晰度选择弹窗
       sessionStorage.setItem("PlayProfile", "p2")
       this.definitionSelect = this.mcs_fluent_clear
@@ -1072,7 +749,7 @@ export default {
           // this.$api.local.local_device_play({ data: this.local_play_data })
           this.$api.local.local_play({ data: this.local_play_data })
         } else {
-          this.$api.play.play({
+          this.$api.play_mac.play({
             dom: $("#play_screen"),
             sn: this.$store.state.jumpPageData.selectDeviceIpc,
             profile_token: "p2"
@@ -1117,29 +794,40 @@ export default {
         this.$router.push({ name: 'history', params: jumpData })
       }
     },
-    clickVoice (event) { // 点击声音图标
-      let class_name = event.target.className
-      if (class_name === "voice_close_close") {
-        this.$api.play.voice({ flag: 0 })
-        event.target.className = "voice_close_open"
+    clickVoice () { // 点击声音图标
+      if (!this.voiceFlag) {
+        window.pywebview.api.voice_open()
+        this.voiceFlag = 1
       } else {
-        this.$api.play.voice({ flag: 1 })
-        event.target.className = "voice_close_close"
+        window.pywebview.api.voice_close()
+        this.voiceFlag = 0
       }
     },
-    clickFullScreen () { // 点击全屏按钮
-      this.$api.play.fullscreen()
+    async clickFullScreen () { // 点击全屏按钮
+      let _this = this
+      await this.$fullscreen.toggle(this.$refs.video, {
+        teleport: true,
+        callback: (isFullscreen) => {
+          console.log(isFullscreen, 'fullScreen')
+          if (isFullscreen) {
+            _this.cameraControlDivFlag = false
+          } else {
+            _this.cameraControlDivFlag = true
+          }
+          // state.fullscreen = isFullscreen
+        },
+      })
     },
     clickRecordVideo (event) { // 点击隐藏菜单中的录像按钮
       if (event.target.className === "video_on_picture") {
         event.target.className = "video_off_picture"
-        this.$api.play.play_record({
+        this.$api.play_mac.play_record({
           recording: 1,
           sn: this.$store.state.jumpPageData.selectDeviceIpc
         })
       } else {
         event.target.className = "video_on_picture"
-        this.$api.play.play_record({
+        this.$api.play_mac.play_record({
           recording: 0,
           sn: this.$store.state.jumpPageData.selectDeviceIpc
         })
@@ -1147,26 +835,37 @@ export default {
     },
     clickScreenShot () { // 点击隐藏菜单中的截图按钮
       if (this.$store.state.jumpPageData.selectDeviceIpc) {
-        this.$api.play.play_snapshot({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => { // 调用截图接口
+        this.$api.play_mac.play_snapshot({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => { // 调用截图接口
           // this.publicFunc.log_upload('take_picture'); //记录日志：拍照
+          console.log(res, '截图res')
           this.snapshotFlag = true
           this.snapshotUrl = res
           this.snapshotDownloadName = new Date().getTime() + ".jpg"
         })
       }
     },
+    clickSnapshotDownload () { // 点击调用截图下载按钮
+      // snapshotDownloadName为截图保存名称, snapshotUrl为截图下载链接
+      window.pywebview.api.snapshotDownload(this.snapshotDownloadName, this.snapshotUrl)
+    },
     clickTalkback (event) { // 调用对讲功能
       let class_name = event.target.className
       if (class_name === "talkback_off_picture") {
+        console.log('开始对讲')
         event.target.className = "talkback_on_picture"
-        this.$api.play.play_speak({ // 开启对讲
-          flag: 1
+        this.$api.play_mac.push_talk({
+          sn: this.$store.state.jumpPageData.selectDeviceIpc,
+          protocol: 'rtdp',
+          token: 'p1'
+        }).then(res => {
+          console.log(res, 'talk_res')
+          // 获取对讲地址链接 并传递给客户端
+          window.pywebview.api.startGetVoice(res.url)
         })
       } else {
         event.target.className = "talkback_off_picture"
-        this.$api.play.play_speak({ // 关闭对讲
-          flag: 0
-        })
+        console.log('结束对讲')
+        window.pywebview.api.endGetVoice()
       }
     },
     adjust_show () { //显示亮度等参数
@@ -1199,12 +898,12 @@ export default {
         this.brightness_value = parseInt(this.cam_conf.brightness)
       }
 
-      this.mode = this.cam_conf.day_night
+      this.mode = this.cam_conf.day_night;
     },
     clickAdjust (event) { // 点击设备调整按钮
       if (event.target.className === "adjust_off_picture") {
         event.target.className = "adjust_on_picture"
-        this.$api.play.adjust_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
+        this.$api.play_mac.adjust_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
           this.cam_conf = res
           this.cam_conf.sn = this.$store.state.jumpPageData.selectDeviceIpc
           this.adjust_show()
@@ -1222,7 +921,7 @@ export default {
       this.adjustSettingFlag = false
     },
     turnCamera (action, direction) { // 摄像头转向方法调用
-      this.$api.play.play_ptz_turn({ // 摄像头转向控制
+      this.$api.play_mac.play_ptz_turn({ // 摄像头转向控制
         flag: action,
         direction: direction
       })
@@ -1236,7 +935,7 @@ export default {
         // this.$api.local.local_device_play({ data: this.local_play_data })
         this.$api.local.local_play({ data: this.local_play_data })
       } else {
-        this.$api.play.play({
+        this.$api.play_mac.play({
           dom: $("#play_screen"),
           sn: this.$store.state.jumpPageData.selectDeviceIpc,
           profile_token: profile_token
@@ -1263,64 +962,64 @@ export default {
       if (this.cam_conf.day) {
         //night,white;night,auto,1;auto,2,white;auto,2,auto,1
         if (this.cam_conf.white_light && ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1))) {
-          this.cam_conf.is_white_light = this.whiteLight;
-          this.cam_conf.white_light.sharpness = this.sharpness_value;
-          this.cam_conf.white_light.contrast = this.contrast_value;
-          this.cam_conf.white_light.color_saturation = this.color_saturation_value;
-          this.cam_conf.white_light.brightness = this.brightness_value;
+          this.cam_conf.is_white_light = this.whiteLight
+          this.cam_conf.white_light.sharpness = this.sharpness_value
+          this.cam_conf.white_light.contrast = this.contrast_value
+          this.cam_conf.white_light.color_saturation = this.color_saturation_value
+          this.cam_conf.white_light.brightness = this.brightness_value
         }
         //night,red;night,auto,0;auto,2,red;auto,2,auto,0 
         else if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "night" && (this.cam_conf.light_mode == "auto" || this.cam_conf.light_mode == "white") && this.cam_conf.red_or_white == 1)) {
-          this.cam_conf.night.sharpness = this.sharpness_value;
-          this.cam_conf.night.contrast = this.contrast_value;
-          this.cam_conf.night.color_saturation = this.color_saturation_value;
-          this.cam_conf.night.brightness = this.brightness_value;
+          this.cam_conf.night.sharpness = this.sharpness_value
+          this.cam_conf.night.contrast = this.contrast_value
+          this.cam_conf.night.color_saturation = this.color_saturation_value
+          this.cam_conf.night.brightness = this.brightness_value
         }
         //day;auto,1
         else if (this.cam_conf.day_night == "day" || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 1)) {
-          this.cam_conf.day.sharpness = this.sharpness_value;
-          this.cam_conf.day.contrast = this.contrast_value;
-          this.cam_conf.day.color_saturation = this.color_saturation_value;
-          this.cam_conf.day.brightness = this.brightness_value;
+          this.cam_conf.day.sharpness = this.sharpness_value
+          this.cam_conf.day.contrast = this.contrast_value
+          this.cam_conf.day.color_saturation = this.color_saturation_value
+          this.cam_conf.day.brightness = this.brightness_value
         }
       } else {
-        this.cam_conf.sharpness = this.sharpness_value;
-        this.cam_conf.contrast = this.contrast_value;
-        this.cam_conf.color_saturation = this.color_saturation_value;
-        this.cam_conf.brightness = this.brightness_value;
+        this.cam_conf.sharpness = this.sharpness_value
+        this.cam_conf.contrast = this.contrast_value
+        this.cam_conf.color_saturation = this.color_saturation_value
+        this.cam_conf.brightness = this.brightness_value
       }
     },
     adjust_reset () { //点击重置
       this.mode = "auto";
       if (this.whiteLight) {
-        this.light_mode = "auto";
+        this.light_mode = "auto"
       }
-      this.sharpness_value = 6;
-      this.contrast_value = 60;
-      this.color_saturation_value = 70;
-      this.brightness_value = 50;
+      this.sharpness_value = 6
+      this.contrast_value = 60
+      this.color_saturation_value = 70
+      this.brightness_value = 50
       if (this.cam_conf.day) {
         if (this.cam_conf.white_light) {
-          this.cam_conf.is_white_light = this.whiteLight;
-          this.cam_conf.white_light.sharpness = this.sharpness_value;
-          this.cam_conf.white_light.contrast = this.contrast_value;
-          this.cam_conf.white_light.color_saturation = this.color_saturation_value;
-          this.cam_conf.white_light.brightness = this.brightness_value;
+          this.cam_conf.is_white_light = this.whiteLight
+          this.cam_conf.white_light.sharpness = this.sharpness_value
+          this.cam_conf.white_light.contrast = this.contrast_value
+          this.cam_conf.white_light.color_saturation = this.color_saturation_value
+          this.cam_conf.white_light.brightness = this.brightness_value
         }
-        this.cam_conf.night.sharpness = this.sharpness_value;
-        this.cam_conf.night.contrast = this.contrast_value;
-        this.cam_conf.night.color_saturation = this.color_saturation_value;
-        this.cam_conf.night.brightness = this.brightness_value;
+        this.cam_conf.night.sharpness = this.sharpness_value
+        this.cam_conf.night.contrast = this.contrast_value
+        this.cam_conf.night.color_saturation = this.color_saturation_value
+        this.cam_conf.night.brightness = this.brightness_value
 
-        this.cam_conf.day.sharpness = this.sharpness_value;
-        this.cam_conf.day.contrast = this.contrast_value;
-        this.cam_conf.day.color_saturation = this.color_saturation_value;
-        this.cam_conf.day.brightness = this.brightness_value;
+        this.cam_conf.day.sharpness = this.sharpness_value
+        this.cam_conf.day.contrast = this.contrast_value
+        this.cam_conf.day.color_saturation = this.color_saturation_value
+        this.cam_conf.day.brightness = this.brightness_value
       } else {
-        this.cam_conf.sharpness = this.sharpness_value;
-        this.cam_conf.contrast = this.contrast_value;
-        this.cam_conf.color_saturation = this.color_saturation_value;
-        this.cam_conf.brightness = this.brightness_value;
+        this.cam_conf.sharpness = this.sharpness_value
+        this.cam_conf.contrast = this.contrast_value
+        this.cam_conf.color_saturation = this.color_saturation_value
+        this.cam_conf.brightness = this.brightness_value
       }
     },
     time_zone_alert () { //当设备时区与设置时区不一致时弹出提示
@@ -1328,45 +1027,93 @@ export default {
       this.$api.devlist.time_get({ // 获取选中时区的时间
         sn: this.$store.state.jumpPageData.selectDeviceIpc
       }).then(res => {
-        this.current_time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        this.current_time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone
         if (res.day === nowDate.getDate() && res.hour === nowDate.getHours() || this.$store.state.jumpPageData.localFlag) { //本地模式下不显示提示
-          this.timezone_err_sign = false;
+          this.timezone_err_sign = false
         } else {
-          this.timezone_err_sign = true;
+          this.timezone_err_sign = true
         }
       })
     },
     clickAlarm () { //点击报警
       if (this.alarm_sign) {
-        this.$api.play.alarm({ // 手动关闭报警
+        this.$api.play_mac.alarm({ // 手动关闭报警
           sn: this.$store.state.jumpPageData.selectDeviceIpc,
           cmd: 'stop'
         })
-        this.alarm_sign = false;
+        this.alarm_sign = false
       } else {
         this.publicFunc.delete_tips({
           content: mrs_alarm_tip_msg,
           title: mrs_manual_alarm,
           func: () => {
-            this.$api.play.alarm({ // 手动开启报警
+            this.$api.play_mac.alarm({ // 手动开启报警
               sn: this.$store.state.jumpPageData.selectDeviceIpc,
               cmd: 'play'
             })
-            this.alarm_sign = true;
+            this.alarm_sign = true
             setTimeout(() => { //60s后自动关闭报警
-              this.$api.play.alarm({
+              this.$api.play_mac.alarm({
                 sn: this.$store.state.jumpPageData.selectDeviceIpc,
                 cmd: 'stop'
               })
-              this.alarm_sign = false;
+              this.alarm_sign = false
             }, 60000)
           }
         })
       }
     },
+    startVoice () { // 开始对讲
+      console.log('点击开始对讲')
+      this.$api.play_mac.push_talk({
+        sn: this.$store.state.jumpPageData.selectDeviceIpc,
+        protocol: 'rtdp',
+        token: 'p1'
+      }).then(res => {
+        console.log(res, 'talk_res')
+        // 获取对讲地址链接 并传递给客户端
+        window.pywebview.api.startGetVoice(res.url)
+      })
+    },
+    endVoice () { // 结束对讲
+      console.log('点击结束对讲')
+      window.pywebview.api.endGetVoice()
+    },
+
+    // canvas 展示视频方法
+    schedule () {
+      const data = this.queue.shift()
+      if (data) {
+        this.render(new Uint8Array(data))
+        if (this.queue.length > 5) {
+          this.queue = []
+        }
+        requestAnimationFrame(this.schedule)
+      } else {
+        this.scheduled = false
+      }
+    },
+    render (buff) {
+      if (this.renderer === null) {
+        return
+      }
+
+      const width = video.width
+      const height = video.height
+      this.renderer.renderImg(width, height, buff)
+    },
+
+    initialCanvas (canvas, width, height) {
+      canvas.width = width
+      canvas.height = height
+      canvas.style.width = this.playViewWidth + 'px'
+      canvas.style.height = (this.playViewHeight - 44) + 'px'
+      return new WebglScreen(canvas)
+    }
   },
   async mounted () {
     await this.$chooseLanguage.lang(this.$store.state.user.userLanguage)
+    console.log(this.$store.state.jumpPageData.deviceData, 'data')
     if (this.$refs.resolute_choice.offsetTop) {
       this.definitionTop = (this.$refs.resolute_choice.offsetTop - 113) + 'px'
     }
@@ -1380,9 +1127,58 @@ export default {
     if (pageData.parent.length === 0) {
       pageData.parent = $("#" + pageData.parentId)
     }
-    // console.log(pageData,"pageData")
+    // 接入pywebview数据传输接口 接收base64图片内容
+    console.log(this.clientFlag, '查看客户端标识')
+    // 定义本地搜索数据
+    window.setLocalDeviceInfo = (data) =>{
+      let default_InvalidAuth_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATAAAACrBAMAAAATA930AAAAIVBMVEXZ2dny8vLf39/c3Nzv7+/o6Ojk5OTq6urs7Ozm5ubh4eEqh4/4AAACCUlEQVR42u3dPWsUURSH8WUWU9hdiJuUFxWVVIPr+rLdSjSmlDWoXaIiahdNYxnfiHVe6yzkcyY5DMnOGTIQCPwP5HmqvcMWPw4zt7gMTGehH7LDzuPbIfvYedgJ2R1gwOoBkwcMmAuYPGDAXMDkAQPmAiYPGDAXMHnAgLmAyQMGzAVMHjBgLmDyrhC28HVlZe8wHKzY/5NOevUzx4IN36SqF5NIsOFGOmtpEgfW3UlTLZdhYPdTre9RYMV6HTaXg8AeJNevGDAbmBtZCNig4ixubS1WP8chYJ+S9fdDv3/vXbJ6EWDFyCz/sy0ObDGbA8AGRrmVK+ZrW24HgN2tS57Z8rke1l2zgZVnaxtZr9TDNm3ncrvavB52c3R6s6+eX5ixC1kOm7EdtZwaoe23q3KYPZQvG/vaWA57Yg9h4zH9IYc9PWX8bl6Rw6r5NGYYAzau3XUxYI+iwpgYE2Ni0WDNid2IACuO7HTg3+epvtg5wbesgvlDC99yKYQNUktjIWytDdbTwbrrbbC5UgYrNttg81kHG7XBZoEBAwYMGDBgwIABAwYMGDBg1wMW9lCl234MpYP5t438u0c6WLFxsWspi2DWcPftBb2fVH+RvzxZFe3lSWCXDJg8YMBcwOQBA+YCJg8YMBcwecCAuYDJAwbMBUweMGAuYPKAAXMBkxcYFvY7I1G/zHIMMIc+sbj4o2sAAAAASUVORK5CYII=";
+      console.log(data, '本地搜索返回的数据')
+      let local_devs_data = data
+      console.log(local_devs_data, '转换后的对象')
+      // 判断传递过来的本地设备数据是否为重复内容
+      for(let i = 0; i < this.is_exist_ipc.length; i++){
+        if (this.is_exist_ipc[i] == local_devs_data.sn){
+          return
+        }
+      }
+      this.is_exist_ipc.push(local_devs_data.sn)
+      let tmp_local_dev_password = sessionStorage.getItem("pass_" + local_devs_data.sn)
+      let tmp_local_devs_data = {
+        sn: local_devs_data.sn,
+        type: local_devs_data.type,
+        def_img: tmp_local_dev_password ? "" : default_InvalidAuth_img,
+        nick: (local_devs_data.ProbeMatch[0].Nick ? local_devs_data.ProbeMatch[0].Nick : local_devs_data.sn),
+        addr: local_devs_data.ProbeMatch[0].XAddrs,
+        stat: tmp_local_dev_password ? "Online" : "InvalidAuth"
+      }
+      this.local_device_list.push(tmp_local_devs_data)
+      console.log(this.local_device_list, 'local_device_list')
+      this.device_list(this.local_device_list, { parent: this.publicFunc.mx("#device_list_sidebar_center") })
+    }
+    // 页面大小改变
+    window.onresize = () => {
+      return (() => {
+        console.log('play enter onresize')
+        this.vimtagPlay(pageData)
+        this.canvasInitFlag = false
+      })()
+    }
+    // 进入播放页面时优先调用创建播放引擎方法
+    window.pywebview.api.createPlayerEngine()
     await this.vimtagPlay(pageData) // 进入页面后加载
     await this.publicFunc.importCss('Public.scss') // 动态引入css样式 页面加载完成后加载样式(如果加载过早则会无法改变jq填充的dom)
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('enter beforeRouteLeave')
+    // 销毁当前组件实例
+    this.$destroy()
+    next()
+  },
+  destroyed () {
+    // 销毁页面时注销播放
+    if(this.clientFlag) {
+      window.pywebview.api.leavePlayPage()
+    }
   },
   watch: {
     sharpness_value (val) {
@@ -1419,7 +1215,7 @@ export default {
     cam_conf: {
       handler (val) {
         if (val) {
-          this.$api.play.adjust_set({ conf: this.cam_conf });
+          this.$api.play_mac.adjust_set({ conf: this.cam_conf });
         }
       },
       deep: true
@@ -1441,7 +1237,35 @@ export default {
           }
         }, 1000)
       }
-    }
+    },
+    // 监听图片内容改变
+    "$store.state.jumpPageData.pywebviewImgData" (val) {
+      if (val) {
+        const canvas = this.$refs.video
+        let canvasDrawWidth = this.$store.state.jumpPageData.pywebviewImgWidth
+        let canvasDrawHeight = this.$store.state.jumpPageData.pywebviewImgHeight
+        this.publicFunc.closeBufferPage()
+        // 初次进入页面获取到视频数据后对canvas进行初始化 or 传入的视频数据宽度与高度发生改变时重新绘制canvas
+        if (!this.canvasInitFlag || this.nowCanvasHeight !== canvasDrawHeight || this.nowCanvasWidth !== canvasDrawWidth) {
+          this.renderer = this.initialCanvas(canvas, canvasDrawWidth, canvasDrawHeight)
+          this.nowCanvasHeight = canvasDrawHeight
+          this.nowCanvasWidth = canvasDrawWidth
+          this.canvasInitFlag = true
+        }
+        let binaryData = atob(val)
+        let yuvData = new Uint8Array(binaryData.length)
+        for (let i = 0; i < binaryData.length; i++) {
+          yuvData[i] = binaryData.charCodeAt(i)
+        }
+        this.queue.push(yuvData)
+        // console.log(pushData, '放入queue中的内容')
+        // this.queue.push(pushData)
+        if (!this.scheduled) {
+          this.schedule()
+          this.scheduled = true
+        }
+      }
+    },
   }
 }
 </script>

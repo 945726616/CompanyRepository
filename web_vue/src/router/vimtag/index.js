@@ -14,6 +14,8 @@ const history = () => import(/* webpackChunkName: "group-Vimtag" */'@/components
 const set = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/set/set')
 const boxlist = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/boxlist/boxlist')
 const splitScreen = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/splitScreen') // playPlugin
+const playMac = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/play/vimtag/play_mac') // mac系统play页面
+const playbackMac = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/playback/playback_mac') // mac系统playback页面
 
 const vimtagRouter = new Router({
   routes: [
@@ -61,7 +63,17 @@ const vimtagRouter = new Router({
       path: '/splitScreen',
       name: 'splitScreen',
       component: splitScreen
-    }
+    },
+    {
+      path: '/play_mac',
+      name: 'playMac',
+      component: playMac
+    },
+    {
+      path: '/playback_mac',
+      name: 'playbackMac',
+      component: playbackMac
+    },
   ]
 })
 
