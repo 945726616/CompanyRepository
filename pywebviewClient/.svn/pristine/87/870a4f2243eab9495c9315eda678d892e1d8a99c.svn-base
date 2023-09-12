@@ -15,7 +15,7 @@ import requests
 
 # 获取动态链接库所在的目录
 dir_path = os.path.dirname(os.path.abspath(__file__))
-lib_path = os.path.join(dir_path, 'libmmec.debug.dylib')
+lib_path = os.path.join(dir_path, 'libmmec.debug_h265.dylib')
 # 引入动态链接库
 dll = ctypes.cdll.LoadLibrary(lib_path)
 screens = webview.screens

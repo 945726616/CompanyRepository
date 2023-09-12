@@ -23,7 +23,6 @@ OPTIONS = {
       'CFBundleVersion': '0.0.0',
       'CFBundleShortVersionString': '0.1',
       'LSUIElement': False, # 禁止 Dock 栏图标显示
-      'NSUIElement': False,
       'NSMicrophoneUsageDescription': '需要访问麦克风以进行音频录制',
       'NSAppleEventsUsageDescription': '需要访问您的文件以打开或保存。',
       'NSFileViewerUsageDescription': '需要访问您的文件以打开或保存。',
