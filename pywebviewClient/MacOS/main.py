@@ -16,6 +16,7 @@ import requests
 # 获取动态链接库所在的目录
 dir_path = os.path.dirname(os.path.abspath(__file__))
 lib_path = os.path.join(dir_path, 'libmmec.debug.dylib')
+web_path = os.path.join(dir_path, 'index.html')
 # 引入动态链接库
 dll = ctypes.cdll.LoadLibrary(lib_path)
 screens = webview.screens
@@ -246,6 +247,10 @@ def on_recv_json_msg(ref, msg_type, msg_json, remote_addrin):
 
 # 定义pywebview的api方法
 class Api:
+    # 获取最终加载地址并重载
+    def reloadUrl(self, url):
+        print(url, 'reloadUrl')
+        window.load_url(url)
     # 调用创建播放引擎方法
     def createPlayerEngine (self):
         global createPlayerFlag
@@ -258,7 +263,7 @@ class Api:
         
         # 先尝试注销当前存在的播放管道，确保播放时是新管道播放
         # destroy_video_channel()
-        while True:
+        for i in range(50):
             print(destroyChannelFlag, 'destroyChannelFlag')
             print(createPlayerFlag, 'createPlayerFlag')
             if destroyChannelFlag == False and createPlayerFlag:
@@ -267,6 +272,8 @@ class Api:
                 getVideo(url, videoType, '')
                 break
         # return 'success'
+        if destroyChannelFlag == False and createPlayerFlag == False:
+            createPlayerFlag()
     # 声音线程开启
     def voice_open(self):
         create_audio_thread()
@@ -544,6 +551,8 @@ def create_player_engine ():
     # 调用c语言函数
     print(refer_id, 'refer_id')
     desc.refer = ctypes.cast(refer_id, ctypes.c_void_p)
+    # refer_id_ptr = ctypes.pointer(ctypes.c_int(refer_id))
+    # desc.refer = ctypes.cast(refer_id_ptr, ctypes.c_void_p)
     refer_id += 1
     dll.mec_create.restype = ctypes.POINTER(mec_desc)
     mecobj_pointer = dll.mec_create( ctypes.byref(desc), ctypes.byref(params) )
@@ -740,10 +749,10 @@ def on_page_loaded():
     print("页面加载完成，可以执行全屏操作")
     time.sleep(10)
     window.toggle_fullscreen()
-# 加载网页并在其中嵌入 base64 编码的图像数据   http://192.168.3.181:8080/vimtag/
-window = webview.create_window('Vimtag', 'http://45.120.103.36:7080/dcm/version/repo/website/pkg-website-v10.9.1.2309051030/index.html?m=vimtag', js_api=api, width=webview.screens[0].width, height=webview.screens[0].height)
+# 加载网页并在其中嵌入 base64 编码的图像数据  http://192.168.3.181:8080/vimtag/  http://45.120.103.36:7080/dcm/version/repo/website/pkg-website-v10.9.1.2309051030/index.html?m=vimtag 
+window = webview.create_window('Vimtag', web_path, js_api=api, width=webview.screens[0].width, height=webview.screens[0].height)
 window.events.closed += on_closed
-# 注册页面加载完成事件的回调函数
+# 注册页面加载完成事件的回调函数        
 
 # window.events.loaded += on_page_loaded
 webview.start(debug = True)

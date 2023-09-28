@@ -8,7 +8,7 @@ Usage:
 from setuptools import setup
 
 APP = ['main.py']
-DATA_FILES = ['mec_struct.py', 'libmmec.debug.dylib']
+DATA_FILES = ['mec_struct.py', 'libmmec.debug.dylib', 'index.html']
 OPTIONS = {
     'argv_emulation': True,
     'no_chdir': True,
@@ -17,26 +17,14 @@ OPTIONS = {
     'dylib_excludes': ['libssl.3.dylib', 'libcrypto.3.dylib'],
     'frameworks': ['/Users/minging/anaconda3/pkgs/openssl-3.1.2-h8a1eda9_0/lib/libssl.3.dylib', '/Users/minging/anaconda3/pkgs/openssl-3.1.2-h8a1eda9_0/lib/libcrypto.3.dylib'],
     'plist': {
-      'CFBundleName': 'Vimtag',
-      'CFBundleDisplayName': 'vimtag',
-      'CFBundleIdentifier': 'www.vimtag.com',
-      'CFBundleVersion': '0.0.0',
-      'CFBundleShortVersionString': '0.1',
-      'LSUIElement': False, # 禁止 Dock 栏图标显示
-      'NSUIElement': False,
-      'NSMicrophoneUsageDescription': '需要访问麦克风以进行音频录制',
-      'NSAppleEventsUsageDescription': '需要访问您的文件以打开或保存。',
-      'NSFileViewerUsageDescription': '需要访问您的文件以打开或保存。',
-      'NSDocumentsFolderUsageDescription': '需要访问您的文件以打开或保存。',
-      'NSFileProviderUserPermissions': [
-          'NSFileProviderUserPermissionReadDocuments',
-          'NSFileProviderUserPermissionReadDownloads',
-          'NSFileProviderUserPermissionReadDesktop',
-          'NSFileProviderUserPermissionReadPictures',
-          'NSFileProviderUserPermissionReadMusic',
-          'NSFileProviderUserPermissionReadMovies',
-      ],
-      'NSAllowsArbitraryLoads': '获取网络权限。',
+     'CFBundleName': 'Vimtag',
+     'CFBundleDisplayName': 'vimtag',
+     'CFBundleIdentifier': 'www.vimtag.com',
+     'CFBundleVersion': '0.0.0',
+     'CFBundleShortVersionString': '0.1',
+     'LSUIElement': False, # 禁止 Dock 栏图标显示
+     'NSMicrophoneUsageDescription': '需要访问麦克风以进行音频录制',
+     'NSAppleEventsUsageDescription': '需要获取全屏权限'
     }
 }
 

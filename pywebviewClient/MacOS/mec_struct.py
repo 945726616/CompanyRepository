@@ -152,7 +152,7 @@ class mec_desc(ctypes.Structure):
     _fields_ = [
                 ("on_event", on_event_ptr),
                 ("on_pack", on_pack_ptr),
-                ("refer", ctypes.c_char_p),
+                ("refer", ctypes.c_void_p),
                 ("params", len_str)]
 
 # 定义查询下载文件内容参数结构体
