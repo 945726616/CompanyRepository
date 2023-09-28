@@ -273,20 +273,20 @@ export default {
     },
     dev_info_get_ack (msg) { // 获取窗口大小并绘制播放内容回调处理函数
       if (this.$store.state.jumpPageData.projectName === "vsmahome") {
-        this.highDefinitionClear = this.mcs_high_clear;
-        this.definitionSelect = this.mcs_high_clear;
+        this.highDefinitionClear = this.mcs_high_clear
+        this.definitionSelect = this.mcs_high_clear
       } else {
         if (msg.s_sensor === 'ok') {
           this.highDefinitionClear = msg.def
           this.support_1080p = msg.def
           if (sessionStorage.getItem("PlayProfile")) {
-            let playProfile = sessionStorage.getItem("PlayProfile");
+            let playProfile = sessionStorage.getItem("PlayProfile")
             if (playProfile === 'p0')
-              this.definitionSelect = msg.def;
+              this.definitionSelect = msg.def
             else if (playProfile === 'p1')
-              this.definitionSelect = this.mcs_standard_clear;
+              this.definitionSelect = this.mcs_standard_clear
             else if (playProfile === 'p2')
-              this.definitionSelect = this.mcs_fluent_clear;
+              this.definitionSelect = this.mcs_fluent_clear
           } else {
             this.definitionSelect = msg.def
           }
@@ -311,7 +311,7 @@ export default {
       this.readyFlag = true
     },
     play_speed (data) { // 播放速度回调
-      this.publicFunc.mx("#play_buffer_ret").innerHTML = data;
+      this.publicFunc.mx("#play_buffer_ret").innerHTML = data
     },
     // 按钮点击事件
     clickPlay (event) { // 点击播放按钮
@@ -320,7 +320,7 @@ export default {
       console.log(class_name, 'event class_name')
       if (class_name === "video_play_stop") {
         this.playFlag = 1 // 更改播放状态
-        let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
+        let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0"
         if (this.$store.state.jumpPageData.localFlag) { // 本地功能暂缓调试
           local_play_data.profile_token = profile_token
           local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
@@ -389,8 +389,8 @@ export default {
       if (this.playFlag) {
         if (this.$store.state.jumpPageData.localFlag) { // 本地内容暂缓
           local_play_data.profile_token = "p1";
-          local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc;
-          msdk_ctrl({ type: "local_device_play", data: local_play_data });
+          local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
+          msdk_ctrl({ type: "local_device_play", data: local_play_data })
         } else {
           this.$api.play.play({
             dom: $("#play_screen"),
@@ -493,12 +493,12 @@ export default {
     clickTalkback (event) { // 调用对讲功能
       let class_name = event.target.className
       if (class_name === "talkback_off_picture") {
-        event.target.className = "talkback_on_picture";
+        event.target.className = "talkback_on_picture"
         this.$api.play.play_speak({ // 开启对讲
           flag: 1
         })
       } else {
-        event.target.className = "talkback_off_picture";
+        event.target.className = "talkback_off_picture"
         this.$api.play.play_speak({ // 关闭对讲
           flag: 0
         })
@@ -569,7 +569,7 @@ export default {
       if (this.$store.state.jumpPageData.localFlag) { // 本地接口暂缓
         local_play_data.profile_token = profile_token
         local_play_data.sn = this.$store.state.jumpPageData.selectDeviceIpc
-        msdk_ctrl({ type: "local_device_play", data: local_play_data });
+        msdk_ctrl({ type: "local_device_play", data: local_play_data })
       } else {
         this.$api.play.play({
           dom: $("#play_screen"),
@@ -579,7 +579,7 @@ export default {
           this.play_speed(res)
         })
       }
-      $("#video_play").attr("class", "video_play_start");
+      $("#video_play").attr("class", "video_play_start")
       this.cameraControlDivFlag = true
     },
     // 按钮点击事件 结束
@@ -587,64 +587,64 @@ export default {
       if (this.cam_conf.day) {
         //night,white;night,auto,1;auto,2,white;auto,2,auto,1
         if (this.cam_conf.white_light && ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1))) {
-          this.cam_conf.is_white_light = this.whiteLight;
-          this.cam_conf.white_light.sharpness = this.sharpness_value;
-          this.cam_conf.white_light.contrast = this.contrast_value;
-          this.cam_conf.white_light.color_saturation = this.color_saturation_value;
-          this.cam_conf.white_light.brightness = this.brightness_value;
+          this.cam_conf.is_white_light = this.whiteLight
+          this.cam_conf.white_light.sharpness = this.sharpness_value
+          this.cam_conf.white_light.contrast = this.contrast_value
+          this.cam_conf.white_light.color_saturation = this.color_saturation_value
+          this.cam_conf.white_light.brightness = this.brightness_value
         }
-        //night,red;night,auto,0;auto,2,red;auto,2,auto,0 
+        //night,red;night,auto,0;auto,2,red;auto,2,auto,0
         else if ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "red") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 0) || (this.cam_conf.day_night == "night" && (this.cam_conf.light_mode == "auto" || this.cam_conf.light_mode == "white") && this.cam_conf.red_or_white == 1)) {
-          this.cam_conf.night.sharpness = this.sharpness_value;
-          this.cam_conf.night.contrast = this.contrast_value;
-          this.cam_conf.night.color_saturation = this.color_saturation_value;
-          this.cam_conf.night.brightness = this.brightness_value;
+          this.cam_conf.night.sharpness = this.sharpness_value
+          this.cam_conf.night.contrast = this.contrast_value
+          this.cam_conf.night.color_saturation = this.color_saturation_value
+          this.cam_conf.night.brightness = this.brightness_value
         }
         //day;auto,1
         else if (this.cam_conf.day_night == "day" || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 1)) {
-          this.cam_conf.day.sharpness = this.sharpness_value;
-          this.cam_conf.day.contrast = this.contrast_value;
-          this.cam_conf.day.color_saturation = this.color_saturation_value;
-          this.cam_conf.day.brightness = this.brightness_value;
+          this.cam_conf.day.sharpness = this.sharpness_value
+          this.cam_conf.day.contrast = this.contrast_value
+          this.cam_conf.day.color_saturation = this.color_saturation_value
+          this.cam_conf.day.brightness = this.brightness_value
         }
       } else {
-        this.cam_conf.sharpness = this.sharpness_value;
-        this.cam_conf.contrast = this.contrast_value;
-        this.cam_conf.color_saturation = this.color_saturation_value;
-        this.cam_conf.brightness = this.brightness_value;
+        this.cam_conf.sharpness = this.sharpness_value
+        this.cam_conf.contrast = this.contrast_value
+        this.cam_conf.color_saturation = this.color_saturation_value
+        this.cam_conf.brightness = this.brightness_value
       }
     },
     adjust_reset () { //点击重置
-      this.mode = "auto";
+      this.mode = "auto"
       if (this.whiteLight) {
-        this.light_mode = "auto";
+        this.light_mode = "auto"
       }
-      this.sharpness_value = 6;
-      this.contrast_value = 60;
-      this.color_saturation_value = 70;
-      this.brightness_value = 50;
+      this.sharpness_value = 6
+      this.contrast_value = 60
+      this.color_saturation_value = 70
+      this.brightness_value = 50
       if (this.cam_conf.day) {
         if (this.cam_conf.white_light) {
-          this.cam_conf.is_white_light = this.whiteLight;
-          this.cam_conf.white_light.sharpness = this.sharpness_value;
-          this.cam_conf.white_light.contrast = this.contrast_value;
-          this.cam_conf.white_light.color_saturation = this.color_saturation_value;
-          this.cam_conf.white_light.brightness = this.brightness_value;
+          this.cam_conf.is_white_light = this.whiteLight
+          this.cam_conf.white_light.sharpness = this.sharpness_value
+          this.cam_conf.white_light.contrast = this.contrast_value
+          this.cam_conf.white_light.color_saturation = this.color_saturation_value
+          this.cam_conf.white_light.brightness = this.brightness_value
         }
-        this.cam_conf.night.sharpness = this.sharpness_value;
-        this.cam_conf.night.contrast = this.contrast_value;
-        this.cam_conf.night.color_saturation = this.color_saturation_value;
-        this.cam_conf.night.brightness = this.brightness_value;
+        this.cam_conf.night.sharpness = this.sharpness_value
+        this.cam_conf.night.contrast = this.contrast_value
+        this.cam_conf.night.color_saturation = this.color_saturation_value
+        this.cam_conf.night.brightness = this.brightness_value
 
-        this.cam_conf.day.sharpness = this.sharpness_value;
-        this.cam_conf.day.contrast = this.contrast_value;
-        this.cam_conf.day.color_saturation = this.color_saturation_value;
-        this.cam_conf.day.brightness = this.brightness_value;
+        this.cam_conf.day.sharpness = this.sharpness_value
+        this.cam_conf.day.contrast = this.contrast_value
+        this.cam_conf.day.color_saturation = this.color_saturation_value
+        this.cam_conf.day.brightness = this.brightness_value
       } else {
-        this.cam_conf.sharpness = this.sharpness_value;
-        this.cam_conf.contrast = this.contrast_value;
-        this.cam_conf.color_saturation = this.color_saturation_value;
-        this.cam_conf.brightness = this.brightness_value;
+        this.cam_conf.sharpness = this.sharpness_value
+        this.cam_conf.contrast = this.contrast_value
+        this.cam_conf.color_saturation = this.color_saturation_value
+        this.cam_conf.brightness = this.brightness_value
       }
     },
     time_zone_alert () { //当设备时区与设置时区不一致时弹出提示
@@ -652,12 +652,12 @@ export default {
       this.$api.devlist.time_get({ // 获取选中时区的时间
         sn: this.$store.state.jumpPageData.selectDeviceIpc
       }).then(res => {
-        this.current_time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        this.current_time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone
         if (res.day && res.hour) {
           if (res.day === nowDate.getDate() && res.hour === nowDate.getHours()) {
-            this.timezone_err_sign = false;
+            this.timezone_err_sign = false
           } else {
-            this.timezone_err_sign = true;
+            this.timezone_err_sign = true
           }
         }
       })
@@ -668,7 +668,7 @@ export default {
           sn: this.$store.state.jumpPageData.selectDeviceIpc,
           cmd: 'stop'
         })
-        this.alarm_sign = false;
+        this.alarm_sign = false
       } else {
         this.publicFunc.delete_tips({
           content: mrs_alarm_tip_msg,
@@ -678,13 +678,13 @@ export default {
               sn: this.$store.state.jumpPageData.selectDeviceIpc,
               cmd: 'play'
             })
-            this.alarm_sign = true;
+            this.alarm_sign = true
             setTimeout(() => { //60s后自动关闭报警
               this.$api.play.alarm({
                 sn: this.$store.state.jumpPageData.selectDeviceIpc,
                 cmd: 'stop'
               }).then(res => {
-                this.alarm_sign = false;
+                this.alarm_sign = false
               })
             }, 60000)
           }
@@ -722,55 +722,55 @@ export default {
     },
     sharpness_value (val) {
       if (val || val == 0) {
-        this.$refs.sharpness.style.backgroundSize = val + '% 100%';
+        this.$refs.sharpness.style.backgroundSize = val + '% 100%'
       }
     },
     contrast_value (val) {
       if (val || val == 0) {
-        this.$refs.contrast.style.backgroundSize = val + '% 100%';
+        this.$refs.contrast.style.backgroundSize = val + '% 100%'
       }
     },
     color_saturation_value (val) {
       if (val || val == 0) {
-        this.$refs.color_saturation.style.backgroundSize = val + '% 100%';
+        this.$refs.color_saturation.style.backgroundSize = val + '% 100%'
       }
     },
     brightness_value (val) {
       if (val || val == 0) {
-        this.$refs.brightness.style.backgroundSize = val + '% 100%';
+        this.$refs.brightness.style.backgroundSize = val + '% 100%'
       }
     },
     mode (val) {
       if (val) {
-        this.cam_conf.day_night = val;
-        this.adjust_show();
+        this.cam_conf.day_night = val
+        this.adjust_show()
       }
     },
     light_mode (val) {
       if (val) {
-        this.cam_conf.light_mode = val;
+        this.cam_conf.light_mode = val
       }
     },
     cam_conf: {
       handler (val) {
         if (val) {
-          this.$api.play.adjust_set({ conf: this.cam_conf });
+          this.$api.play.adjust_set({ conf: this.cam_conf })
         }
       },
       deep: true
     },
     screenWidth (val) {
       this.playScreenHeight = { height: ((val - document.getElementById('dev_main_left').offsetWidth - 60) * 0.563) + 'px' }
-      this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px";
+      this.publicFunc.mx("#dev_main_right").style.width = val - this.publicFunc.mx("#dev_main_left").offsetWidth - 60 + "px"
       this.publicFunc.mx("#dev_main_left").style.height = (document.documentElement.clientHeight - 54) + "px"
       this.publicFunc.mx("#dev_list_nav").style.height = (this.publicFunc.mx("#dev_main_left").offsetHeight - 43) + "px"
     },
     alarm_sign (val) {
-      let timer = null;
+      let timer = null
       if (val) {
-        this.alarm_countdown_code = 60;
+        this.alarm_countdown_code = 60
         timer = setInterval(() => {
-          this.alarm_countdown_code--;
+          this.alarm_countdown_code--
           if (this.alarm_countdown_code <= 0 || this.alarm_sign === false) {
             clearInterval(timer)
           }

@@ -873,7 +873,7 @@ const play_mac = {
     }
     if (l_mark.flag === "ready") {
       l_mark.flag = "move"
-      play.ptz_ctrl({
+      play_mac.ptz_ctrl({
         sn: store.state.jumpPageData.selectDeviceIpc,
         x: -l_move_x,
         y: l_move_y
@@ -924,18 +924,18 @@ const play_mac = {
   play_record (params) {
     if (params.sn) {
       if (params.recording === 1) {
-        play.record({
+        play_mac.record({
           sn: params.sn,
           keep_time: 60000
         }).then(res => {
-          play.record_ack(res, params.recording)
+          play_mac.record_ack(res, params.recording)
         })
       } else {
-        play.record({
+        play_mac.record({
           sn: params.sn,
           keep_time: -1
         }).then(res => {
-          play.record_ack(res, params.recording)
+          play_mac.record_ack(res, params.recording)
         })
       }
     }
@@ -956,7 +956,7 @@ const play_mac = {
       let result = login.get_ret(res)
       if (result === '' && res.data.sd_ready === 1) {
         res.data.task.keep = params.keep_time
-        play.record_task_set({ // 调用函数录像接口返回值
+        play_mac.record_task_set({ // 调用函数录像接口返回值
           sess: {
             nid: login.create_nid(),
             sn: params.sn
@@ -1063,7 +1063,7 @@ const play_mac = {
   play_speak (params) {
     let play_info = store.state.jumpPageData.playInfo
     if (params.flag) {
-      play.push_talk({
+      play_mac.push_talk({
         sn: store.state.jumpPageData.selectDeviceIpc,
         protocol: "rtdp",
         token: "p1"
@@ -1230,7 +1230,7 @@ const play_mac = {
     if (obj.conf) obj = obj.conf;
     let returnItem
     if (obj.is_white_light && obj.white_light == 1) {
-      await play.img_set({
+      await play_mac.img_set({
         sn: obj.sn,
         token: "vs0",
         conf: {
@@ -1258,7 +1258,7 @@ const play_mac = {
       }).then(async res => {
         let result = login.get_ret(res);
         if (result === "") {
-          await play.misc_set({
+          await play_mac.misc_set({
             sn: obj.sn,
             info: {
               flip: obj.flip,
@@ -1275,7 +1275,7 @@ const play_mac = {
         }
       })
     } else if (obj.day) {
-      await play.img_set({
+      await play_mac.img_set({
         sn: obj.sn,
         token: "vs0",
         conf: {
@@ -1297,7 +1297,7 @@ const play_mac = {
       }).then(async res => {
         let result = login.get_ret(res);
         if (result == "") {
-          await play.misc_set({
+          await play_mac.misc_set({
             sn: obj.sn,
             info: {
               flip: obj.flip,
@@ -1314,7 +1314,7 @@ const play_mac = {
         }
       })
     } else {
-      await play.img_set({
+      await play_mac.img_set({
         sn: obj.sn,
         token: "vs0",
         conf: {
@@ -1327,7 +1327,7 @@ const play_mac = {
       }).then(async res => {
         let result = login.get_ret(res);
         if (result === "") {
-          await play.misc_set({
+          await play_mac.misc_set({
             sn: obj.sn,
             info: {
               flip: obj.flip,
@@ -1344,7 +1344,7 @@ const play_mac = {
         }
       })
       if (obj.light_mode === "white" || obj.light_mode === "red") {
-        play.img_set({
+        play_mac.img_set({
           sn: obj.sn,
           token: "vs0",
           conf: {
@@ -1526,7 +1526,7 @@ function msdk_create (param, data) {
   result.data = { "result": "" };
   // result.ref = obj.ref;
   // onEvent(JSON.stringify(result), data);
-  play.play_hls(data)
+  play_mac.play_hls(data)
 }
 // function onEvent (param, data) {
 //   console.log(param, data, 'param, data, onEvent')

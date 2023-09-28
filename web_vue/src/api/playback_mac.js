@@ -25,20 +25,20 @@ const playback_mac = {
     }
     // console.log('vc_1')
     if (play_info.inner_window_info.video_chls) {
-      play_info.inner_window_info.mme.chl_destroy(play_info.inner_window_info.video_chls);
+      play_info.inner_window_info.mme.chl_destroy(play_info.inner_window_info.video_chls)
     }
     if (play_info.inner_window_info.audio_chls)
-      play_info.inner_window_info.mme.chl_destroy(play_info.inner_window_info.audio_chls);
-    play_info.inner_window_info.node_sn = "none";
-    play_info.inner_window_info.device_list_li_span = null;
-    play_info.inner_window_info.profile_token = "";
-    play_info.inner_window_info.ptz_token = "";
-    play_info.inner_window_info.video_encoding = "";
-    play_info.inner_window_info.video_resolution_w = 0;
-    play_info.inner_window_info.video_resolution_h = 0;
-    play_info.inner_window_info.video_frame_rate = 0;
-    play_info.inner_window_info.video_max_bit_rate = 0;
-    play_info.inner_window_info.video_min_bit_rate = 0;
+      play_info.inner_window_info.mme.chl_destroy(play_info.inner_window_info.audio_chls)
+      play_info.inner_window_info.node_sn = "none"
+      play_info.inner_window_info.device_list_li_span = null
+      play_info.inner_window_info.profile_token = ""
+      play_info.inner_window_info.ptz_token = ""
+      play_info.inner_window_info.video_encoding = ""
+      play_info.inner_window_info.video_resolution_w = 0
+      play_info.inner_window_info.video_resolution_h = 0
+      play_info.inner_window_info.video_frame_rate = 0
+      play_info.inner_window_info.video_max_bit_rate = 0
+      play_info.inner_window_info.video_min_bit_rate = 0
     if (params.isDownload) {
       $("#download_dom").html('')
     } else {
@@ -111,17 +111,17 @@ const playback_mac = {
   async play (data) {
     let _this = this
     let returnItem
-    let judge_enable_native_plug = true;
-    let judge_enable_flash_plug = false;
-    let ref_obj = create_play_ipc(data);
-    let playbackFlag = data.playback ? 1 : 0;
-    let flash_isplay = store.state.jumpPageData.flashIsPlay;
-    let l_plug_type;
+    let judge_enable_native_plug = true
+    let judge_enable_flash_plug = false
+    let ref_obj = create_play_ipc(data)
+    let playbackFlag = data.playback ? 1 : 0
+    let flash_isplay = store.state.jumpPageData.flashIsPlay
+    let l_plug_type
     if (ref_obj.isDownload) { // 播放弹窗dom
       if (!$("#download_dom").length > 0) {
         $("body").append("<div id='download_dom' style='width:1px;height:1px;'></div>")
       }
-      data.dom = $("#download_dom");
+      data.dom = $("#download_dom")
     }
     let mme_params = {
       parent: data.dom,
@@ -136,15 +136,15 @@ const playback_mac = {
       debug: 0
     };
     if (data.ipc_stat != 0) {
-      ref_obj.inner_window_info.mme = await new mme(mme_params);
+      ref_obj.inner_window_info.mme = await new mme(mme_params)
     }
     store.dispatch('setPlayInfo', ref_obj)
     // console.log('vc_2')
     function create_play_ipc (obj) { // 整理传递的数据(用于创建mme实例)
-      obj.protocol = "auto";
-      obj.videoSize = obj.videoSize ? obj.videoSize : 0;
-      obj.localPath = obj.download_path ? obj.download_path : null;
-      obj.isDownload = obj.isDownload ? 1 : 0;
+      obj.protocol = "auto"
+      obj.videoSize = obj.videoSize ? obj.videoSize : 0
+      obj.localPath = obj.download_path ? obj.download_path : null
+      obj.isDownload = obj.isDownload ? 1 : 0
       obj.inner_window_info = {
         dom_id: ("play_screen"),
         index: 1,
@@ -155,38 +155,38 @@ const playback_mac = {
         node_sn: obj.sn,
         profile_token: obj.profile_token
       };
-      return obj;
+      return obj
     }
     async function on_plug_event (obj) { // 调用创建mme插件事件
       // // console.log(obj, 'on_plug_event_obj')
-      sessionStorage.setItem("type_tip", obj.type);
-      sessionStorage.setItem("code_tip", obj.code);
+      sessionStorage.setItem("type_tip", obj.type)
+      sessionStorage.setItem("code_tip", obj.code)
       switch (obj.type) {
         case "missing": {
           if (!playbackFlag) {
             // if ((navigator.userAgent.toLowerCase().match(/chrome\/[\d.]+/gi) + "").replace(/[^0-9.]/ig, "") > "44") {
             //   location.href = "https://www.adobe.com/go/getflashplayer";
             // }
-            if (flash_isplay) clearInterval(flash_isplay);
-            flash_isplay = setInterval(function () { flash_play() }, 1000);
+            if (flash_isplay) clearInterval(flash_isplay)
+            flash_isplay = setInterval(function () { flash_play() }, 1000)
           } else {
-            if (flash_isplay) clearInterval(flash_isplay);
-            let i = 0;
+            if (flash_isplay) clearInterval(flash_isplay)
+            let i = 0
             flash_isplay = setInterval(function () {
-              flash_play(i);
-              i++;
-              if (i > data.token.length) clearInterval(flash_isplay);
-            }, 1000);
+              flash_play(i)
+              i++
+              if (i > data.token.length) clearInterval(flash_isplay)
+            }, 1000)
           }
-          break;
+          break
         }
         case "ready": {
-          let proto = obj.ref_obj.protocol;
+          let proto = obj.ref_obj.protocol
           if (obj.plug.type.name == "flash") {
-            l_plug_type = "flash";
-            proto = "rtmp";
+            l_plug_type = "flash"
+            proto = "rtmp"
           } else {
-            if (proto == "auto") proto = "rtdp";
+            if (proto == "auto") proto = "rtdp"
           }
           await axios.get('/ccm/ccm_replay', {
             params: {
@@ -267,7 +267,7 @@ const playback_mac = {
         //   publicFunc.log_upload('playback_sd', 'success') //记录日志：sd卡录像播放成功
         // }
         
-        await chl_video_create({ type: msg.type, uri: msg.url, inner_window_info: ref.inner_window_info, localPath: ref.localPath, isDownload: ref.isDownload });
+        await chl_video_create({ type: msg.type, uri: msg.url, inner_window_info: ref.inner_window_info, localPath: ref.localPath, isDownload: ref.isDownload })
       } else {
         // if(data.box_ipc) { //云盒子
         //   publicFunc.log_upload('playback_box', 'fail', msg.result) //记录日志：云盒子录像播放失败，失败原因
@@ -289,19 +289,19 @@ const playback_mac = {
       let uri = obj.uri,
         chl_params = (obj.type == "publish") ? "" : ",thread:\"istream\", jitter:{max:3000}"/* for old version's mme plugin */,
         trans_params = (obj.type == "play") ? ",trans:[{flow_ctrl:\"jitter\",thread:\"istream\"}]" :
-          ((obj.type == "playback") ? ",trans:[{flow_ctrl:\"delay\",thread:\"istream\"}]" : "");
-      let params_data;
-      let l_ipc_speed_time;
-      let l_Last_speed = 0;
-      let l_speed = 0;
-      let l_progress = 0;
+          ((obj.type == "playback") ? ",trans:[{flow_ctrl:\"delay\",thread:\"istream\"}]" : "")
+      let params_data
+      let l_ipc_speed_time
+      let l_Last_speed = 0
+      let l_speed = 0
+      let l_progress = 0
       if (obj.isDownload) {
-        obj.localPath = obj.localPath.replace(/[/]/g, '\\/') + data.token + ".mp4";
+        obj.localPath = obj.localPath.replace(/[/]/g, '\\/') + data.token + ".mp4"
       }
       if (obj.type == "playback" && obj.isDownload) {
         params_data = "{src:[{url:\"" + uri + "\"}], dst:[{url:\"file://" + obj.localPath + "\",thread:\"channel\"}],speaker:{mute:\"1\"},audio:{type:\"none\"},thread:\"channel\",canvas:\"none\"}}"
       } else {
-        params_data = "{" + ((obj.type == "publish") ? "dst" : "src") + ":[{url:\"" + uri + "\"}]" + trans_params + chl_params + "}";
+        params_data = "{" + ((obj.type == "publish") ? "dst" : "src") + ":[{url:\"" + uri + "\"}]" + trans_params + chl_params + "}"
       }
       // console.log('vc_3')
       obj.inner_window_info.video_chls = obj.inner_window_info.mme.chl_create({
@@ -311,53 +311,53 @@ const playback_mac = {
       if (obj.inner_window_info.video_chls !== null) {
         obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "speaker.mute", obj.type == "playback" ? "{value:0}" : "{value:1}") // 参考旧代码此处原本含有一处全局变量判断,但未发现该值有后赋值行为默认删减成单一属性
         if (l_ipc_speed_time) {
-          clearInterval(l_ipc_speed_time);
+          clearInterval(l_ipc_speed_time)
         }
         // console.log('vc_5')
         if (l_plug_type !== "flash") { // 该判断条件中需要添加!此为客户端逻辑(去掉!用于在浏览器中测试使用)
           l_ipc_speed_time = setInterval(function () {
-            let string_speed = obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "query", "{}");
+            let string_speed = obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "query", "{}")
             // // console.log(string_speed, 'download_string_speed', obj, 'download_obj')
             if (string_speed.length >= 150) {
-              let json_speed = eval("(" + string_speed + ")");
+              let json_speed = eval("(" + string_speed + ")")
               // console.log(json_speed, 'json_speed') // json_speed是视频播放的相关参数 可以根据该参数进行视频内容和进度条的对齐
               // console.log(data, playbackFlag, 'data_playbackFlag')
               if (data.isDownload) {
                 if (json_speed.data.played_duration / data.videoSize > 1) {
-                  json_speed.data.played_duration = data.videoSize;
-                  l_speed = "100%";
+                  json_speed.data.played_duration = data.videoSize
+                  l_speed = "100%"
                   clearInterval(l_ipc_speed_time);//5.11.3后加
-                  publicFunc.msg_tips({ msg: mrs_download_completed, type: "success", timeout: 3000 });
+                  publicFunc.msg_tips({ msg: mrs_download_completed, type: "success", timeout: 3000 })
                   // }
                 } else {
-                  record_played_duration_num = 0;
-                  record_played_duration = json_speed.data.played_duration;
-                  l_speed = parseInt((json_speed.data.played_duration / data.videoSize) * 100) + "%";
+                  record_played_duration_num = 0
+                  record_played_duration = json_speed.data.played_duration
+                  l_speed = parseInt((json_speed.data.played_duration / data.videoSize) * 100) + "%"
                 }
                 // returnItem = l_speed
                 data.func(l_speed)
               } else if (playbackFlag) {
-                let duration2 = sessionStorage.getItem("duration");
-                let kb = json_speed.data.p2ping ? "kB" : "KB";
-                l_speed = json_speed.data.total_bytes > l_Last_speed ? parseInt((json_speed.data.total_bytes - l_Last_speed) / 1000) + kb : l_Last_speed = 0;
+                let duration2 = sessionStorage.getItem("duration")
+                let kb = json_speed.data.p2ping ? "kB" : "KB"
+                l_speed = json_speed.data.total_bytes > l_Last_speed ? parseInt((json_speed.data.total_bytes - l_Last_speed) / 1000) + kb : l_Last_speed = 0
                 if (duration2 == json_speed.data.played_duration) {
-                  let duration_tip = true;
+                  let duration_tip = true
                   sessionStorage.setItem("duration_tip", duration_tip)
                 }
-                l_Last_speed = json_speed.data.total_bytes;
+                l_Last_speed = json_speed.data.total_bytes
                 l_progress = json_speed.data.played_duration / data.videoSize
                 //store.dispatch('setPercent', l_progress) // 赋值播放进度百分比
                 // console.log(l_progress, '播放百分比进度')
-                sessionStorage.setItem("duration", json_speed.data.played_duration);
+                sessionStorage.setItem("duration", json_speed.data.played_duration)
                 let record_played_duration = json_speed.data.played_duration // - duration2;
                 // returnItem = [l_speed, l_progress, record_played_duration]
                 // console.log('enter_playback_speed')
                 playback_speed(l_speed, l_progress, record_played_duration)
               } else {
                 // console.log('enter this else')
-                let kb = json_speed.data.p2ping ? "kB" : "KB";
-                l_speed = json_speed.data.total_bytes > l_Last_speed ? parseInt((json_speed.data.total_bytes - l_Last_speed) / 1000) + kb : l_Last_speed = 0;
-                l_Last_speed = json_speed.data.total_bytes;
+                let kb = json_speed.data.p2ping ? "kB" : "KB"
+                l_speed = json_speed.data.total_bytes > l_Last_speed ? parseInt((json_speed.data.total_bytes - l_Last_speed) / 1000) + kb : l_Last_speed = 0
+                l_Last_speed = json_speed.data.total_bytes
                 // returnItem = l_speed
               }
               store.dispatch('setClientP2Ping', l_speed)
@@ -375,14 +375,14 @@ const playback_mac = {
     }
     function play_ipc (obj) { // 播放Ipc
       // console.log('进入play_ipc')
-      obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "play", "");
-      obj.inner_window_info.playback_state = "play";
-      return 0;
+      obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "play", "")
+      obj.inner_window_info.playback_state = "play"
+      return 0
     }
     function flash_play (i) {
       // console.log('进入flash_play')
-      let profile_token_choice = get_profile_token_choice(data.profile_token);
-      let urls;
+      let profile_token_choice = get_profile_token_choice(data.profile_token)
+      let urls
       if (!playbackFlag) {
         if (process.env.NODE_ENV === 'production') {
           urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
@@ -390,7 +390,7 @@ const playback_mac = {
           urls = "http://45.113.201.4:7080/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + profile_token_choice.profile_token_choice_value + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
         }
       } else {
-        let pic_token = data.token[i];
+        let pic_token = data.token[i]
         if (process.env.NODE_ENV === 'production') {
           urls = window.location.protocol + "//" + store.state.jumpPageData.serverDevice + "/ccm/ccm_pic_get.js?hfrom_handle=887330&dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
         } else {
@@ -437,7 +437,7 @@ const playback_mac = {
         // console.log('进入终止播放函数')
         store.dispatch('setPlayBackSavePercent', 0) // 偏移百分比设置为0
         store.dispatch('setPercent', 0) // 停止播放百分比设置1
-        playback.video_stop({
+        playback_mac.video_stop({
           dom: $("#playback_screen")
         }).then(res => {
           // create_preview(res)
@@ -519,8 +519,8 @@ const playback_mac = {
       store.dispatch('setPlayInfo', ref_obj) // 全局存储播放对象
     }
     async function on_plug_event (obj) {
-      sessionStorage.setItem("type_tip", obj.type);
-      sessionStorage.setItem("code_tip", obj.code);
+      sessionStorage.setItem("type_tip", obj.type)
+      sessionStorage.setItem("code_tip", obj.code)
       switch (obj.type) {
         case "ready": {
         // case "link": {
@@ -614,38 +614,38 @@ const playback_mac = {
         // // console.log('准备下载', obj.inner_window_info.mme)
         obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "speaker.mute", obj.type == "playback" ? "{value:0}" : "{value:1}") // 参考旧代码此处原本含有一处全局变量判断,但未发现该值有后赋值行为默认删减成单一属性
         if (l_ipc_speed_time) {
-          clearInterval(l_ipc_speed_time);
+          clearInterval(l_ipc_speed_time)
         }
         // console.log('vc_8')
         l_ipc_speed_time = setInterval(function () {
-          let string_speed = obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "query", "{}");
+          let string_speed = obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "query", "{}")
           // // console.log(string_speed, 'download_string_speed', obj, 'download_obj')
           if (string_speed.length >= 150) {
-            let json_speed = eval("(" + string_speed + ")");
+            let json_speed = eval("(" + string_speed + ")")
             // console.log(json_speed.data.played_duration / data.videoSize, 'json_speed.data.played_duration / data.videoSize')
             if (json_speed.data.played_duration / data.videoSize > 1) {
-              json_speed.data.played_duration = data.videoSize;
-              l_speed = "100%";
-              clearInterval(l_ipc_speed_time); //5.11.3后加
+              json_speed.data.played_duration = data.videoSize
+              l_speed = "100%"
+              clearInterval(l_ipc_speed_time) //5.11.3后加
               publicFunc.msg_tips({
                 msg: mrs_download_completed,
                 type: "success",
                 timeout: 3000
-              });
+              })
             } else {
-              record_played_duration_num = 0;
-              record_played_duration = json_speed.data.played_duration;
-              l_speed = parseInt((json_speed.data.played_duration / data.videoSize) * 100) + "%";
+              record_played_duration_num = 0
+              record_played_duration = json_speed.data.played_duration
+              l_speed = parseInt((json_speed.data.played_duration / data.videoSize) * 100) + "%"
             }
             // returnItem = l_speed
             download_info(l_speed)
             function download_info (data) {
               // console.log(data, 'download_info_data')
-              let data_num = data.substring(0, data.length - 1);
+              let data_num = data.substring(0, data.length - 1)
               $("#download_progress").html(data)
               if (data_num > 99) {
                 // create_preview({parent:l_dom_playback_screen});
-                playback.video_stop({
+                playback_mac.video_stop({
                   dom: $("#playback_screen"),
                   isDownload: 1 // 是否下载中特殊标记
                 }).then(res => {
@@ -672,7 +672,7 @@ const playback_mac = {
                 + "<div id='play_pause_pic'></div>"
                 + "</div>"
               let pic_token = obj.pic_token.replace("_p3_", "_p0_");
-              playback.play_preview_img({
+              playback_mac.play_preview_img({
                 dom: $("#playback_screen"),
                 sn: store.state.jumpPageData.selectDeviceIpc,
                 pic_token: pic_token
@@ -688,17 +688,17 @@ const playback_mac = {
       }
       function play_ipc (obj) {
         // console.log('vc_9')
-        obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "play", "");
-        obj.inner_window_info.playback_state = "play";
-        return 0;
+        obj.inner_window_info.mme.ctrl(obj.inner_window_info.video_chls, "play", "")
+        obj.inner_window_info.playback_state = "play"
+        return 0
       }
       // return returnItem;
     }
     function create_play_ipc (obj) { // 传递的参数整理
-      obj.protocol = "auto";
-      obj.videoSize = obj.videoSize ? obj.videoSize : 0;
-      obj.localPath = obj.download_path ? obj.download_path : null;
-      obj.isDownload = obj.isDownload ? 1 : 0;
+      obj.protocol = "auto"
+      obj.videoSize = obj.videoSize ? obj.videoSize : 0
+      obj.localPath = obj.download_path ? obj.download_path : null
+      obj.isDownload = obj.isDownload ? 1 : 0
       obj.inner_window_info = {
         dom_id: ("play_screen"),
         index: 1,
@@ -708,8 +708,8 @@ const playback_mac = {
         ipc_state: "",
         node_sn: obj.sn,
         profile_token: obj.profile_token
-      };
-      return obj;
+      }
+      return obj
     }
   },
   /*
@@ -721,7 +721,7 @@ const playback_mac = {
       // console.log('vc_10')
       play_info.inner_window_info.mme.ctrl(play_info.inner_window_info.video_chls, "pause", "")
     }
-    play_info.inner_window_info.playback_state = "pause";
+    play_info.inner_window_info.playback_state = "pause"
   },
   /*
   ** 继续下载
@@ -729,8 +729,8 @@ const playback_mac = {
   async play_download_continue () {
     let play_info = store.state.jumpPageData.playInfo
     // console.log('vc_11')
-    play_info.inner_window_info.mme.ctrl(play_info.inner_window_info.video_chls, "play", "");
-    play_info.inner_window_info.playback_state = "play";
+    play_info.inner_window_info.mme.ctrl(play_info.inner_window_info.video_chls, "play", "")
+    play_info.inner_window_info.playback_state = "play"
   },
   /*
   ** 播放封面图
@@ -742,9 +742,9 @@ const playback_mac = {
     } else {
       url = (data.addr ? "http://" + data.addr : window.location.protocol + "//" + window.location.host) + "/api/ccm/ccm_pic_get.js?dsess=1&dsess_nid=" + login.create_nid() + "&dsess_sn=" + data.sn + "&dtoken=" + data.pic_token + "&dencode_type=0&dpic_types_support=2&dflag=2"//"&dencode_type=3&dpic_types_support=2";
     }
-    data.dom[0].style.backgroundImage = 'url(' + url + ')';
-    data.dom[0].style.backgroundSize = '100% 100%';
-    data.dom[0].style.backgroundRepeat = 'no-repeat';
+    data.dom[0].style.backgroundImage = 'url(' + url + ')'
+    data.dom[0].style.backgroundSize = '100% 100%'
+    data.dom[0].style.backgroundRepeat = 'no-repeat'
     // data.dom[0].attr('style', 'background: url('+url+') no-repeat')
     // data.dom[0].attr('style', 'backgroundSize: 100% 100%')
   }
@@ -753,28 +753,28 @@ const playback_mac = {
 export default playback_mac
 
 function get_profile_token_choice (data) {
-  var profile_token_obj = new Object();
-  var profile_token_choice = data;
+  var profile_token_obj = new Object()
+  var profile_token_choice = data
   if (profile_token_choice == "" || profile_token_choice == null) {
     if (store.state.jumpPageData.networkEnviron == "private") {
-      profile_token_obj.profile_token_choice_value = "p0_xxxxxxxxxx";
-      profile_token_obj.few_seconds = 3000;
+      profile_token_obj.profile_token_choice_value = "p0_xxxxxxxxxx"
+      profile_token_obj.few_seconds = 3000
     } else {
-      profile_token_obj.profile_token_choice_value = "p1_xxxxxxxxxx";
-      profile_token_obj.few_seconds = 1000;
+      profile_token_obj.profile_token_choice_value = "p1_xxxxxxxxxx"
+      profile_token_obj.few_seconds = 1000
     }
   } else if (profile_token_choice == "p0") {
-    profile_token_obj.profile_token_choice_value = "p0_xxxxxxxxxx";
-    profile_token_obj.few_seconds = 3000;
+    profile_token_obj.profile_token_choice_value = "p0_xxxxxxxxxx"
+    profile_token_obj.few_seconds = 3000
   } else if (profile_token_choice == "p1") {
-    profile_token_obj.profile_token_choice_value = "p1_xxxxxxxxxx";
-    profile_token_obj.few_seconds = 1000;
+    profile_token_obj.profile_token_choice_value = "p1_xxxxxxxxxx"
+    profile_token_obj.few_seconds = 1000
   } else if (profile_token_choice == "p2") {
-    profile_token_obj.profile_token_choice_value = "p2_xxxxxxxxxx";
-    profile_token_obj.few_seconds = 500;
+    profile_token_obj.profile_token_choice_value = "p2_xxxxxxxxxx"
+    profile_token_obj.few_seconds = 500
   } else if (profile_token_choice == "p3") {
-    profile_token_obj.profile_token_choice_value = "p3_xxxxxxxxxx";
-    profile_token_obj.few_seconds = 500;
+    profile_token_obj.profile_token_choice_value = "p3_xxxxxxxxxx"
+    profile_token_obj.few_seconds = 500
   }
-  return profile_token_obj;
+  return profile_token_obj
 }

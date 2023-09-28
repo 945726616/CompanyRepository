@@ -74,12 +74,8 @@
           </div>
           <!-- 播放底部菜单栏 结束 -->
           <div id='play_view_control' class='noselect' v-show="Boolean(cameraControlDivFlag)">
-            <!--:style="{
-            'width': (document.documentElement.clientWidth - 17 - 100) - ($refs.play_dev_list.width + 20) + 'px',
-            'height': playViewHeight - 44 + 'px',
-            'left': $refs.play_view.offsetLeft + 'px',
-            'top': playViewTop + "px"}"-->
             <!-- 顶部数据传输kb值暂时条(放在这里与控制菜单置于同一层避免影响播放界面效果) -->
+            <!-- <div id='topClientP2Ping' v-show="clientFlag">{{clientP2PingValue}}</div> -->
             <div id='vimtag_ptz_control'>
               <div id='ptz_control_left' @mouseover="leftControl = true" @mouseout="leftControl = false">
                 <div id='turn_left' class='left_key' v-show="leftControl" @mousedown="turnCamera('move', 'left')"
@@ -327,13 +323,13 @@ export default {
       this.local_play_data.dom = _this.publicFunc.mx("#play_screen")
       this.local_play_data.profile_token = "p0"
 
-      let l_dom_play_menu_box = _this.publicFunc.mx("#play_menu_box");
-      let l_dom_play_buffer_ret = _this.publicFunc.mx("#play_buffer_ret");
-      let l_play_box_width = document.documentElement.clientWidth - 17 - 100;
-      $("#play_box").css("width", l_play_box_width + 'px');
+      let l_dom_play_menu_box = _this.publicFunc.mx("#play_menu_box")
+      let l_dom_play_buffer_ret = _this.publicFunc.mx("#play_buffer_ret")
+      let l_play_box_width = document.documentElement.clientWidth - 17 - 100
+      $("#play_box").css("width", l_play_box_width + 'px')
 
-      _this.publicFunc.mx("#play_dev_list").setAttribute("style", "width:234px;float:left;background:#ebebeb;display:block;overflow:hidden;position: relative;");
-      l_dom_play_buffer_ret.style.display = "none";
+      _this.publicFunc.mx("#play_dev_list").setAttribute("style", "width:234px;float:left;background:#ebebeb;display:block;overflow:hidden;position: relative;")
+      l_dom_play_buffer_ret.style.display = "none"
       // 动态设置播放器大小
       this.playViewWidth = (document.documentElement.clientWidth - 17 - 100) - (parseInt($("#play_dev_list").css("width")) + 20)
       this.playViewHeight = this.playViewWidth / 16 * 9 + 44
@@ -342,7 +338,7 @@ export default {
       // 添加占位div高度
       document.getElementById('play_screen').style.height = this.playViewHeight - 44 + 'px'
 
-      document.getElementById('timezone_err_tip').style.width = this.playViewWidth + 'px';
+      document.getElementById('timezone_err_tip').style.width = this.playViewWidth + 'px'
       this.playListHeight = this.playViewHeight - document.getElementById('device_list_sidebar_up').offsetHeight
       this.playViewTop = document.getElementById('play_view').offsetTop
       // 动态设置播放器大小 结束
@@ -608,33 +604,33 @@ export default {
     },
     // 摇头机镜头控制
     play_view_control (data) {
-      let l_dom_turn_left = this.publicFunc.mx("#turn_left");
-      let l_dom_turn_right = this.publicFunc.mx("#turn_right");
-      let l_dom_turn_up = this.publicFunc.mx("#turn_up");
-      let l_dom_turn_down = this.publicFunc.mx("#turn_down");
-      let l_dom_ptz_control_bottom_center = this.publicFunc.mx("#ptz_control_bottom_center");
+      let l_dom_turn_left = this.publicFunc.mx("#turn_left")
+      let l_dom_turn_right = this.publicFunc.mx("#turn_right")
+      let l_dom_turn_up = this.publicFunc.mx("#turn_up")
+      let l_dom_turn_down = this.publicFunc.mx("#turn_down")
+      let l_dom_ptz_control_bottom_center = this.publicFunc.mx("#ptz_control_bottom_center")
       let l_dom_play_view_control = this.publicFunc.mx("#play_view_control")
-      l_dom_play_view_control.style.width = (document.documentElement.clientWidth - 17 - 100) - (parseInt($("#play_dev_list").css("width")) + 20) + 'px';
-      l_dom_play_view_control.style.height = this.playViewHeight - 44 + 'px';
-      l_dom_play_view_control.style.left = this.publicFunc.mx('#play_view').offsetLeft + "px";
-      l_dom_play_view_control.style.top = this.playViewTop + "px";
-      l_dom_turn_up.className = "up_key";
-      l_dom_turn_down.className = "down_key";
-      l_dom_turn_left.className = "left_key";
-      l_dom_turn_right.className = "right_key";
+      l_dom_play_view_control.style.width = (document.documentElement.clientWidth - 17 - 100) - (parseInt($("#play_dev_list").css("width")) + 20) + 'px'
+      l_dom_play_view_control.style.height = this.playViewHeight - 44 + 'px'
+      l_dom_play_view_control.style.left = this.publicFunc.mx('#play_view').offsetLeft + "px"
+      l_dom_play_view_control.style.top = this.playViewTop + "px"
+      l_dom_turn_up.className = "up_key"
+      l_dom_turn_down.className = "down_key"
+      l_dom_turn_left.className = "left_key"
+      l_dom_turn_right.className = "right_key"
 
       // 鼠标点击视频中间窗口弹出菜单
       l_dom_ptz_control_bottom_center.onclick = function () {
-        let is_display = 0;
+        let is_display = 0
         // let is_innerhtml = this.publicFunc.mx("#play_buffer_ret").innerHTML;
         this.cameraControlDivFlag = true
         // $("#play_view_control").show();
         // if (is_innerhtml) {
-        is_display = $("#ptz_control_bottom").css("display") == "none" ? 0 : 1;
+        is_display = $("#ptz_control_bottom").css("display") == "none" ? 0 : 1
         if (is_display) {
-          $("#ptz_control_bottom").hide();
+          $("#ptz_control_bottom").hide()
         } else {
-          $("#ptz_control_bottom").show();
+          $("#ptz_control_bottom").show()
         }
         // }
       }
@@ -643,7 +639,7 @@ export default {
     // 获取设备列表信息 结束
     // 按钮点击事件
     clickPreview () {
-      let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
+      let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0"
       this.playFlag = 1
       if (this.vimtagPlayObj.box_ipc === 1) {
         // 调用播放接口
@@ -667,7 +663,7 @@ export default {
     clickPlay () { // 点击播放按钮
       if (!this.playFlag) { // 当前处于暂停状态
         this.playFlag = 1 // 更改播放状态至播放
-        let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0";
+        let profile_token = sessionStorage.getItem("PlayProfile") ? sessionStorage.getItem("PlayProfile") : "p0"
         this.$api.play_mac.play({ // 调用播放接口进行视频播放
           dom: $("#play_screen"),
           sn: this.$store.state.jumpPageData.selectDeviceIpc,
@@ -868,7 +864,8 @@ export default {
         window.pywebview.api.endGetVoice()
       }
     },
-    adjust_show () { //显示亮度等参数
+    // 显示亮度等参数
+    adjust_show () {
       if (this.cam_conf.day) {
         //night,white;night,auto,1;auto,2,white;auto,2,auto,1
         if (this.cam_conf.white_light && ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1))) {
@@ -898,9 +895,10 @@ export default {
         this.brightness_value = parseInt(this.cam_conf.brightness)
       }
 
-      this.mode = this.cam_conf.day_night;
+      this.mode = this.cam_conf.day_night
     },
-    clickAdjust (event) { // 点击设备调整按钮
+    // 点击设备调整按钮
+    clickAdjust (event) {
       if (event.target.className === "adjust_off_picture") {
         event.target.className = "adjust_on_picture"
         this.$api.play_mac.adjust_get({ sn: this.$store.state.jumpPageData.selectDeviceIpc }).then(res => {
@@ -943,7 +941,7 @@ export default {
           this.play_speed(res)
         })
       }
-      $("#video_play").attr("class", "video_play_start");
+      $("#video_play").attr("class", "video_play_start")
       this.cameraControlDivFlag = true
     },
     clickBack () { // 点击返回
@@ -957,8 +955,8 @@ export default {
       }
     },
     // 按钮点击事件 结束
-
-    adjust_set () { //调整亮度等参数
+    // 调整亮度等参数
+    adjust_set () { 
       if (this.cam_conf.day) {
         //night,white;night,auto,1;auto,2,white;auto,2,auto,1
         if (this.cam_conf.white_light && ((this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "night" && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1) || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "white") || (this.cam_conf.day_night == "auto" && this.cam_conf.day_or_night == 2 && this.cam_conf.light_mode == "auto" && this.cam_conf.red_or_white == 1))) {
@@ -989,8 +987,9 @@ export default {
         this.cam_conf.brightness = this.brightness_value
       }
     },
-    adjust_reset () { //点击重置
-      this.mode = "auto";
+    // 点击重置
+    adjust_reset () {
+      this.mode = "auto"
       if (this.whiteLight) {
         this.light_mode = "auto"
       }
@@ -1183,39 +1182,39 @@ export default {
   watch: {
     sharpness_value (val) {
       if (val || val == 0) {
-        this.$refs.sharpness.style.backgroundSize = val + '% 100%';
+        this.$refs.sharpness.style.backgroundSize = val + '% 100%'
       }
     },
     contrast_value (val) {
       if (val || val == 0) {
-        this.$refs.contrast.style.backgroundSize = val + '% 100%';
+        this.$refs.contrast.style.backgroundSize = val + '% 100%'
       }
     },
     color_saturation_value (val) {
       if (val || val == 0) {
-        this.$refs.color_saturation.style.backgroundSize = val + '% 100%';
+        this.$refs.color_saturation.style.backgroundSize = val + '% 100%'
       }
     },
     brightness_value (val) {
       if (val || val == 0) {
-        this.$refs.brightness.style.backgroundSize = val + '% 100%';
+        this.$refs.brightness.style.backgroundSize = val + '% 100%'
       }
     },
     mode (val) {
       if (val) {
-        this.cam_conf.day_night = val;
-        this.adjust_show();
+        this.cam_conf.day_night = val
+        this.adjust_show()
       }
     },
     light_mode (val) {
       if (val) {
-        this.cam_conf.light_mode = val;
+        this.cam_conf.light_mode = val
       }
     },
     cam_conf: {
       handler (val) {
         if (val) {
-          this.$api.play_mac.adjust_set({ conf: this.cam_conf });
+          this.$api.play_mac.adjust_set({ conf: this.cam_conf })
         }
       },
       deep: true
@@ -1227,11 +1226,11 @@ export default {
       }
     },
     alarm_sign (val) {
-      let timer = null;
+      let timer = null
       if (val) {
-        this.alarm_countdown_code = 60;
+        this.alarm_countdown_code = 60
         timer = setInterval(() => {
-          this.alarm_countdown_code--;
+          this.alarm_countdown_code--
           if (this.alarm_countdown_code <= 0 || this.alarm_sign === false) {
             clearInterval(timer)
           }
