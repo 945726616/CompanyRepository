@@ -22,8 +22,6 @@ dll = ctypes.cdll.LoadLibrary(lib_path)
 screens = webview.screens
 print('Available screens are: ' + str(screens[0]))
 
-refer_id = 1
-
 # 播放引擎创建标识 false：当前无播放引擎需要创建播放引擎 true：有播放引擎无需创建
 createPlayerFlag = False
 # 销毁播放通道标识 flase：当前无播放通道不需要销毁 true：当前有播放通道需要销毁
@@ -120,7 +118,7 @@ def json_get_child_string(obj, child_len, child_name_const, out_value_pointer):
 class TimeQuery(threading.Thread):
     def __init__(self):
         super(TimeQuery, self).__init__()  # 调用父类的 __init__() 方法
-        self.stop_flag = False  
+        self.stop_flag = False
         self.result_queue = queue.Queue()
     # 开始查询
     def start_query(self):
@@ -162,7 +160,6 @@ class TimeQuery(threading.Thread):
             print(query_dict, 'query_dict')
             # 将查询结果存储到 result_queue 中
             self.result_queue.put(query_dict)
-            
             # 等待 1 秒钟
             time.sleep(1)
     # 将结果返回到主进程
@@ -173,7 +170,7 @@ class TimeQuery(threading.Thread):
             result = self.result_queue.get()
             result_list.append(result)
         return result_list
-    # 停止查询     
+    # 停止查询
     def stop_query(self):
         self.stop_flag = True
         while not self.result_queue.empty():
@@ -188,7 +185,7 @@ def create_query_thread():
 # 定义动态库回调函数
 def test_on_pack( mec, pack, refer):
     print('on_pack开始')
-    global player, refer_id
+    global player
     print(refer, 'test_on_pack_refer')
     data_major = pack.contents.type.contents.major.data
     # 传递两种数值 video/audio 其中video的width/height是正常比例  audio的width/height含义为文件采样率16000Hz/采样深度为16bit
@@ -214,27 +211,20 @@ def test_on_pack( mec, pack, refer):
         yuv_width = pack.contents.type.contents.format.video.width
         yuv_data = pack.contents.data.data
         byte_ptr = ctypes.cast(yuv_data, ctypes.POINTER(ctypes.c_ubyte))
-        byte_count = pack.contents.data.len 
+        byte_count = pack.contents.data.len
         byte_array = bytes(byte_ptr[:byte_count])
 
         yuv_str = base64.b64encode(byte_array).decode('ascii')
-        # referCheck = refer_id - refer
-        # print(refer_id, '当前refer标识值')
-        if refer_id - refer == 1:
-            print(refer_id, '当前refer标识值', refer)
-            print(yuv_width, 'width', yuv_height, 'height')
-            send_video_data(window, yuv_str, yuv_width, yuv_height)
+        print(yuv_width, 'width', yuv_height, 'height')
+        send_video_data(window, yuv_str, yuv_width, yuv_height)
         print('on_pack结束')
 
 
 # 通道事件回调
 def test_on_event( mec, evt, refer):
     print('on_event开始')
-    global refer_id
-    if refer_id - refer == 1:
-        print(refer, 'refer')
-        # 将获取到的evt参数传递出去，进行相应的判断和处理， 如果在该回调函数中调用则会出现死锁现象
-        get_event_params(evt)
+    # 将获取到的evt参数传递出去，进行相应的判断和处理， 如果在该回调函数中调用则会出现死锁现象
+    get_event_params(evt)
     print('on_event结束')
 
 # 本地搜索回调实例
@@ -260,7 +250,6 @@ class Api:
     # 获取视频播放链接
     def getPlayUrl(self, url, videoType):
         global destroyChannelFlag, createPlayerFlag, videoUrl
-        
         # 先尝试注销当前存在的播放管道，确保播放时是新管道播放
         # destroy_video_channel()
         for i in range(50):
@@ -378,7 +367,7 @@ class Api:
         print('enter continue')
         print(query_param.key_video_frame_counts, 'query_param.key_video_frame_counts')
         return query_param.key_video_frame_counts
-    
+
     # 点击本地搜索按钮
     def local_search(self):
         # 初始化message结构体
@@ -443,7 +432,6 @@ class Api:
     def fullScreen(self):
         print(window.width, 'window.width')
         print(window.height, 'window.height')
-        
         # window.toggle_fullscreen()
         # retrunData = {'width': webview.screens[0].width, 'height': webview.screens[0].height}
         # return retrunData
@@ -546,14 +534,9 @@ params.len = len(params.data)
 
 # 定义创建播放器引擎 mec_create方法
 def create_player_engine ():
-    global mecobj_pointer, desc, refer_id
+    global mecobj_pointer, desc
 
     # 调用c语言函数
-    print(refer_id, 'refer_id')
-    desc.refer = ctypes.cast(refer_id, ctypes.c_void_p)
-    # refer_id_ptr = ctypes.pointer(ctypes.c_int(refer_id))
-    # desc.refer = ctypes.cast(refer_id_ptr, ctypes.c_void_p)
-    refer_id += 1
     dll.mec_create.restype = ctypes.POINTER(mec_desc)
     mecobj_pointer = dll.mec_create( ctypes.byref(desc), ctypes.byref(params) )
     print(mecobj_pointer, 'mec_create_return')
@@ -582,7 +565,7 @@ def getVideo (playUrl, videoType, download_folder_path):
         query_flag = True
         create_query_thread()
         # 如果不是继续下载则重新拼接下载地址 继续下载则不拼接地址使用之前的地址进行下载
-        if not downloadContinueFlag: 
+        if not downloadContinueFlag:
             downloadFolderPathGlobal = download_folder_path + "/" + playUrl.split("/")[-1] + ".mp4"
         print(downloadFolderPathGlobal, '传入的播放链接')
         chl_params_str = '{"src":[{"url":"' + playUrl + '"}], "dst":[{"url":"file://' + downloadFolderPathGlobal + '", "thread":"channel"}], "speaker":{"mute":"1"}, "audio":{"type":"none"}, "thread":"channel", "canvas":"none"}'
@@ -597,14 +580,14 @@ def getVideo (playUrl, videoType, download_folder_path):
     res_chl_create = dll.mec_chl_create( ctypes.byref(mecobj_pointer.contents), ctypes.byref(chl_params) )
     destroyChannelFlag = True
 
-# 判断为回放时需要调用ctrl方法进行播放 
+# 判断为回放时需要调用ctrl方法进行播放
 def recordPlay():
     print('enter recordPlay', playUrlGlobal)
     record_params = len_str()
     record_params_str = "{pic:{position:'null'},src:[{url:'" + playUrlGlobal + "'}], dst:[{url:'data:/',thread:'istream'}], trans:[{flow_ctrl:'delay', thread:'istream'}],thread:'istream', delay:{buf:{min:3000}}, speaker:{mute:1}}"
     record_params.data = ctypes.c_char_p(record_params_str.encode('utf-8'))
     record_params.len = len(record_params.data)
-    
+
     record_method = len_str()
     record_method_str = 'play'
     record_method.data = ctypes.c_char_p(record_method_str.encode('utf-8'))
@@ -628,10 +611,9 @@ def recordPlay():
         time.sleep(1)
 
 # 对讲功能调用
-def startIntercom(voiceUrl):    
+def startIntercom(voiceUrl):
     print('enter start intercom')
     # 开始录音和播放
-    
     voice_params = len_str()
     voice_params_str = "{src:[{url: 'data://',type: 'audio/pcm'}], gaec:1, gvc:0, gns:1, dst:[{url:'" + voiceUrl + "'}]}"
     voice_params.data = ctypes.c_char_p(voice_params_str.encode('utf-8'))
@@ -716,7 +698,7 @@ def destroyVideo():
     global downloadContinueFlag, query_flag, timeQuery, chl_id, createPlayerFlag, destroyChannelFlag
     downloadContinueFlag = False
     if 'mecobj_pointer' in globals() and mecobj_pointer is not None:
-        print(ctypes.byref(mecobj_pointer.contents), 'arg1')    
+        print(ctypes.byref(mecobj_pointer.contents), 'arg1')
         print(chl_id, 'arg2')
         destroy_result = dll.mec_destroy(ctypes.byref(mecobj_pointer.contents))
         print(destroy_result,'destroy_result')
@@ -752,7 +734,7 @@ def on_page_loaded():
 # 加载网页并在其中嵌入 base64 编码的图像数据  http://192.168.3.181:8080/vimtag/  http://45.120.103.36:7080/dcm/version/repo/website/pkg-website-v10.9.1.2309051030/index.html?m=vimtag 
 window = webview.create_window('Vimtag', web_path, js_api=api, width=webview.screens[0].width, height=webview.screens[0].height)
 window.events.closed += on_closed
-# 注册页面加载完成事件的回调函数        
+# 注册页面加载完成事件的回调函数
 
 # window.events.loaded += on_page_loaded
 webview.start(debug = True)

@@ -144,7 +144,7 @@ class mec_pack(ctypes.Structure):
                 ("reserved", ctypes.c_ubyte * 2)]
 
 # 定义回调函数原型
-on_pack_ptr = ctypes.CFUNCTYPE(ctypes.c_void_p, ctypes.c_char_p, ctypes.POINTER(mec_pack), ctypes.c_void_p)    
+on_pack_ptr = ctypes.CFUNCTYPE(ctypes.c_void_p, ctypes.c_char_p, ctypes.POINTER(mec_pack), ctypes.c_void_p)
 on_event_ptr = ctypes.CFUNCTYPE(ctypes.c_void_p, ctypes.c_char_p, ctypes.POINTER(mec_event), ctypes.c_void_p)
 
 # 定义mec_desc结构体
