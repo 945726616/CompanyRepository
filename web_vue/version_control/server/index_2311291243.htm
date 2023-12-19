@@ -1,5 +1,5 @@
-<!-- version v10.11.2.2311291533 -->
-<!-- 版本号 v10.11.2.2311291533 -->
+<!-- version v10.11.1.2311291243 -->
+<!-- 版本号 v10.11.1.2311291243 -->
 <html>
 <!-- 发布到dcm服务器上用于测试入口服务器index文件 -->
 <head>
@@ -17,45 +17,6 @@
     var serverArr = [] // 获取所有信令服务器地址数组
     var httpsTest // https协议测试结果
     var cmipcgwGetData // cmipcgw获取的全部数据
-    var httpMapArr = [
-      {
-        httpIp: '45.120.103.34:7080',
-        mapIp: 'https://wsbgp12.fujikam.com:7447'
-      },
-      {
-        httpIp: '45.120.103.34:4080',
-        mapIp: 'https://wsbgp12.fujikam.com:4447'
-      },
-      {
-        httpIp: '45.120.103.34:3080',
-        mapIp: 'https://wsbgp12.fujikam.com:3447'
-      },
-      {
-        httpIp: '45.120.103.35:7080',
-        mapIp: 'https://wsbgp13.fujikam.com:7447'
-      },
-      {
-        httpIp: '45.120.103.35:4080',
-        mapIp: 'https://wsbgp13.fujikam.com:4447'
-      },
-      {
-        httpIp: '45.120.103.35:3080',
-        mapIp: 'https://wsbgp13.fujikam.com:3447'
-      },
-      {
-        httpIp: '45.120.103.36:7080',
-        mapIp: 'https://wsbgp14.fujikam.com:7447'
-      },
-      {
-        httpIp: '45.120.103.36:4080',
-        mapIp: 'https://wsbgp14.fujikam.com:4447'
-      },
-      {
-        httpIp: '45.120.103.36:3080',
-        mapIp: 'https://wsbgp14.fujikam.com:3447'
-      },
-    ]
-    // 拼接地址用于请求cmipcgw_get_req接口获取信令服务器地址
     function start() {
       var s, temp, tp = null, request, oem_domain
       if (web_url.indexOf("m=") > -1) { // 如果地址中有m参数,则品牌名称为m
@@ -133,56 +94,6 @@
         }
       }
     }
-    // cmipcgw_get_req接口返回处理
-    function message(obj) {
-      if (obj && obj.type === "cmipcgw_get_ack") { // 获取信令服务器接口回调截取
-        if (obj && obj.data && obj.data.result == "" && obj.data.server.signal && obj.data.server.signal[0]) { // 筛选正确返回值的接口内容
-          // 判断当前访问协议https/http
-          let protoFlag = ("https:" === window.location.protocol) ? true : false
-          // 返回的数组中是否包含https的标识
-          let serverHttpsFlag = false
-          let iframeHostArr = []
-          let iframeHostName = ''
-          serverArr = obj.data.server.signal // 将信令服务器地址全部存储
-          cmipcgwGetData = obj.data // cmipcgw接口获取的全部数据信息
-          // 循环遍历服务器数组寻找https域名, 格式化所有信令服务器地址保留http/https协议包含端口号
-          serverArr.forEach(item => {
-            iframeHostArr.push(extractBaseURL(item))
-            if (item.indexOf('https') != -1) {
-              serverHttpsFlag = true
-            }
-          })
-          // 当前访问协议为https, 但没有返回https域名
-          if (protoFlag && !serverHttpsFlag) {
-            // 取出http域名项
-            let httpHostName = iframeHostArr.find(item => item.indexOf('http') > -1)
-            // 查询http域名是否有映射
-            let httpMapIpObj = httpMapArr.find(item => item.httpIp == httpHostName)
-            if (httpMapIpObj) {
-              iframeHostArr.push(httpMapIpObj.mapIp)
-              serverHttpsFlag = true
-            } else {
-              alert('error get server')
-            }
-          }
-          // 经过筛选处理后的信令服务器数组
-          serverArr = iframeHostArr
-          // 有https协议地址
-          if (serverHttpsFlag) {
-            iframeHostName = serverArr.find(item => item.indexOf('https') > -1)
-          } else {
-            // 无https协议地址
-            iframeHostName = serverArr.find(item => item.indexOf('http') > -1)
-          }
-          load_iframe()
-          function load_iframe() { // 渲染下一层iframe地址(固定dcm地址, 加载版本js文件并且渲染最终要展示的页面)
-            console.log(serverArr, 'iframeHostArr')
-            // 调用的为version_control的正式版地址
-            document.body.innerHTML = "<iframe id='main_ifr' onload='load()' src='" + iframeHostName + "/dcm/static/version_control/index.htm'></iframe>"
-          }
-        }
-      }
-    }
     function load() {
       console.log(serverArr, 'serverArr')
       console.log(m_hostname, 'm_hostname')
@@ -194,6 +105,59 @@
         browserHref: window.location.href,
         cmipcgwGetData: cmipcgwGetData
       }, '*')
+    }
+    function message(obj) {
+      if (obj && obj.type === "cmipcgw_get_ack") { // 获取信令服务器接口回调截取
+        if (obj && obj.data && obj.data.result == "" && obj.data.server.signal && obj.data.server.signal[0]) { // 筛选正确返回值的接口内容
+          // 判断访问协议https/http
+          let protoFlag = ("https:" === window.location.protocol) ? true : false
+          // 返回的数组中是否包含https的标识
+          let serverHttpsFlag = false
+          // host = obj.data.server.signal[0].substring(obj.data.server.signal[0].indexOf("//") + 2, obj.data.server.signal[0].lastIndexOf("/")) // 截取返回的第一个服务器域名(去除协议https/http, 以及端口号后的部分)
+          obj.data.server.signal[0] = obj.data.server.signal[0].substring(0, obj.data.server.signal[0].lastIndexOf("/")) // 去除第一条返回数据中的/ccm 原第一条数据为'http://45.113.201.4:7080/ccm'
+          serverArr = obj.data.server.signal // 将信令服务器地址全部存储
+          cmipcgwGetData = obj.data // cmipcgw接口获取的全部数据信息
+          // 循环遍历服务器数组寻找https域名(目前默认一个)
+          for (let i = 0; i < serverArr.length; i++) {
+            if (serverArr[i].indexOf('https') !== -1) { // 有https域名则获取其index
+              serverHttpsFlag = true
+            }
+          }
+          // 当返回的服务器数组中包含https且当前访问的是http协议时,重定向为https协议
+          if (serverHttpsFlag && !protoFlag) {
+            window.location.href = window.location.href.replace("http:", "https:")
+          }
+          // 当访问的协议为https协议且返回的服务器数组中没有https时,重定向为http
+          else if (protoFlag && !serverHttpsFlag) {
+            window.location.href = window.location.href.replace("https:", "http:")
+          }
+          // 其余情况
+          else {
+            load_iframe()
+          }
+          // if (httpsIndex) { // 有https域名
+          //   contain_https = obj.data.server.signal[httpsIndex]
+          // } else { // 返回的入口服务器地址中没有https的域名
+          //   contain_https = undefined
+          // }
+          // if (window.fujikam) { // 客户端不使用https链接
+          //   contain_https = undefined
+          // }
+          function load_iframe() { // 渲染下一层iframe地址(固定dcm地址, 加载版本js文件并且渲染最终要展示的页面)
+            // 调用的为version_control的正式版地址
+            document.body.innerHTML = "<iframe id='main_ifr' onload='load()' src='" + (("https:" === window.location.protocol) ? serverArr[2] : serverArr[0]) + "/dcm/static/version_control/index.htm'></iframe>"
+          }
+
+          // function load_https() { // 更改http协议为https协议并重新加载网页, 目前vimtag项目限定不要转换
+          //   if (contain_https && (proto === "http://") && (m_hostname !== 'www.vimtag.com')) {
+          //     var web_url = window.location.href.replace("http:", "https:")
+          //     window.location.href = web_url
+          //   } else {
+          //     load_iframe()
+          //   }
+          // }
+        }
+      }
     }
     function GetUrlParms() { // url参数截取方法
       var args, query, pairs
@@ -210,12 +174,6 @@
         args[argname] = unescape(value)
       }
       return args
-    }
-    //截取字符串中包含端口号部分
-    function extractBaseURL(url) {
-      var parser = document.createElement('a')
-      parser.href = url
-      return parser.protocol + '//' + parser.host
     }
     window.addEventListener('message', function(e) { // 从子页面中接收需要修改的title值,并修改title
         console.log('get childPage postMessage change the browser title', e.data)

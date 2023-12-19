@@ -4,11 +4,11 @@ import router from '../router'
 // import "firebase/analytics"
 const publicFunc = {
   async importCss (docPath) { // 引入CSS文件
-    if (window.location.href.indexOf('vimtag') > -1) {
+    if (store.state.jumpPageData.projectName.indexOf('vimtag') > -1) {
       await require('../css/vimtag' + docPath)
-    } else if (window.location.href.indexOf('ebit') > -1) {
+    } else if (store.state.jumpPageData.projectName.indexOf('ebit') > -1) {
       await require('../css/ebit' + docPath)
-    } else if (window.location.href.indexOf('mipc') > -1){
+    } else if (store.state.jumpPageData.projectName.indexOf('mipc') > -1){
       await require('../css/mipc' + docPath)
     }else{
       await require('../css/vsmahome' + docPath)

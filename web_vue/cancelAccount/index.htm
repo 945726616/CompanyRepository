@@ -174,26 +174,10 @@
             // 无https协议地址
             iframeHostName = serverArr.find(item => item.indexOf('http') > -1)
           }
-          load_iframe()
-          function load_iframe() { // 渲染下一层iframe地址(固定dcm地址, 加载版本js文件并且渲染最终要展示的页面)
-            console.log(serverArr, 'iframeHostArr')
-            // 调用的为version_control的正式版地址
-            document.body.innerHTML = "<iframe id='main_ifr' onload='load()' src='" + iframeHostName + "/dcm/static/version_control/index.htm'></iframe>"
-          }
+          // 信令服务器地址
+          iframeHostName
         }
       }
-    }
-    function load() {
-      console.log(serverArr, 'serverArr')
-      console.log(m_hostname, 'm_hostname')
-      console.log(window.location.href, 'window.location.href')
-      // 传递的参数signalServer: 信令服务器地址数组 host: 域名 browserHref: 当前浏览器URL cmipcgwGetData: cmipcgw获取的全部数据
-      document.getElementById('main_ifr').contentWindow.postMessage({
-        signalServer: serverArr,
-        host: m_hostname,
-        browserHref: window.location.href,
-        cmipcgwGetData: cmipcgwGetData
-      }, '*')
     }
     function GetUrlParms() { // url参数截取方法
       var args, query, pairs

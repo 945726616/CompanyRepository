@@ -14,6 +14,8 @@ const set = () => import(/* webpackChunkName: "group-Mipc" */'@/components/set/s
 const playback = () => import(/* webpackChunkName: "group-Mipc" */'@/components/playback/playback')
 const my = () => import(/* webpackChunkName: "group-Mipc" */'@/components/my/mipc/my')
 const download = () => import(/* webpackChunkName: "group-Mipc" */'@/components/download/download')
+const playMac = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/play/mipc/play_mac') // mac系统play页面
+const playbackMac = () => import(/* webpackChunkName: "group-Vimtag" */'@/components/playback/playback_mac') // mac系统playback页面
 
 const mipcRouter = new Router({
   routes: [
@@ -36,7 +38,12 @@ const mipcRouter = new Router({
           path: '/devlist',
           name: 'play',
           component: play
-        }
+        },
+        {
+          path: '/devlist',
+          name: 'playMac',
+          component: playMac
+        },
       ]
     },
     {
@@ -63,7 +70,12 @@ const mipcRouter = new Router({
       path: '/download',
       name: 'download',
       component: download
-    }
+    },
+    {
+      path: '/playback_mac',
+      name: 'playbackMac',
+      component: playbackMac
+    },
   ]
 })
 

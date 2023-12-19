@@ -88,7 +88,7 @@
                     @mouseup="turnCamera('stop', 'up')"></div>
                   <div id='ptz_click_up'>{{mcs_bottom_left}}</div>
                 </div>
-                <div id='ptz_control_bottom_center' @dblclick="$api.play_mac.fullscreen()"></div>
+                <div id='ptz_control_bottom_center' @dblclick="clickFullScreen"></div>
                 <div id='ptz_control_bottom'>
                   <!-- 弹出控制选项按钮 -->
                   <div id='control_menu'>

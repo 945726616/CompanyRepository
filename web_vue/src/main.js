@@ -3,19 +3,16 @@ import store from "./store"
 import router from "./router"
 import App from './App.vue'
 import Api from './api'
-import $ from 'jquery'
+import $, { data } from 'jquery'
 import Public from './util/public.js'
 import './util/msdk.min.js'
 import './css/public.scss'
+// 引入全屏插件
+import VueFullscreen from 'vue-fullscreen'
+Vue.use(VueFullscreen)
 // 引入多国语言切换插件
 import chooseLanguage from './lib/exportModule/languageExport'
-
-Vue.prototype.$ = $
-Vue.prototype.$api = Api
-Vue.config.productionTip = false
-Vue.prototype.publicFunc = Public
 Vue.prototype.$chooseLanguage = chooseLanguage
-
 if (!store.state.user.userLanguage) {
   let chromeLang = (navigator.language || navigator.userLanguage).substr(0, 2)
   if (chromeLang === 'zh') {
@@ -64,9 +61,12 @@ if (store.state.jumpPageData.projectName === 'vimtag') {
   // project_color = '#2988cc'
 }
 
+// console.log(test, 'main页面打印')
 // 定义pywebview客户端传递图片数据方法
 window.setImgData = (imgData, width, height) => {
   // console.log('获取图片数据', width, height)
+  // window.pywebview.api.getRecordPlay()
+  // console.log(typeof(imgData), '获取的imgData')
   store.dispatch('setPywebviewImgData', imgData)
   store.dispatch('setPywebviewImgWidth', width)
   store.dispatch('setPywebviewImgHeight', height)
@@ -83,13 +83,13 @@ window.downloadVideo = () => {
 window.queryVideo = () => {
   window.pywebview.api.queryVideo()
 }
-
 router.beforeEach(async (to, from, next) => {
   if (store.state.user.loginFlag === 1) { // 如果已经登录的话
     if (window.pywebview) {
       store.dispatch('setClientFlag', true)
+      console.log(store.state.user.clientFlag, '检测标识')
       console.log('enter pywebview')
-      if (to.path === '/play') {
+      if (to.path === '/play') { // vimtag 会跳转执行
         next({ path: '/play_mac' })
       } else {
         next()
@@ -104,25 +104,19 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' })
     }
   }
-  // if (window.fujikam !== 'fujikam') {
-  //   if (from.path === '/play' || from.path === '/playback') {
-  //     let player
-  //     player = videojs('hls-video')
-  //     console.log(player, '获取到的播放器实例')
-  //     if (player) {
-  //       player.dispose()
-  //       console.log('执行hls播放器销毁')
-  //     }
-  //   }
-  // }
   // next()
   // 	console.log(to,"router to")
   // 	console.log(from,"router from")
 })
 
-if (window.fujikam === 'fujikam') {
-  Public.importCss('Public.scss')
-}
+Vue.prototype.$ = $
+Vue.prototype.$api = Api
+Vue.config.productionTip = false
+Vue.prototype.publicFunc = Public
+
+// if (window.fujikam === 'fujikam') {
+//   Public.importCss('Public.scss')
+// }
 
 new Vue({
   router,

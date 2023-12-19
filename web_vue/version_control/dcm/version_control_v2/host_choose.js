@@ -12,7 +12,7 @@ var host_choose = {
   'www.vimtag.com': {
     title: 'Vimtag',
     brand: 'vimtag',
-    address: '/dcm/home/'
+    address: '/dcm/vp/home/'
   },
   'www.vimtag.com/device': {
     title: 'Vimtag',
@@ -22,8 +22,26 @@ var host_choose = {
   'www.vimtag.com/download': {
     title: 'Vimtag',
     brand: 'vimtag',
-    address: '/dcm/static/download/download/',
+    address: '/dcm/static/download/download_v2/download/',
     downloadHostname: 'vimtag.com'
+  },
+  'test.vimtag.com/download': {
+    title: 'Vimtag',
+    brand: 'vimtag',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.vimtag.com'
+  },
+  'testing.vimtag.com/download': {
+    title: 'Vimtag',
+    brand: 'vimtag',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.vimtag.com'
+  },
+  'debug.vimtag.com/download': {
+    title: 'Vimtag',
+    brand: 'vimtag',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'debug.vimtag.com'
   },
   'test.vimtag.com': {
     title: 'Vimtag',
@@ -38,7 +56,7 @@ var host_choose = {
   'www.ebitcam.com': {
     title: 'Ebitcam',
     brand: 'ebitcam',
-    address: '/dcm/home/'
+    address: '/dcm/ep/home/'
   },
   'www.ebitcam.com/device': {
     title: 'Ebitcam',
@@ -48,8 +66,26 @@ var host_choose = {
   'www.ebitcam.com/download': {
     title: 'Ebitcam',
     brand: 'ebitcam',
-    address: '/dcm/static/download/download/',
+    address: '/dcm/static/download/download_v2/download/',
     downloadHostname: 'ebitcam.com'
+  },
+  'test.ebitcam.com/download': {
+    title: 'Ebitcam',
+    brand: 'ebitcam',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.ebitcam.com'
+  },
+  'testing.ebitcam.com/download': {
+    title: 'Ebitcam',
+    brand: 'ebitcam',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.ebitcam.com'
+  },
+  'debug.ebitcam.com/download': {
+    title: 'Ebitcam',
+    brand: 'ebitcam',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'debug.ebitcam.com'
   },
   'test.ebitcam.com': {
     title: 'Ebitcam',
@@ -69,8 +105,26 @@ var host_choose = {
   'www.mipcm.com/download': {
     title: 'MIPC',
     brand: 'mipcm',
-    address: '/dcm/static/download/download/',
+    address: '/dcm/static/download/download_v2/download/',
     downloadHostname: 'mipcm.com'
+  },
+  'test.mipcm.com/download': {
+    title: 'MIPC',
+    brand: 'mipcm',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.mipcm.com'
+  },
+  'testing.mipcm.com/download': {
+    title: 'MIPC',
+    brand: 'mipcm',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.mipcm.com'
+  },
+  'debug.mipcm.com/download': {
+    title: 'MIPC',
+    brand: 'mipcm',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'debug.mipcm.com'
   },
   'test.mipcm.com': {
     title: 'MIPC',
@@ -90,8 +144,26 @@ var host_choose = {
   'www.vsmahome.com/download': {
     title: 'vsmahome',
     brand: 'vsmahome',
-    address: '/dcm/static/download/download/',
+    address: '/dcm/static/download/download_v2/download/',
     downloadHostname: 'vsmahome.com'
+  },
+  'test.vsmahome.com/download': {
+    title: 'vsmahome',
+    brand: 'vsmahome',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.vsmahome.com'
+  },
+  'testing.vsmahome.com/download': {
+    title: 'vsmahome',
+    brand: 'vsmahome',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'test.vsmahome.com'
+  },
+  'debug.vsmahome.com/download': {
+    title: 'vsmahome',
+    brand: 'vsmahome',
+    address: '/dcm/static/download/download_v2/download/',
+    downloadHostname: 'debug.vsmahome.com'
   },
   'test.vsmahome.com': {
     title: 'vsmahome',
@@ -129,11 +201,15 @@ var host_choose = {
   },
   'www.fujikam.com': {
     title: 'Fujikam',
-    address: '/dcm/fujikam.com/home/'
+    address: '/dcm/fp/home/'
   },
   'test.fujikam.com': {
     title: 'Fujikam',
-    address: '/dcm/fujikam.com/home/'
+    address: '/dcm/fp/home/'
+  },
+  'en.fujikam.com': {
+    title: 'Fujikam',
+    address: '/dcm/fp/home/'
   },
   'v1.mipcm.com': {
     title: 'MIPC',

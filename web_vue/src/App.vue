@@ -46,6 +46,7 @@ export default {
     window.addEventListener('pywebviewready', function() {
       console.log('判断为客户端')
       this.$store.dispatch('setClientFlag', true)
+      console.log(this.$store.state.user.clientFlag, '改变后的标识')
     })
   },
   destroyed () {

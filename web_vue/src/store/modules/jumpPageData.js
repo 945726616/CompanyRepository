@@ -194,18 +194,50 @@ function GetQueryString (name) { // 截取url参数函数判断其中是否含�
   return null;
 }
 
+function GetUrlParms () { // 参数截取函数
+  var args, query, pairs
+  args = new Object()
+  query = location.search.substring(1)
+  pairs = query.split("&")
+  for (var i = 0; i < pairs.length; i++) {
+    var pos = pairs[i].indexOf('=')
+    if (pos === -1) {
+      continue
+    }
+    var argname = pairs[i].substring(0, pos)
+    var value = pairs[i].substring(pos + 1)
+    args[argname] = unescape(value)
+  }
+  return args
+}
+
 function getProjectName () { // 获取项目名称从域名中截取并存储在session中
   let returnItem
   let url = window.location.href
+  let oem_domain = GetUrlParms().m
   // console.log(url, 'vuex_href')
-  if (url.indexOf('vimtag') > 1) {
-    returnItem = 'vimtag'
-  } else if (url.indexOf('mipcm') > 1) {
-    returnItem = 'mipcm'
-  } else if (url.indexOf('ebitcam') > -1) {
-    returnItem = 'ebitcam'
-  } else if (url.indexOf('vsmahome') > -1) {
-    returnItem = 'vsmahome'
+  console.log(oem_domain, 'oem_domain')
+  if (oem_domain) {
+    if (oem_domain.indexOf('vimtag') > -1) {
+      returnItem = 'vimtag'
+    } else if (oem_domain.indexOf('mipcm') > -1) {
+      returnItem = 'mipcm'
+    } else if (oem_domain.indexOf('ebitcam') > -1) {
+      returnItem = 'ebitcam'
+    } else if (oem_domain.indexOf('vsmahome') > -1) {
+      returnItem = 'vsmahome'
+    }
+  } else {
+    if (url.indexOf('vimtag') > -1) {
+      returnItem = 'vimtag'
+    } else if (url.indexOf('mipcm') > -1) {
+      returnItem = 'mipcm'
+    } else if (url.indexOf('ebitcam') > -1) {
+      returnItem = 'ebitcam'
+    } else if (url.indexOf('vsmahome') > -1) {
+      returnItem = 'vsmahome'
+    }
   }
+  console.log(returnItem, 'vuex returnItem')
   return returnItem
 }

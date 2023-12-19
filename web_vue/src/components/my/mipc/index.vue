@@ -960,7 +960,7 @@ export default {
     await this.mipcMyPage(pageData) // 进入页面后加载
     // await this.create_my_page({ parent: $('#my') })
     // await this.publicFunc.importCss('Public.scss') // 动态引入css样式 页面加载完成后加载样式(如果加载过早则会无法改变jq填充的dom)
-    // if (window.location.href.indexOf('vimtag') === -1) {
+    // if (this.$store.state.jumpPageData.projectName.indexOf('vimtag') === -1) {
     //   // mipc系列
     //   languageSelect.mipc($('#login_box'))
     //   $('#login_box').append("<div id='is_mipc_div'></div>")

@@ -205,17 +205,18 @@ export default {
     }
   },
   async mounted () {
-    if (window.location.href.indexOf('vimtag') > -1) {
-      this.name = 'vimtag';
+    console.log(this.$store.state.jumpPageData, '$store')
+    if (this.$store.state.jumpPageData.projectName.indexOf('vimtag') > -1) {
+      this.name = 'vimtag'
       this.appid = 'vimtag.com'
-    } else if (window.location.href.indexOf('ebitcam') > -1) {
-      this.name = 'ebit';
+    } else if (this.$store.state.jumpPageData.projectName.indexOf('ebitcam') > -1) {
+      this.name = 'ebit'
       this.appid = 'ebitcam.com'
-    } else if (window.location.href.indexOf('mipcm') > -1) {
-      this.name = 'mipc';
+    } else if (this.$store.state.jumpPageData.projectName.indexOf('mipcm') > -1) {
+      this.name = 'mipc'
       this.appid = 'mipcm.com'
     } else {
-      this.name = 'vsmahome';
+      this.name = 'vsmahome'
       this.appid = 'vsmahome.com'
     }
 

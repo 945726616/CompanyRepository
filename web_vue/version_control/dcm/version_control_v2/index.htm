@@ -50,11 +50,11 @@
         cmipcgwGetData = iframeData.cmipcgwGetData // 赋值获取到的cmipcgw信息
 
         // 地址链接中是否包含device
-        if (browserHref.indexOf('device') > 0) {
+        if (browserHref && browserHref.indexOf('device') > -1) {
           m_hostname += '/device'
         }
         // 地址链接中是否包含download
-        if (browserHref.indexOf('download') > 0) {
+        if (browserHref && browserHref.indexOf('download') > -1) {
           m_hostname += '/download'
         }
         // 客户端vimtag/ebitcam特殊判断
@@ -77,13 +77,13 @@
         console.log('host_choose_item', host_choose_item, pageTitle)
         // iframe地址协议判断
         // 如果用户访问的是http协议
-        if (browserHref.indexOf('http://') !== -1) {
-          if (iframeData.signalServer[2]) { // 返回的信令服务器地址数组中是否包含https协议的信令服务器地址
+        if (browserHref && browserHref.indexOf('http://') !== -1) {
+          if (iframeData.signalServer[2] && window.fujikam !== 'fujikam') { // 返回的信令服务器地址数组中是否包含https协议的信令服务器地址
             console.log('enter change https')
             postFatherMessageInfo.sendEvalFunc = 'window.location.href = "' + browserHref.replace('http', 'https') + '"'
             postFatherMessage(postFatherMessageInfo)
             return
-          } else { // 返回的数组中不包含https的信令服务器地址
+          } else { // 返回的数组中不包含https的信令服务器地址或为客户端
             iframeSrcHeader = iframeData.signalServer[0]
           }
         } else { // https协议
@@ -98,7 +98,11 @@
             if (host_choose_item.indexOf('download') > 0) {
               document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + 'download.htm?m=' + host_choose[host_choose_item].downloadHostname + "'></iframe>"
             } else {
-              document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + 'index.htm?m=' + m_hostname + "'></iframe>"
+              if (host_choose_item == 'en.fujikam.com') {
+                document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + 'indexen.htm?m=' + m_hostname + "'></iframe>"
+              } else {
+                document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + 'index.htm?m=' + m_hostname + "'></iframe>"
+              }
             }
             // document.body.innerHTML = "<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + 'index.htm?m=' + m_hostname + "'></iframe>"
           // }

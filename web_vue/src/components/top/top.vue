@@ -92,8 +92,8 @@
             }
         },
         async mounted() {
+            this.project_sign = (this.$store.state.jumpPageData.projectName.indexOf('vimtag') > -1) ? true : false
             console.log(this.experienceShow, 'experienceShow', this.project_sign)
-            this.project_sign = window.location.href.indexOf('vimtag') > -1;
             this.$nextTick(async () => {
                 // 强制重新引入多国语言 main.js中的引用无法确保在调用top时能够全局使用
                 await this.$chooseLanguage.lang(this.$store.state.user.userLanguage)
